@@ -1,1 +1,496 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEMENTFIT | أوزان احترافية بقوة الخرسانة</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Base & Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0f1115;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-hover: rgba(255, 255, 255, 0.1);
+            --accent-orange: #ff6b35;
+            --accent-glow: rgba(255, 107, 53, 0.35);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Ambient Glowing Background Orbs (Graphics Effect) */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 350px;
+            height: 350px;
+            background: var(--accent-orange);
+            top: -50px;
+            right: -50px;
+        }
+
+        .orb-2 {
+            width: 450px;
+            height: 450px;
+            background: #3b82f6;
+            bottom: -100px;
+            left: -100px;
+            opacity: 0.25;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #8b5cf6;
+            top: 40%;
+            left: 30%;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 40px) scale(1.08); }
+        }
+
+        /* Glassmorphic Navbar */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--accent-orange);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #e85d04);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px var(--accent-glow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 140px 8% 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+            gap: 40px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .badge {
+            background: rgba(255, 107, 53, 0.15);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            color: var(--accent-orange);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 35px;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-glass {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 10px 24px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-glass:hover {
+            background: var(--glass-hover);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Glass Card Graphic Showcase */
+        .hero-image-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .glass-card-main {
+            width: 100%;
+            max-width: 420px;
+            height: 480px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: all 0.5s ease;
+        }
+
+        .glass-card-main:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .dumbbell-graphic {
+            width: 100%;
+            height: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .dumbbell-graphic img {
+            width: 80%;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7));
+            animation: floatImage 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatImage {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        .card-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .card-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .card-metrics {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 8%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            font-weight: 800;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: var(--glass-hover);
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .feature-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 130px;
+            }
+
+            .hero-description {
+                margin: 0 auto 35px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none; /* Can be enhanced with mobile menu */
+            }
+
+            .hero-title {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Light Effects (Background Glass Graphics) -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Glass Navbar -->
+    <header>
+        <a href="#" class="logo">
+            <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
+            CEMENT<span>FIT</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">الرئيسية</a></li>
+            <li><a href="#products">المنتجات</a></li>
+            <li><a href="#features">المميزات</a></li>
+            <li><a href="#reviews">الآراء</a></li>
+        </ul>
+        <a href="#shop" class="btn-primary">
+            تواصل معنا <i class="fa-solid fa-arrow-left"></i>
+        </a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="badge"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
+            <h1 class="hero-title">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
+            <p class="hero-description">
+                احصل على فورمة الجيم من البيت بأعلى خامات الأسمنت المسلح المقاوم للصدمات، مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
+            </p>
+            <div class="hero-buttons">
+                <a href="#shop" class="btn-primary">اطلب الآن</a>
+                <a href="#features" class="btn-glass">استكشف بالمزيد</a>
+            </div>
+        </div>
+
+        <!-- Glass Showcase Graphic -->
+        <div class="hero-image-container">
+            <div class="glass-card-main">
+                <div class="dumbbell-graphic">
+                    <!-- SVG Graphic Vector Placeholder for Dumbbell -->
+                    <svg width="200" height="120" viewBox="0 0 24 24" fill="none" stroke="#f3f4f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="6" width="4" height="12" rx="1" fill="#ff6b35" stroke="none"/>
+                        <rect x="6" y="8" width="2" height="8" rx="0.5" fill="#9ca3af" stroke="none"/>
+                        <line x1="8" y1="12" x2="16" y2="12" stroke="#fff" stroke-width="2.5"/>
+                        <rect x="16" y="8" width="2" height="8" rx="0.5" fill="#9ca3af" stroke="none"/>
+                        <rect x="18" y="6" width="4" height="12" rx="1" fill="#ff6b35" stroke="none"/>
+                    </svg>
+                </div>
+                <div class="card-info">
+                    <h3>طقم دامبلز احترافي (20 كجم)</h3>
+                    <p>أسمنت عالي الكثافة + مغلف بحماية خرسانية</p>
+                </div>
+                <div class="card-metrics">
+                    <div>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">السعر التنافسي</span>
+                        <div class="price">350 ج.م</div>
+                    </div>
+                    <a href="#" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem;">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">لماذا تختار <span style="color: var(--accent-orange);">CementFit</span>؟</h2>
+        <div class="grid">
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h4>صلابة وخامة معالجة</h4>
+                <p>خلطة خرسانية خاصة ومقاومة للتآكل والكسر للتحمل أثناء أعتى التمرينات.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-hand-fist"></i>
+                </div>
+                <h4>مقبض مريح لليد</h4>
+                <p>تصميم مميز للمقبض يمنع الانزلاق أثناء التمرين ويقلل الضغط على كف اليد.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+                <h4>قيمة مقابل سعر</h4>
+                <p>وفر أكثر من 70% مقارنة بأوزان الحديد التقليدية مع الحصول على نفس النتيجة تماماً.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
