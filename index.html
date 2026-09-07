@@ -181,10 +181,10 @@
         .hero-content {
             flex: 1;
             position: relative;
-            z-index: 10; /* تأكيد إظهار النص أعلى الموديل */
+            z-index: 10;
         }
 
-        /* 3D Model View Container - خلف الكلام والـ hero-content بالكامل */
+        /* 3D Model View Container */
         .hero-3d-bg {
             position: absolute;
             top: 50%;
@@ -193,11 +193,11 @@
             width: 100%;
             height: 380px;
             max-width: 550px;
-            z-index: -1; /* يضمن إرسال الموديل للخلفية تماماً */
+            z-index: -1;
             pointer-events: none;
         }
 
-        /* إخفاء شريط التحميل (Progress Bar) والحدود الافتراضية للـ model-viewer */
+        /* التحكم في إخفاء الموديل حتى يكتمل التحميل للظهور بنعومة */
         model-viewer {
             width: 100%;
             height: 100%;
@@ -208,9 +208,17 @@
             --progress-mask: transparent;
             outline: none;
             border: none;
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* إلغاء أي شريط تحميل داخل السلوت الافتراضي */
+        /* الكلاس الذي يُضاف عبر JS فور اكتمال الجاهزية */
+        model-viewer.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+
         model-viewer::part(progress-bar) {
             display: none;
         }
@@ -477,14 +485,15 @@
             <!-- 3D Model Background Container -->
             <div class="hero-3d-bg">
                 <model-viewer 
+                    id="dumbbellViewer"
                     src="./dumbbellmodel.glb" 
                     alt="3D Dumbbell Model" 
                     auto-rotate 
                     rotation-per-second="40deg"
                     interaction-prompt="none"
                     loading="eager"
+                    reveal="auto"
                     shadow-intensity="0.5">
-                    <!-- سلوت إخفاء الـ Progress bar كلياً -->
                     <div slot="progress-bar"></div>
                 </model-viewer>
             </div>
@@ -559,5 +568,16 @@
         </div>
     </section>
 
+    <script>
+        // كود التحكم في ظهور الدامبل بنعومة فور اكتمال الجاهزية
+        const viewer = document.getElementById('dumbbellViewer');
+        
+        viewer.addEventListener('load', () => {
+            // انتظار إطار بسيط لضمان اكتمال بناء الـ 3D Scene وبدء الحركة فوراً
+            requestAnimationFrame(() => {
+                viewer.classList.add('loaded');
+            });
+        });
+    </script>
 </body>
 </html>
