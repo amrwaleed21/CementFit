@@ -108,7 +108,6 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* Fix LTR order for Logo Name */
         .logo {
             font-size: 1.25rem;
             font-weight: 900;
@@ -118,7 +117,7 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
-            direction: ltr; /* Force Left-To-Right for correct word order */
+            direction: ltr;
         }
 
         .logo span {
@@ -182,41 +181,30 @@
         .hero-content {
             flex: 1;
             position: relative;
-            z-index: 2; /* Keeps text above 3D model */
+            z-index: 2; /* وضع النص والأزرار فوق الموديل */
         }
 
-        /* 3D Background Container for Hero Text */
+        /* 3D Model View Container - خلف الكلام */
         .hero-3d-bg {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
-            height: 100%;
+            height: 380px;
             max-width: 550px;
-            max-height: 550px;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0;
-            animation: popup3d 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+            z-index: 0; /* خلف العناصر التفاعلية والنصوص */
+            pointer-events: none; /* لمنع إعاقة النقر على الأزرار والنصوص */
         }
 
-        /* Smooth Pop-up Animation for 3D Model */
-        @keyframes popup3d {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -40%) scale(0.6);
-            }
-            100% {
-                opacity: 0.35; /* Subtle opacity so text remains clear */
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
+        /* إلغاء الخطوط السوداء والخلفيات الرمادية للـ Model Viewer */
         model-viewer {
             width: 100%;
             height: 100%;
+            background-color: transparent;
             --poster-color: transparent;
+            outline: none;
+            border: none;
         }
 
         .badge {
@@ -239,7 +227,7 @@
             background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .hero-description {
@@ -445,8 +433,8 @@
             }
 
             .hero-3d-bg {
+                height: 300px;
                 max-width: 380px;
-                max-height: 380px;
             }
         }
     </style>
@@ -460,7 +448,6 @@
 
     <!-- Glass Navbar -->
     <header>
-        <!-- Corrected LTR Order: CEMENT FIT -->
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
             CEMENT <span>FIT</span>
@@ -479,23 +466,21 @@
     <section class="hero" id="home">
         
         <div class="hero-content">
-            <!-- 3D Model Rotating background behind text -->
+            <!-- 3D Model Background Container -->
             <div class="hero-3d-bg">
                 <model-viewer 
-                    src="dumbbellmodel.glb" 
+                    src="./dumbbellmodel.glb" 
                     alt="3D Dumbbell Model" 
                     auto-rotate 
                     rotation-per-second="30deg"
-                    orientation="0deg 0deg 90deg"
-                    interaction-prompt="none"
                     disable-zoom
-                    shadow-intensity="0">
+                    reveal="auto"
+                    shadow-intensity="0.5">
                 </model-viewer>
             </div>
 
             <span class="badge"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
             <h1 class="hero-title">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
-            <!-- Updated Paragraph Without the removed phrase -->
             <p class="hero-description">
                 احصل على فورمة الجيم من البيت بأعلى خامات الجودة مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
             </p>
