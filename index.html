@@ -13,6 +13,9 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- 3D Model Viewer Component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
     <style>
         /* Base & Reset */
         * {
@@ -84,7 +87,7 @@
             100% { transform: translate(30px, 40px) scale(1.08); }
         }
 
-        /* Glassmorphic Navbar (Compact & Fixed height) */
+        /* Glassmorphic Navbar */
         header {
             position: fixed;
             top: 12px;
@@ -105,6 +108,7 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
+        /* Fix LTR order for Logo Name */
         .logo {
             font-size: 1.25rem;
             font-weight: 900;
@@ -114,6 +118,7 @@
             align-items: center;
             gap: 8px;
             white-space: nowrap;
+            direction: ltr; /* Force Left-To-Right for correct word order */
         }
 
         .logo span {
@@ -171,10 +176,47 @@
             max-width: 1300px;
             margin: 0 auto;
             gap: 40px;
+            position: relative;
         }
 
         .hero-content {
             flex: 1;
+            position: relative;
+            z-index: 2; /* Keeps text above 3D model */
+        }
+
+        /* 3D Background Container for Hero Text */
+        .hero-3d-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            max-width: 550px;
+            max-height: 550px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            animation: popup3d 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+        }
+
+        /* Smooth Pop-up Animation for 3D Model */
+        @keyframes popup3d {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -40%) scale(0.6);
+            }
+            100% {
+                opacity: 0.35; /* Subtle opacity so text remains clear */
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent;
         }
 
         .badge {
@@ -197,6 +239,7 @@
             background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .hero-description {
@@ -232,13 +275,14 @@
             transform: translateY(-2px);
         }
 
-        /* Glass Card Graphic Showcase */
+        /* Glass Card Showcase */
         .hero-image-container {
             flex: 1;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 2;
         }
 
         .glass-card-main {
@@ -399,6 +443,11 @@
             header {
                 padding: 8px 12px;
             }
+
+            .hero-3d-bg {
+                max-width: 380px;
+                max-height: 380px;
+            }
         }
     </style>
 </head>
@@ -411,9 +460,10 @@
 
     <!-- Glass Navbar -->
     <header>
+        <!-- Corrected LTR Order: CEMENT FIT -->
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
-            CEMENT<span>FIT</span>
+            CEMENT <span>FIT</span>
         </a>
         <ul class="nav-links">
             <li><a href="#home">الرئيسية</a></li>
@@ -427,11 +477,27 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        
         <div class="hero-content">
+            <!-- 3D Model Rotating background behind text -->
+            <div class="hero-3d-bg">
+                <model-viewer 
+                    src="dumbbellmodel.glb" 
+                    alt="3D Dumbbell Model" 
+                    auto-rotate 
+                    rotation-per-second="30deg"
+                    orientation="0deg 0deg 90deg"
+                    interaction-prompt="none"
+                    disable-zoom
+                    shadow-intensity="0">
+                </model-viewer>
+            </div>
+
             <span class="badge"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
             <h1 class="hero-title">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
+            <!-- Updated Paragraph Without the removed phrase -->
             <p class="hero-description">
-                احصل على فورمة الجيم من البيت بأعلى خامات الأسمنت المسلح المقاوم للصدمات، مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
+                احصل على فورمة الجيم من البيت بأعلى خامات الجودة مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
             </p>
             <div class="hero-buttons">
                 <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20اوردر%20من%20CementFit" target="_blank" class="btn-primary">
