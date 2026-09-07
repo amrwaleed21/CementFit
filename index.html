@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -43,7 +42,7 @@
             min-height: 100vh;
         }
 
-        /* Ambient Glowing Background Orbs (Graphics Effect) */
+        /* Ambient Glowing Background Orbs */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
@@ -85,20 +84,20 @@
             100% { transform: translate(30px, 40px) scale(1.08); }
         }
 
-        /* Glassmorphic Navbar */
+        /* Glassmorphic Navbar (Compact & Fixed height) */
         header {
             position: fixed;
-            top: 20px;
+            top: 12px;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
+            width: 92%;
             max-width: 1200px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 15px 30px;
+            border-radius: 18px;
+            padding: 8px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -107,13 +106,14 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 900;
             color: var(--text-main);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            white-space: nowrap;
         }
 
         .logo span {
@@ -122,7 +122,7 @@
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             list-style: none;
         }
 
@@ -141,17 +141,19 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
-            padding: 10px 24px;
-            border-radius: 14px;
+            padding: 8px 16px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 700;
+            font-size: 0.9rem;
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 20px var(--accent-glow);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            white-space: nowrap;
         }
 
         .btn-primary:hover {
@@ -165,7 +167,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 140px 8% 60px;
+            padding: 110px 8% 60px;
             max-width: 1300px;
             margin: 0 auto;
             gap: 40px;
@@ -188,7 +190,7 @@
         }
 
         .hero-title {
-            font-size: 3.2rem;
+            font-size: 3rem;
             font-weight: 900;
             line-height: 1.25;
             margin-bottom: 20px;
@@ -215,10 +217,11 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            padding: 10px 24px;
-            border-radius: 14px;
+            padding: 8px 20px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.9rem;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
@@ -271,8 +274,7 @@
             position: relative;
         }
 
-        .dumbbell-graphic img {
-            width: 80%;
+        .dumbbell-graphic svg {
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7));
             animation: floatImage 4s infinite alternate ease-in-out;
         }
@@ -375,7 +377,7 @@
             .hero {
                 flex-direction: column;
                 text-align: center;
-                padding-top: 130px;
+                padding-top: 110px;
             }
 
             .hero-description {
@@ -387,18 +389,22 @@
             }
 
             .nav-links {
-                display: none; /* Can be enhanced with mobile menu */
+                display: none;
             }
 
             .hero-title {
-                font-size: 2.4rem;
+                font-size: 2.2rem;
+            }
+            
+            header {
+                padding: 8px 12px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Light Effects (Background Glass Graphics) -->
+    <!-- Background Glass Orbs -->
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
     <div class="glow-orb orb-3"></div>
@@ -413,10 +419,9 @@
             <li><a href="#home">الرئيسية</a></li>
             <li><a href="#products">المنتجات</a></li>
             <li><a href="#features">المميزات</a></li>
-            <li><a href="#reviews">الآراء</a></li>
         </ul>
-        <a href="#shop" class="btn-primary">
-            تواصل معنا <i class="fa-solid fa-arrow-left"></i>
+        <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit" target="_blank" class="btn-primary">
+            تواصل معنا <i class="fa-brands fa-whatsapp"></i>
         </a>
     </header>
 
@@ -429,8 +434,10 @@
                 احصل على فورمة الجيم من البيت بأعلى خامات الأسمنت المسلح المقاوم للصدمات، مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
             </p>
             <div class="hero-buttons">
-                <a href="#shop" class="btn-primary">اطلب الآن</a>
-                <a href="#features" class="btn-glass">استكشف بالمزيد</a>
+                <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20اوردر%20من%20CementFit" target="_blank" class="btn-primary">
+                    اطلب الآن <i class="fa-brands fa-whatsapp"></i>
+                </a>
+                <a href="#features" class="btn-glass">استكشف المزيد</a>
             </div>
         </div>
 
@@ -438,7 +445,6 @@
         <div class="hero-image-container">
             <div class="glass-card-main">
                 <div class="dumbbell-graphic">
-                    <!-- SVG Graphic Vector Placeholder for Dumbbell -->
                     <svg width="200" height="120" viewBox="0 0 24 24" fill="none" stroke="#f3f4f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="6" width="4" height="12" rx="1" fill="#ff6b35" stroke="none"/>
                         <rect x="6" y="8" width="2" height="8" rx="0.5" fill="#9ca3af" stroke="none"/>
@@ -456,8 +462,8 @@
                         <span style="font-size: 0.8rem; color: var(--text-muted);">السعر التنافسي</span>
                         <div class="price">350 ج.م</div>
                     </div>
-                    <a href="#" class="btn-primary" style="padding: 8px 16px; font-size: 0.85rem;">
-                        <i class="fa-solid fa-cart-shopping"></i>
+                    <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20طقم%20الدامبلز%2020%20كجم" target="_blank" class="btn-primary" style="padding: 8px 14px;">
+                        <i class="fa-brands fa-whatsapp"></i>
                     </a>
                 </div>
             </div>
