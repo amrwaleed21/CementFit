@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEMENTFIT | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --accent-orange: #ff6b35;
+            --text-main: #f3f4f6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 20px; }
+
+        .container { max-width: 800px; margin: 40px auto; }
+        
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        h2 { margin-bottom: 20px; color: var(--accent-orange); }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--accent-orange), #e85d04);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .actions { display: flex; gap: 10px; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        .btn-edit { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Login Section -->
+        <div id="login-section" class="card">
+            <h2>تسجيل دخول الأدمن</h2>
+            <div class="input-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" id="admin-email" placeholder="أدخل البريد الإلكتروني">
+            </div>
+            <div class="input-group">
+                <label>كلمة السر</label>
+                <input type="password" id="admin-pass" placeholder="أدخل كلمة السر">
+            </div>
+            <button class="btn" onclick="checkLogin()">دخول</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1>لوحة إدارة المنتجات</h1>
+                <button class="btn-delete" onclick="logout()">تسجيل خروج</button>
+            </div>
+
+            <!-- Form Add / Edit -->
+            <div class="card">
+                <h2 id="form-title">إضافة منتج جديد</h2>
+                <input type="hidden" id="prod-id">
+                <div class="input-group">
+                    <label>اسم المنتج</label>
+                    <input type="text" id="prod-name" placeholder="مثال: طارة خرسانية 10 كجم">
+                </div>
+                <div class="input-group">
+                    <label>الوصف</label>
+                    <textarea id="prod-desc" rows="3" placeholder="وصف المنتج..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>السعر (بالجنيه)</label>
+                    <input type="number" id="prod-price" placeholder="مثال: 350">
+                </div>
+                <div class="input-group">
+                    <label>رابط صورة المنتج (URL)</label>
+                    <input type="text" id="prod-img" placeholder="https://example.com/image.jpg">
+                </div>
+                <button class="btn" id="save-btn" onclick="saveProduct()">حفظ المنتج</button>
+            </div>
+
+            <!-- Existing Products List -->
+            <div class="card">
+                <h2>المنتجات الحالية</h2>
+                <div id="admin-products-list">جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // إعدادات Supabase
+        const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // قم بتعيين بريدك الإلكتروني وكلمة السر هنا
+        const ADMIN_EMAIL = 'admin@cementfit.com';
+        const ADMIN_PASSWORD = '123456admin';
+
+        function checkLogin() {
+            const email = document.getElementById('admin-email').value.trim();
+            const pass = document.getElementById('admin-pass').value.trim();
+
+            if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('dashboard-section').classList.remove('hidden');
+                loadAdminProducts();
+            } else {
+                alert('البريد الإلكتروني أو كلمة السر غير صحيحة!');
+            }
+        }
+
+        function logout() {
+            location.reload();
+        }
+
+        async function loadAdminProducts() {
+            const list = document.getElementById('admin-products-list');
+            list.innerHTML = 'جاري التحميل...';
+
+            const { data: products, error } = await _supabase
+                .from('products')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) {
+                list.innerHTML = 'حدث خطأ أثناء جلب المنتجات: ' + error.message;
+                return;
+            }
+
+            if (products.length === 0) {
+                list.innerHTML = 'لا توجد منتجات حالياً.';
+                return;
+            }
+
+            list.innerHTML = '';
+            products.forEach((prod) => {
+                list.innerHTML += `
+                    <div class="product-item">
+                        <div>
+                            <strong>${prod.name}</strong> - ${prod.price} ج.م
+                        </div>
+                        <div class="actions">
+                            <button class="btn-edit" onclick="editProduct(${prod.id}, '${prod.name}', '${prod.desc || ''}', ${prod.price}, '${prod.image || ''}')">تعديل</button>
+                            <button class="btn-delete" onclick="deleteProduct(${prod.id})">حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function saveProduct() {
+            const id = document.getElementById('prod-id').value;
+            const name = document.getElementById('prod-name').value.trim();
+            const desc = document.getElementById('prod-desc').value.trim();
+            const price = Number(document.getElementById('prod-price').value);
+            const image = document.getElementById('prod-img').value.trim();
+
+            if(!name || !price) return alert('برجاء كتابة الاسم والسعر');
+
+            if(id) {
+                // تعديل منتج
+                await _supabase.from('products').update({ name, desc, price, image }).eq('id', id);
+            } else {
+                // إضافة منتج
+                await _supabase.from('products').insert([{ name, desc, price, image }]);
+            }
+
+            resetForm();
+            loadAdminProducts();
+        }
+
+        function editProduct(id, name, desc, price, image) {
+            document.getElementById('prod-id').value = id;
+            document.getElementById('prod-name').value = name;
+            document.getElementById('prod-desc').value = desc;
+            document.getElementById('prod-price').value = price;
+            document.getElementById('prod-img').value = image;
+            document.getElementById('form-title').innerText = 'تعديل المنتج';
+            document.getElementById('save-btn').innerText = 'تحديث البيانات';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteProduct(id) {
+            if(confirm('هل أنت متاكد من حذف هذا المنتج؟')) {
+                await _supabase.from('products').delete().eq('id', id);
+                loadAdminProducts();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('prod-id').value = '';
+            document.getElementById('prod-name').value = '';
+            document.getElementById('prod-desc').value = '';
+            document.getElementById('prod-price').value = '';
+            document.getElementById('prod-img').value = '';
+            document.getElementById('form-title').innerText = 'إضافة منتج جديد';
+            document.getElementById('save-btn').innerText = 'حفظ المنتج';
+        }
+    </script>
+</body>
+</html>
