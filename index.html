@@ -28,7 +28,7 @@
 
         :root {
             --bg-color: #0f1115;
-            --glass-bg: rgba(255, 255, 255, 0.12); /* خلفية زجاجية أفتح */
+            --glass-bg: rgba(255, 255, 255, 0.12);
             --glass-border: rgba(255, 255, 255, 0.22);
             --glass-hover: rgba(255, 255, 255, 0.18);
             --accent-orange: #ff6b35;
@@ -72,7 +72,7 @@
             transform: translateX(-50%);
             width: 92%;
             max-width: 1100px;
-            background: rgba(255, 255, 255, 0.14); /* لون فاتح وأوضح للناڤ بار */
+            background: rgba(255, 255, 255, 0.14);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
@@ -85,6 +85,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
+        /* Logo without space between CEMENT and FIT */
         .logo {
             font-size: 1.25rem;
             font-weight: 900;
@@ -94,10 +95,16 @@
             align-items: center;
             gap: 6px;
             direction: ltr;
-            letter-spacing: -0.5px;
         }
 
-        .logo span { color: var(--accent-orange); }
+        .logo-text {
+            display: inline-block;
+            letter-spacing: 0px;
+            word-spacing: 0px;
+            white-space: nowrap;
+        }
+
+        .logo-text span { color: var(--accent-orange); }
 
         .nav-links {
             display: flex;
@@ -224,7 +231,7 @@
             align-items: center;
         }
 
-        /* 3D Container with Pop Up Animation */
+        /* Smooth 3D Container */
         .hero-3d-bg {
             position: absolute;
             top: 50%;
@@ -237,6 +244,7 @@
             pointer-events: none;
         }
 
+        /* Ensure Model Viewer transition is ultra-smooth */
         model-viewer {
             width: 100%;
             height: 100%;
@@ -244,10 +252,17 @@
             outline: none !important;
             border: none !important;
             box-shadow: none !important;
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
             --poster-color: transparent !important;
             --progress-bar-color: transparent !important;
             --progress-bar-height: 0px !important;
-            --progress-mask: transparent !important;
+        }
+
+        model-viewer.loaded {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .badge {
@@ -335,27 +350,18 @@
             margin-bottom: 15px;
         }
 
-        /* Smooth Pop-Up Animation for all elements including 3D model */
+        /* Smooth Sequential Staggered Entrance Animations */
         .animate-element {
             opacity: 0;
-            transform: translateY(35px) scale(0.9);
-            transition: opacity 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        transform 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(25px) scale(0.96);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, transform;
         }
 
         .animate-element.visible {
             opacity: 1;
             transform: translateY(0) scale(1);
-        }
-
-        /* Pop up animation correction specifically for centered 3d model container */
-        .hero-3d-bg.animate-element {
-            transform: translate(-50%, -40%) scale(0.85);
-        }
-
-        .hero-3d-bg.animate-element.visible {
-            transform: translate(-50%, -50%) scale(1);
         }
 
         @media (max-width: 968px) {
@@ -376,7 +382,7 @@
     <header>
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
-            CEMENT<span>FIT</span>
+            <span class="logo-text">CEMENT<span>FIT</span></span>
         </a>
 
         <ul class="nav-links">
@@ -416,8 +422,8 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <!-- 3D Model with Pop Up Animation -->
-            <div class="hero-3d-bg animate-element">
+            <!-- 3D Model Container -->
+            <div class="hero-3d-bg">
                 <model-viewer 
                     id="dumbbellViewer"
                     src="./dumbbellmodel.glb" 
@@ -515,17 +521,34 @@
         document.addEventListener('click', unlockAudio, { passive: true });
         document.addEventListener('scroll', unlockAudio, { passive: true });
 
-        // Intersection Observer for Pop-up smooth entrance with sound
+        // Handle 3D Model Smooth Fade-in when fully loaded
+        const dumbbellViewer = document.getElementById('dumbbellViewer');
+        if (dumbbellViewer) {
+            dumbbellViewer.addEventListener('load', () => {
+                dumbbellViewer.classList.add('loaded');
+                playPopSound();
+            });
+            // Fallback in case load event fires early
+            if (dumbbellViewer.loaded) {
+                dumbbellViewer.classList.add('loaded');
+            }
+        }
+
+        // Ordered Sequential Reveal for Elements
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.animate-element');
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting) {
+                        const allVisibleInGrid = Array.from(animatedElements).filter(el => el.getBoundingClientRect().top < window.innerHeight);
+                        const index = allVisibleInGrid.indexOf(entry.target);
+                        
                         setTimeout(() => {
                             entry.target.classList.add('visible');
                             playPopSound();
-                        }, index * 90);
+                        }, Math.max(0, index) * 140);
+
                         observer.unobserve(entry.target);
                     }
                 });
