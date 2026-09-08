@@ -42,8 +42,19 @@
 
         h2 { margin-bottom: 20px; color: var(--accent-orange); }
 
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .input-group.full-width { grid-column: 1 / -1; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.95rem; }
         .input-group input, .input-group textarea {
             width: 100%;
             padding: 12px;
@@ -64,6 +75,7 @@
             font-weight: 700;
             width: 100%;
             transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
         .btn:active { transform: scale(0.98); }
@@ -84,7 +96,6 @@
         .btn-edit { background: #3b82f6; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
         .hidden { display: none !important; }
 
-        /* Preview Image */
         #img-preview {
             max-width: 120px;
             max-height: 120px;
@@ -123,23 +134,45 @@
             <div class="card">
                 <h2 id="form-title">إضافة منتج جديد</h2>
                 <input type="hidden" id="prod-id">
-                <div class="input-group">
-                    <label>اسم المنتج</label>
-                    <input type="text" id="prod-name" placeholder="مثال: طارة خرسانية 10 كجم">
+                
+                <div class="form-grid">
+                    <div class="input-group full-width">
+                        <label>اسم المنتج</label>
+                        <input type="text" id="prod-name" placeholder="مثال: طارة خرسانية 10 كجم">
+                    </div>
+                    
+                    <div class="input-group full-width">
+                        <label>الوصف</label>
+                        <textarea id="prod-desc" rows="3" placeholder="وصف المنتج..."></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label>السعر النهائي (بعد الخصم)</label>
+                        <input type="number" id="prod-price" placeholder="مثال: 300">
+                    </div>
+
+                    <div class="input-group">
+                        <label>السعر الأصلي (قبل الخصم - اختياري)</label>
+                        <input type="number" id="prod-old-price" placeholder="مثال: 400">
+                    </div>
+
+                    <div class="input-group">
+                        <label>سعر الشحن (بالجنيه)</label>
+                        <input type="number" id="prod-shipping-price" placeholder="مثال: 50">
+                    </div>
+
+                    <div class="input-group">
+                        <label>الأماكن المتاحة للشحن</label>
+                        <input type="text" id="prod-shipping-locs" placeholder="مثال: بورسعيد، القاهرة، الجيزة">
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>اختر صورة المنتج من جهازك</label>
+                        <input type="file" id="prod-file" accept="image/*" onchange="previewImage(event)">
+                        <img id="img-preview" alt="معاينة الصورة">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>الوصف</label>
-                    <textarea id="prod-desc" rows="3" placeholder="وصف المنتج..."></textarea>
-                </div>
-                <div class="input-group">
-                    <label>السعر (بالجنيه)</label>
-                    <input type="number" id="prod-price" placeholder="مثال: 350">
-                </div>
-                <div class="input-group">
-                    <label>اختر صورة المنتج من جهازك</label>
-                    <input type="file" id="prod-file" accept="image/*" onchange="previewImage(event)">
-                    <img id="img-preview" alt="معاينة الصورة">
-                </div>
+
                 <button class="btn" id="save-btn" onclick="saveProduct()">حفظ المنتج</button>
             </div>
 
@@ -157,6 +190,7 @@
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentBase64Image = '';
+        let productsMap = {};
 
         window.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await _supabase.auth.getSession();
@@ -228,14 +262,17 @@
             }
 
             list.innerHTML = '';
+            productsMap = {};
+
             products.forEach((prod) => {
+                productsMap[prod.id] = prod;
                 list.innerHTML += `
                     <div class="product-item">
                         <div>
-                            <strong>${prod.name}</strong> - ${prod.price} ج.م
+                            <strong>${prod.name}</strong> - ${prod.price} ج.م ${prod.old_price ? `<span style="text-decoration:line-through; font-size:0.85rem; color:#888;">(${prod.old_price} ج.م)</span>` : ''}
                         </div>
                         <div class="actions">
-                            <button class="btn-edit" onclick="editProduct(${prod.id}, '${prod.name}', '${prod.desc || ''}', ${prod.price}, '${prod.image || ''}')">تعديل</button>
+                            <button class="btn-edit" onclick="editProduct(${prod.id})">تعديل</button>
                             <button class="btn-delete" onclick="deleteProduct(${prod.id})">حذف</button>
                         </div>
                     </div>
@@ -248,18 +285,31 @@
             const name = document.getElementById('prod-name').value.trim();
             const desc = document.getElementById('prod-desc').value.trim();
             const price = Number(document.getElementById('prod-price').value);
+            const old_price = document.getElementById('prod-old-price').value ? Number(document.getElementById('prod-old-price').value) : null;
+            const shipping_price = document.getElementById('prod-shipping-price').value ? Number(document.getElementById('prod-shipping-price').value) : null;
+            const shipping_locations = document.getElementById('prod-shipping-locs').value.trim();
 
-            if(!name || !price) return alert('برجاء كتابة الاسم والسعر');
+            if(!name || !price) return alert('برجاء كتابة اسم المنتج والسعر على الأقل');
+
+            const payload = { 
+                name, 
+                desc, 
+                price, 
+                old_price, 
+                shipping_price, 
+                shipping_locations 
+            };
+
+            if (currentBase64Image) {
+                payload.image = currentBase64Image;
+            }
 
             let error;
             if(id) {
-                const payload = { name, desc, price };
-                if (currentBase64Image) payload.image = currentBase64Image;
-                
                 const res = await _supabase.from('products').update(payload).eq('id', id);
                 error = res.error;
             } else {
-                const res = await _supabase.from('products').insert([{ name, desc, price, image: currentBase64Image }]);
+                const res = await _supabase.from('products').insert([payload]);
                 error = res.error;
             }
 
@@ -271,17 +321,26 @@
             }
         }
 
-        function editProduct(id, name, desc, price, image) {
-            document.getElementById('prod-id').value = id;
-            document.getElementById('prod-name').value = name;
-            document.getElementById('prod-desc').value = desc;
-            document.getElementById('prod-price').value = price;
-            currentBase64Image = image;
+        function editProduct(id) {
+            const prod = productsMap[id];
+            if (!prod) return;
 
-            if(image) {
+            document.getElementById('prod-id').value = prod.id;
+            document.getElementById('prod-name').value = prod.name;
+            document.getElementById('prod-desc').value = prod.desc || '';
+            document.getElementById('prod-price').value = prod.price;
+            document.getElementById('prod-old-price').value = prod.old_price || '';
+            document.getElementById('prod-shipping-price').value = prod.shipping_price || '';
+            document.getElementById('prod-shipping-locs').value = prod.shipping_locations || '';
+            
+            currentBase64Image = prod.image || '';
+
+            if(prod.image) {
                 const img = document.getElementById('img-preview');
-                img.src = image;
+                img.src = prod.image;
                 img.style.display = 'block';
+            } else {
+                document.getElementById('img-preview').style.display = 'none';
             }
 
             document.getElementById('form-title').innerText = 'تعديل المنتج';
@@ -302,6 +361,9 @@
             document.getElementById('prod-name').value = '';
             document.getElementById('prod-desc').value = '';
             document.getElementById('prod-price').value = '';
+            document.getElementById('prod-old-price').value = '';
+            document.getElementById('prod-shipping-price').value = '';
+            document.getElementById('prod-shipping-locs').value = '';
             document.getElementById('prod-file').value = '';
             document.getElementById('img-preview').style.display = 'none';
             currentBase64Image = '';
