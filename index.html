@@ -148,39 +148,36 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Dropdown Menu Style - Centered in Navbar */
-        .menu-container {
-            position: relative;
-        }
-
+        /* Menu Button Style (Original position inside Header) */
         .menu-toggle-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-size: 1.1rem;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
         }
 
         .menu-toggle-btn:hover, .menu-toggle-btn.active {
             background: var(--glass-hover);
             border-color: rgba(255, 255, 255, 0.3);
             color: var(--accent-orange);
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
+        /* Dropdown Menu Centered under Navbar */
         .dropdown-menu {
             position: absolute;
-            top: calc(100% + 18px);
+            top: calc(100% + 14px);
             left: 50%;
-            transform: translateX(-50%) translateY(-15px) scale(0.9);
-            width: 220px;
+            transform: translateX(-50%) translateY(-12px) scale(0.95);
+            width: 240px;
             background: rgba(15, 17, 21, 0.92);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -193,7 +190,7 @@
             gap: 6px;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1001;
         }
 
@@ -231,7 +228,7 @@
         }
 
         .dropdown-item:hover i {
-            transform: scale(1.25);
+            transform: scale(1.2);
         }
 
         .btn-primary {
@@ -303,8 +300,8 @@
             outline: none;
             border: none;
             opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.85);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         model-viewer.loaded {
@@ -396,7 +393,7 @@
             border: 1px solid var(--glass-border);
             padding: 30px;
             border-radius: 24px;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
         .feature-card:hover {
@@ -431,7 +428,7 @@
             line-height: 1.6;
         }
 
-        /* Smooth Entrance Animations Base Classes */
+        /* Animation classes */
         .animate-element {
             opacity: 0;
             transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -495,29 +492,28 @@
         </ul>
 
         <div class="header-actions">
-            <!-- Dropdown Menu Container -->
-            <div class="menu-container">
-                <button class="menu-toggle-btn" id="menuBtn" aria-label="Open Menu">
-                    <i class="fa-solid fa-bars-staggered"></i>
-                </button>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="#home" class="dropdown-item">
-                        <i class="fa-solid fa-house"></i>
-                        <span>الرئيسية</span>
-                    </a>
-                    <a href="products.html" class="dropdown-item">
-                        <i class="fa-solid fa-boxes-stacked"></i>
-                        <span>جميع المنتجات</span>
-                    </a>
-                    <a href="#features" class="dropdown-item">
-                        <i class="fa-solid fa-star"></i>
-                        <span>المميزات</span>
-                    </a>
-                </div>
-            </div>
+            <button class="menu-toggle-btn" id="menuBtn" aria-label="Open Menu">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
 
             <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit" target="_blank" class="btn-primary">
                 تواصل معنا <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
+
+        <!-- Dropdown Menu Centered inside Navbar Header -->
+        <div class="dropdown-menu" id="dropdownMenu">
+            <a href="#home" class="dropdown-item">
+                <i class="fa-solid fa-house"></i>
+                <span>الرئيسية</span>
+            </a>
+            <a href="products.html" class="dropdown-item">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>جميع المنتجات</span>
+            </a>
+            <a href="#features" class="dropdown-item">
+                <i class="fa-solid fa-star"></i>
+                <span>المميزات</span>
             </a>
         </div>
     </header>
@@ -584,52 +580,53 @@
     </section>
 
     <script>
-        // Smooth Web Audio Generator (Soft UI Sounds)
+        // Web Audio Synthesizer for Smooth UI Sound Effects
         const AudioFX = {
             ctx: null,
             init() {
                 if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) this.ctx = new AudioContextClass();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
                 }
             },
-            playSoftPop() {
+            // Soft Pop sound played when elements appear/render
+            playElementAppear() {
                 this.init();
                 if (!this.ctx) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(320, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(680, this.ctx.currentTime + 0.08);
-                
-                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(520, this.ctx.currentTime + 0.09);
+                    
+                    gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.09);
 
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 0.08);
-            },
-            playIntroSwoosh() {
-                this.init();
-                if (!this.ctx) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(450, this.ctx.currentTime + 0.35);
-
-                gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
-
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 0.35);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.09);
+                } catch(e) {}
             }
         };
 
-        // Scroll and Page Load Animations Trigger
+        // Initialize Audio context on any user interaction (to bypass browser audio locks)
+        const enableAudio = () => {
+            AudioFX.init();
+            window.removeEventListener('touchstart', enableAudio);
+            window.removeEventListener('click', enableAudio);
+            window.removeEventListener('scroll', enableAudio);
+        };
+        window.addEventListener('touchstart', enableAudio, { once: true });
+        window.addEventListener('click', enableAudio, { once: true });
+        window.addEventListener('scroll', enableAudio, { once: true });
+
+        // Scroll Observer with sound trigger when elements show up
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.animate-element');
 
@@ -638,18 +635,14 @@
                     if (entry.isIntersecting) {
                         setTimeout(() => {
                             entry.target.classList.add('visible');
-                            AudioFX.playSoftPop();
-                        }, index * 120);
+                            AudioFX.playElementAppear(); // Play soft pop sound as element appears
+                        }, index * 100);
                         observer.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.15 });
 
             animatedElements.forEach(el => observer.observe(el));
-
-            // Play intro audio once on first user interaction or load
-            window.addEventListener('click', () => AudioFX.init(), { once: true });
-            setTimeout(() => AudioFX.playIntroSwoosh(), 400);
         });
 
         // 3D Model Loading Animation
@@ -666,7 +659,7 @@
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            AudioFX.playSoftPop();
+            AudioFX.playElementAppear();
             menuBtn.classList.toggle('active');
             dropdownMenu.classList.toggle('show');
         });
@@ -674,19 +667,15 @@
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                if (dropdownMenu.classList.contains('show')) {
-                    AudioFX.playSoftPop();
-                }
                 menuBtn.classList.remove('active');
                 dropdownMenu.classList.remove('show');
             }
         });
 
-        // Close dropdown when clicking on any menu link
+        // Close dropdown when clicking on links
         const dropdownItems = document.querySelectorAll('.dropdown-item');
         dropdownItems.forEach(item => {
             item.addEventListener('click', () => {
-                AudioFX.playSoftPop();
                 menuBtn.classList.remove('active');
                 dropdownMenu.classList.remove('show');
             });
