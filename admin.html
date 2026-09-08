@@ -3,44 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEMENTFIT | لوحة التحكم الآمنة</title>
+    <title>CEMENTFIT | لوحة الإدارة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         :root {
-            --bg-color: #0f1115;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --bg-color: #0d0f12;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
             --accent-orange: #ff6b35;
             --text-main: #f3f4f6;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 20px; }
 
         .container { max-width: 800px; margin: 40px auto; }
         
         .card {
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 25px;
             margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         h2 { margin-bottom: 20px; color: var(--accent-orange); }
 
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; }
         .input-group input, .input-group textarea {
             width: 100%;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 12px;
             border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
             color: #fff;
             outline: none;
         }
@@ -49,28 +58,41 @@
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 700;
             width: 100%;
+            transition: all 0.3s ease;
         }
+
+        .btn:active { transform: scale(0.98); }
 
         .product-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
-            margin-bottom: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 14px;
+            margin-bottom: 12px;
             border: 1px solid var(--glass-border);
         }
 
-        .actions { display: flex; gap: 10px; }
-        .btn-delete { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
-        .btn-edit { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        .actions { display: flex; gap: 8px; }
+        .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+        .btn-edit { background: #3b82f6; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
         .hidden { display: none !important; }
+
+        /* Preview Image */
+        #img-preview {
+            max-width: 120px;
+            max-height: 120px;
+            margin-top: 10px;
+            border-radius: 10px;
+            display: none;
+            border: 1px solid var(--glass-border);
+        }
     </style>
 </head>
 <body>
@@ -78,10 +100,10 @@
     <div class="container">
         <!-- Login Section -->
         <div id="login-section" class="card">
-            <h2>تسجيل دخول الأدمن (Supabase Auth)</h2>
+            <h2>تسجيل دخول لوحة الإدارة</h2>
             <div class="input-group">
                 <label>البريد الإلكتروني</label>
-                <input type="email" id="admin-email" placeholder="أدخل البريد الإلكتروني الخاص بـ Supabase">
+                <input type="email" id="admin-email" placeholder="أدخل البريد الإلكتروني">
             </div>
             <div class="input-group">
                 <label>كلمة السر</label>
@@ -93,7 +115,7 @@
         <!-- Dashboard Section -->
         <div id="dashboard-section" class="hidden">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1>لوحة إدارة المنتجات</h1>
+                <h1>إدارة منتجات CEMENTFIT</h1>
                 <button class="btn-delete" onclick="logout()">تسجيل خروج</button>
             </div>
 
@@ -114,8 +136,9 @@
                     <input type="number" id="prod-price" placeholder="مثال: 350">
                 </div>
                 <div class="input-group">
-                    <label>رابط صورة المنتج (URL)</label>
-                    <input type="text" id="prod-img" placeholder="https://example.com/image.jpg">
+                    <label>اختر صورة المنتج من جهازك</label>
+                    <input type="file" id="prod-file" accept="image/*" onchange="previewImage(event)">
+                    <img id="img-preview" alt="معاينة الصورة">
                 </div>
                 <button class="btn" id="save-btn" onclick="saveProduct()">حفظ المنتج</button>
             </div>
@@ -133,12 +156,11 @@
         const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // التحقق الآلي من حالة الجلسة بـ Supabase عند تحميل الصفحة
+        let currentBase64Image = '';
+
         window.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await _supabase.auth.getSession();
-            if (session) {
-                showDashboard();
-            }
+            if (session) showDashboard();
         });
 
         async function checkLogin() {
@@ -146,20 +168,16 @@
             const password = document.getElementById('admin-pass').value.trim();
             const btn = document.getElementById('login-btn');
 
-            if (!email || !password) return alert('برجاء إدخال البريد وكلمة السر');
+            if (!email || !password) return alert('برجاء إدخال البيانات');
 
             btn.innerText = 'جاري التحقق...';
 
-            // تسجيل الدخول الحقيقي عبر Supabase Auth
-            const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
 
             btn.innerText = 'دخول';
 
             if (error) {
-                alert('فشل تسجيل الدخول: ' + error.message);
+                alert('البريد أو كلمة السر غير صحيحة');
             } else {
                 showDashboard();
             }
@@ -176,6 +194,20 @@
             location.reload();
         }
 
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentBase64Image = e.target.result;
+                    const img = document.getElementById('img-preview');
+                    img.src = currentBase64Image;
+                    img.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         async function loadAdminProducts() {
             const list = document.getElementById('admin-products-list');
             list.innerHTML = 'جاري التحميل...';
@@ -186,7 +218,7 @@
                 .order('id', { ascending: false });
 
             if (error) {
-                list.innerHTML = 'حدث خطأ أثناء جلب المنتجات: ' + error.message;
+                list.innerHTML = 'حدث خطأ في تحميل البيانات.';
                 return;
             }
 
@@ -216,18 +248,18 @@
             const name = document.getElementById('prod-name').value.trim();
             const desc = document.getElementById('prod-desc').value.trim();
             const price = Number(document.getElementById('prod-price').value);
-            const image = document.getElementById('prod-img').value.trim();
 
             if(!name || !price) return alert('برجاء كتابة الاسم والسعر');
 
             let error;
             if(id) {
-                // تعديل منتج
-                const res = await _supabase.from('products').update({ name, desc, price, image }).eq('id', id);
+                const payload = { name, desc, price };
+                if (currentBase64Image) payload.image = currentBase64Image;
+                
+                const res = await _supabase.from('products').update(payload).eq('id', id);
                 error = res.error;
             } else {
-                // إضافة منتج
-                const res = await _supabase.from('products').insert([{ name, desc, price, image }]);
+                const res = await _supabase.from('products').insert([{ name, desc, price, image: currentBase64Image }]);
                 error = res.error;
             }
 
@@ -244,16 +276,23 @@
             document.getElementById('prod-name').value = name;
             document.getElementById('prod-desc').value = desc;
             document.getElementById('prod-price').value = price;
-            document.getElementById('prod-img').value = image;
+            currentBase64Image = image;
+
+            if(image) {
+                const img = document.getElementById('img-preview');
+                img.src = image;
+                img.style.display = 'block';
+            }
+
             document.getElementById('form-title').innerText = 'تعديل المنتج';
             document.getElementById('save-btn').innerText = 'تحديث البيانات';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         async function deleteProduct(id) {
-            if(confirm('هل أنت متاكد من حذف هذا المنتج؟')) {
+            if(confirm('هل أنت متأكد من الحذف؟')) {
                 const { error } = await _supabase.from('products').delete().eq('id', id);
-                if (error) alert('فشل الحذف: ' + error.message);
+                if (error) alert('فشل الحذف');
                 else loadAdminProducts();
             }
         }
@@ -263,7 +302,9 @@
             document.getElementById('prod-name').value = '';
             document.getElementById('prod-desc').value = '';
             document.getElementById('prod-price').value = '';
-            document.getElementById('prod-img').value = '';
+            document.getElementById('prod-file').value = '';
+            document.getElementById('img-preview').style.display = 'none';
+            currentBase64Image = '';
             document.getElementById('form-title').innerText = 'إضافة منتج جديد';
             document.getElementById('save-btn').innerText = 'حفظ المنتج';
         }
