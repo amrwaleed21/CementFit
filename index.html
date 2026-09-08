@@ -202,14 +202,14 @@
         .dropdown-item i { color: var(--accent-orange); width: 20px; text-align: center; }
         .dropdown-item:hover { background: var(--glass-hover); }
 
-        /* Hero Section */
+        /* Hero Section - Reduced bottom padding to bring Features closer */
         .hero {
-            min-height: 85vh;
+            min-height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 120px 20px 40px;
+            padding: 110px 20px 10px;
             max-width: 900px;
             margin: 0 auto;
             position: relative;
@@ -236,10 +236,18 @@
             pointer-events: none;
         }
 
+        /* Clean 3D Model without black outlines or shadows */
         model-viewer {
             width: 100%;
             height: 100%;
             background-color: transparent;
+            outline: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            --poster-color: transparent !important;
+            --progress-bar-color: transparent !important;
+            --progress-bar-height: 0px !important;
+            --progress-mask: transparent !important;
         }
 
         .badge {
@@ -265,7 +273,7 @@
             color: var(--text-muted);
             font-size: 1.05rem;
             line-height: 1.7;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             max-width: 600px;
         }
 
@@ -286,9 +294,9 @@
             font-size: 0.9rem;
         }
 
-        /* Features Section */
+        /* Features Section Moved UP */
         .features {
-            padding: 40px 20px 80px;
+            padding: 20px 20px 60px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -296,7 +304,7 @@
         .section-title {
             text-align: center;
             font-size: 2rem;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-weight: 800;
         }
 
@@ -327,21 +335,25 @@
             margin-bottom: 15px;
         }
 
-        /* Smooth Animation setup */
+        /* Smooth Pop-Up Entrance Animation */
         .animate-element {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
+            transform: translateY(35px) scale(0.94);
+            transition: opacity 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: opacity, transform;
         }
 
         .animate-element.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         @media (max-width: 968px) {
             .hero-title { font-size: 2.2rem; }
             .nav-links { display: none; }
+            .hero { padding-top: 100px; }
+            .features { padding-top: 10px; }
         }
     </style>
 </head>
@@ -405,7 +417,7 @@
                     interaction-prompt="none"
                     loading="eager"
                     reveal="auto"
-                    shadow-intensity="0.5">
+                    shadow-intensity="0">
                 </model-viewer>
             </div>
 
@@ -425,7 +437,7 @@
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2 class="section-title animate-element">لماذا تختار <span style="color: var(--accent-orange);">CementFit</span>؟</h2>
+        <h2 class="section-title animate-element">ليه تختار <span style="color: var(--accent-orange);">CEMENTFIT</span>؟</h2>
         <div class="grid">
             <div class="feature-card animate-element">
                 <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
@@ -446,82 +458,81 @@
     </section>
 
     <script>
-        // Web Audio Synthesizer (Designed specifically to sound crisp on Mobile)
-        class SoundSystem {
-            constructor() {
-                this.ctx = null;
+        // Web Audio Synthesizer - Consistent High Quality Sound Generation
+        let globalAudioCtx = null;
+
+        function getAudioContext() {
+            if (!globalAudioCtx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtx) globalAudioCtx = new AudioCtx();
             }
-
-            init() {
-                if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
-                }
-                if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
+            if (globalAudioCtx && globalAudioCtx.state === 'suspended') {
+                globalAudioCtx.resume();
             }
-
-            // High Quality Pop Sound Effect
-            playPop() {
-                this.init();
-                if (!this.ctx) return;
-                try {
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
-
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(300, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(700, this.ctx.currentTime + 0.08);
-
-                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
-
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.08);
-                } catch(e) {}
-            }
+            return globalAudioCtx;
         }
 
-        const sound = new SoundSystem();
+        // Crisp Pop sound that stays constant without fading
+        function playPopSound() {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
 
-        // Unlock Web Audio on First User Touch/Interaction
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(320, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(680, ctx.currentTime + 0.07);
+
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.07);
+            } catch(e) {}
+        }
+
+        // Unlock Web Audio context on user tap/scroll
         const unlockAudio = () => {
-            sound.init();
+            getAudioContext();
             document.removeEventListener('touchstart', unlockAudio);
             document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('scroll', unlockAudio);
         };
         document.addEventListener('touchstart', unlockAudio, { passive: true });
         document.addEventListener('click', unlockAudio, { passive: true });
+        document.addEventListener('scroll', unlockAudio, { passive: true });
 
-        // Scroll Observer for smooth entrance animations
+        // Intersection Observer for Pop-up smooth entrance with sound
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.animate-element');
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
+                entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        // Play sound when elements enter view
-                        sound.playPop();
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                            playPopSound();
+                        }, index * 90);
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.15 });
+            }, { threshold: 0.12 });
 
             animatedElements.forEach(el => observer.observe(el));
         });
 
-        // Toggle Menu functionality with Sound
+        // Dropdown Menu Toggle
         const menuBtn = document.getElementById('menuBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            sound.playPop(); // Guaranteed sound on Menu button tap!
+            playPopSound();
             dropdownMenu.classList.toggle('show');
         });
 
