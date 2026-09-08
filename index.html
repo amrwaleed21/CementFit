@@ -108,6 +108,12 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .logo {
             font-size: 1.25rem;
             font-weight: 900;
@@ -142,6 +148,92 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
+        /* Dropdown Menu Style */
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-toggle-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle-btn:hover, .menu-toggle-btn.active {
+            background: var(--glass-hover);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: var(--accent-orange);
+            transform: scale(1.05);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 0;
+            width: 220px;
+            background: rgba(15, 17, 21, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-12px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1001;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+        }
+
+        .dropdown-item i {
+            color: var(--accent-orange);
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            transition: transform 0.25s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--glass-hover);
+            color: #ffffff;
+            transform: translateX(-4px);
+        }
+
+        .dropdown-item:hover i {
+            transform: scale(1.2);
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
@@ -165,14 +257,14 @@
             box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
         }
 
-        /* Hero Section */
+        /* Hero Section - تقليل المارجن والبادينج للتقريب */
         .hero {
-            min-height: 100vh;
+            min-height: 85vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 130px 8% 60px;
+            padding: 120px 8% 20px;
             max-width: 900px;
             margin: 0 auto;
             position: relative;
@@ -194,7 +286,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
-            height: 420px;
+            height: 400px;
             max-width: 650px;
             z-index: -1;
             pointer-events: none;
@@ -281,9 +373,9 @@
             transform: translateY(-2px);
         }
 
-        /* Features Section */
+        /* Features Section - تم تقليل المسافة العلوية لرفع السكشن للأعلى */
         .features {
-            padding: 80px 8%;
+            padding: 30px 8% 80px;
             max-width: 1300px;
             margin: 0 auto;
         }
@@ -291,7 +383,7 @@
         .section-title {
             text-align: center;
             font-size: 2.2rem;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             font-weight: 800;
         }
 
@@ -358,8 +450,12 @@
             }
 
             .hero-3d-bg {
-                height: 320px;
+                height: 300px;
                 max-width: 420px;
+            }
+
+            .features {
+                padding-top: 10px;
             }
         }
     </style>
@@ -377,13 +473,39 @@
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
             CEMENT <span>FIT</span>
         </a>
+
         <ul class="nav-links">
             <li><a href="#home">الرئيسية</a></li>
+            <li><a href="products.html">المنتجات</a></li>
             <li><a href="#features">المميزات</a></li>
         </ul>
-        <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit" target="_blank" class="btn-primary">
-            تواصل معنا <i class="fa-brands fa-whatsapp"></i>
-        </a>
+
+        <div class="header-actions">
+            <!-- Dropdown Menu Container -->
+            <div class="menu-container">
+                <button class="menu-toggle-btn" id="menuBtn" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="#home" class="dropdown-item">
+                        <i class="fa-solid fa-house"></i>
+                        <span>الرئيسية</span>
+                    </a>
+                    <a href="products.html" class="dropdown-item">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>جميع المنتجات</span>
+                    </a>
+                    <a href="#features" class="dropdown-item">
+                        <i class="fa-solid fa-star"></i>
+                        <span>المميزات</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit" target="_blank" class="btn-primary">
+                تواصل معنا <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
     </header>
 
     <!-- Hero Section -->
@@ -448,11 +570,38 @@
     </section>
 
     <script>
+        // 3D Model Loading Animation
         const viewer = document.getElementById('dumbbellViewer');
-        
         viewer.addEventListener('load', () => {
             requestAnimationFrame(() => {
                 viewer.classList.add('loaded');
+            });
+        });
+
+        // Dropdown Menu Logic
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuBtn.classList.toggle('active');
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                menuBtn.classList.remove('active');
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        // Close dropdown when clicking on any menu link
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuBtn.classList.remove('active');
+                dropdownMenu.classList.remove('show');
             });
         });
     </script>
