@@ -24,7 +24,7 @@
             box-sizing: border-box;
             font-family: 'Cairo', sans-serif;
             scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent; /* إلغاء التحديد الأزرق للموبايل */
+            -webkit-tap-highlight-color: transparent;
             outline: none;
         }
 
@@ -72,14 +72,14 @@
             top: 15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 92%;
+            width: 94%;
             max-width: 1100px;
             background: rgba(255, 255, 255, 0.14);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 10px 20px;
+            padding: 10px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -87,9 +87,8 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Logo without space between CEMENT and FIT */
         .logo {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 900;
             color: var(--text-main);
             text-decoration: none;
@@ -123,32 +122,30 @@
 
         .nav-links a:hover { color: var(--text-main); }
 
-        /* Left Actions inside Header */
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
-            padding: 8px 16px;
+            padding: 7px 14px;
             border-radius: 12px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 15px var(--accent-glow);
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             white-space: nowrap;
             transition: all 0.2s ease;
         }
 
-        /* تأثير التوهج عند الضغط على الأزرار الرئيسية */
         .btn-primary:active {
             transform: scale(0.95);
             box-shadow: 0 0 25px rgba(255, 107, 53, 0.85), 0 0 10px rgba(255, 255, 255, 0.5);
@@ -158,14 +155,14 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: all 0.2s ease;
         }
 
@@ -246,7 +243,6 @@
             align-items: center;
         }
 
-        /* Smooth 3D Container */
         .hero-3d-bg {
             position: absolute;
             top: 50%;
@@ -259,7 +255,6 @@
             pointer-events: none;
         }
 
-        /* Model Viewer Transition */
         model-viewer {
             width: 100%;
             height: 100%;
@@ -291,7 +286,6 @@
             margin-bottom: 20px;
         }
 
-        /* تعديل اللون ليصبح رمادي في أبيض غامق Faded */
         .hero-title {
             font-size: 2.8rem;
             font-weight: 900;
@@ -300,7 +294,7 @@
             background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            color: #d4d4d8; /* Fallback */
+            color: #d4d4d8;
         }
 
         .hero-description {
@@ -336,14 +330,12 @@
             background: var(--glass-hover);
         }
 
-        /* توهج الزر الزجاجي عند الضغط */
         .btn-glass:active {
             transform: scale(0.95);
             box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
             border-color: var(--accent-orange);
         }
 
-        /* Features Section (Pushed Down slightly) */
         .features {
             padding: 50px 20px 60px;
             max-width: 1200px;
@@ -385,7 +377,6 @@
             margin-bottom: 15px;
         }
 
-        /* Smooth Sequential Staggered Entrance Animations */
         .animate-element {
             opacity: 0;
             transform: translateY(25px) scale(0.96);
@@ -401,7 +392,19 @@
 
         @media (max-width: 968px) {
             .hero-title { font-size: 2.2rem; }
-            .nav-links { display: none; }
+            .nav-links { display: none !important; }
+            header {
+                width: 95%;
+                padding: 8px 12px;
+            }
+            .logo {
+                font-size: 1.05rem;
+                gap: 4px;
+            }
+            .btn-primary {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
             .hero { padding-top: 100px; margin-bottom: 15px; }
             .features { padding-top: 35px; }
         }
@@ -409,11 +412,9 @@
 </head>
 <body>
 
-    <!-- Background Orbs -->
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
 
-    <!-- Glass Navbar Header -->
     <header>
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
@@ -431,13 +432,11 @@
                 تواصل معنا <i class="fa-brands fa-whatsapp"></i>
             </a>
 
-            <!-- Menu Button -->
             <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle Menu">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
         </div>
 
-        <!-- Dropdown Menu -->
         <div class="dropdown-menu" id="dropdownMenu">
             <a href="#home" class="dropdown-item">
                 <i class="fa-solid fa-house"></i>
@@ -454,10 +453,8 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <!-- 3D Model Container -->
             <div class="hero-3d-bg">
                 <model-viewer 
                     id="dumbbellViewer"
@@ -488,7 +485,6 @@
         </div>
     </section>
 
-    <!-- Features Section (Pushed down) -->
     <section class="features" id="features">
         <h2 class="section-title animate-element">ليه تختار <span style="color: var(--accent-orange);">CEMENTFIT</span>؟</h2>
         <div class="grid">
@@ -511,7 +507,6 @@
     </section>
 
     <script>
-        // Web Audio Synthesizer
         let globalAudioCtx = null;
 
         function getAudioContext() {
@@ -558,7 +553,6 @@
         document.addEventListener('click', unlockAudio, { passive: true });
         document.addEventListener('scroll', unlockAudio, { passive: true });
 
-        // Handle 3D Model Smooth Fade-in
         const dumbbellViewer = document.getElementById('dumbbellViewer');
         if (dumbbellViewer) {
             dumbbellViewer.addEventListener('load', () => {
@@ -570,7 +564,6 @@
             }
         }
 
-        // Ordered Sequential Reveal for Elements
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.animate-element');
 
@@ -593,7 +586,6 @@
             animatedElements.forEach(el => observer.observe(el));
         });
 
-        // Dropdown Menu Toggle
         const menuBtn = document.getElementById('menuBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
