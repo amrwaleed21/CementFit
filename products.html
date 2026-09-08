@@ -159,6 +159,36 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
+        /* Glassy Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(25, 28, 35, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 3000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--accent-glow);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
         .container { max-width: 1100px; margin: 110px auto 0; padding: 0 20px; }
         .title { text-align: center; margin-bottom: 25px; font-size: 2.2rem; font-weight: 900; animation: fadeIn 0.8s ease; }
 
@@ -379,15 +409,15 @@
         /* Cart Modal Specifics */
         .cart-modal-body {
             padding: 25px;
-            max-height: 70vh;
+            max-height: 75vh;
             display: flex;
             flex-direction: column;
         }
 
         .cart-items-list {
             overflow-y: auto;
-            max-height: 320px;
-            margin-bottom: 20px;
+            max-height: 260px;
+            margin-bottom: 15px;
             padding-left: 5px;
         }
 
@@ -428,14 +458,22 @@
             padding-top: 15px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+        }
+
+        .cart-shipping-row, .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: var(--text-muted);
         }
 
         .cart-total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 900;
+            color: #fff;
+            border-top: 1px dashed var(--glass-border);
+            padding-top: 8px;
         }
 
         .btn-checkout-whatsapp {
@@ -453,6 +491,7 @@
             font-size: 1rem;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
             transition: all 0.3s ease;
+            margin-top: 5px;
         }
 
         .btn-checkout-whatsapp:hover, .btn-checkout-whatsapp:active {
@@ -468,6 +507,12 @@
 
     <div class="glow-blob-1"></div>
     <div class="glow-blob-2"></div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <i class="fa-solid fa-circle-check" style="color: #25d366; font-size: 1.2rem;"></i>
+        <span id="toastText">تم إضافة المنتج للسلة بنجاح</span>
+    </div>
 
     <header>
         <a href="index.html" class="logo">
@@ -546,8 +591,12 @@
                 </div>
 
                 <div class="cart-summary">
+                    <div class="cart-shipping-row">
+                        <span>تكلفة الشحن (<span id="cartShippingLoc" style="color:#fff;">لا يوجد</span>):</span>
+                        <span id="cartShippingPriceVal" style="color: var(--accent-orange);">0 ج.م</span>
+                    </div>
                     <div class="cart-total-row">
-                        <span>الإجمالي:</span>
+                        <span>الإجمالي الكلي (شامل الشحن):</span>
                         <span id="cartTotalPrice" style="color: var(--accent-orange);">0 ج.م</span>
                     </div>
                     <a href="#" id="whatsappCheckoutBtn" target="_blank" class="btn-checkout-whatsapp">
@@ -566,6 +615,18 @@
         let productsData = [];
         let cart = [];
         let currentCategory = 'all';
+        let toastTimeout = null;
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastText').innerText = message;
+            toast.classList.add('show');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
 
         async function loadProducts() {
             const container = document.getElementById('products-container');
@@ -666,6 +727,7 @@
             }
 
             updateCartUI();
+            showToast(`تم إضافة "${prod.name}" للسلة بنجاح`);
         }
 
         function changeQty(id, delta) {
@@ -688,18 +750,30 @@
 
             if (cart.length === 0) {
                 itemsContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted); margin: 30px 0;">السلة فارغة حالياً</p>';
+                document.getElementById('cartShippingPriceVal').innerText = '0 ج.م';
+                document.getElementById('cartShippingLoc').innerText = 'لا يوجد';
                 document.getElementById('cartTotalPrice').innerText = '0 ج.م';
                 document.getElementById('whatsappCheckoutBtn').href = '#';
                 return;
             }
 
-            let totalPrice = 0;
+            let productsTotalPrice = 0;
+            let maxShippingPrice = 0;
+            let maxShippingLocation = "حسب المتفق عليه";
+
             let orderSummaryText = "السلام عليكم، أريد طلب المنتجات التالية من موقع CementFit:\n\n";
 
             cart.forEach(item => {
                 const itemTotal = item.price * item.qty;
-                totalPrice += itemTotal;
+                productsTotalPrice += itemTotal;
                 orderSummaryText += `▪️ *${item.name}* (الكمية: ${item.qty}) - بسعر: ${itemTotal} ج.م\n`;
+
+                // Calculate Highest Shipping Price & Location
+                const itemShipping = parseFloat(item.shipping_price) || 0;
+                if (itemShipping > maxShippingPrice) {
+                    maxShippingPrice = itemShipping;
+                    maxShippingLocation = item.shipping_locations || "جميع المحافظات";
+                }
 
                 itemsContainer.innerHTML += `
                     <div class="cart-item">
@@ -716,10 +790,15 @@
                 `;
             });
 
-            orderSummaryText += `\n💰 *المجموع الكلي:* ${totalPrice} ج.م`;
+            const finalTotalPrice = productsTotalPrice + maxShippingPrice;
 
-            document.getElementById('cartTotalPrice').innerText = `${totalPrice} ج.م`;
-            
+            document.getElementById('cartShippingPriceVal').innerText = `${maxShippingPrice} ج.م`;
+            document.getElementById('cartShippingLoc').innerText = maxShippingLocation;
+            document.getElementById('cartTotalPrice').innerText = `${finalTotalPrice} ج.م`;
+
+            orderSummaryText += `\n📦 *مصاريف الشحن (${maxShippingLocation}):* ${maxShippingPrice} ج.م`;
+            orderSummaryText += `\n💰 *المجموع الكلي (شامل الشحن):* ${finalTotalPrice} ج.م`;
+
             const encodedMsg = encodeURIComponent(orderSummaryText);
             document.getElementById('whatsappCheckoutBtn').href = `https://wa.me/201212338084?text=${encodedMsg}`;
         }
