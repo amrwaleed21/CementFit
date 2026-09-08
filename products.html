@@ -33,7 +33,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
             overflow-x: hidden;
             position: relative;
         }
@@ -99,17 +99,11 @@
         .logo-cement { color: #ffffff; }
         .logo-fit { color: var(--accent-orange); }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
         .nav-btn {
             color: var(--text-main);
             text-decoration: none;
             font-weight: 700;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--glass-border);
@@ -122,39 +116,47 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* Cart Button in Header */
-        .cart-trigger-btn {
+        /* Floating Circular Cart Button (Bottom Right) */
+        .floating-cart-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
             border: none;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px var(--accent-glow);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .cart-trigger-btn:hover, .cart-trigger-btn:active {
-            transform: scale(1.08);
-            box-shadow: 0 0 20px var(--accent-orange), 0 0 30px var(--accent-glow);
-        }
-
-        .cart-badge {
-            background: #fff;
-            color: var(--accent-orange);
-            font-size: 0.75rem;
-            font-weight: 900;
-            width: 20px;
-            height: 20px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 1500;
+            box-shadow: 0 6px 20px var(--accent-glow), 0 4px 10px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .floating-cart-btn:hover, .floating-cart-btn:active {
+            transform: scale(1.12) rotate(5deg);
+            box-shadow: 0 0 25px var(--accent-orange), 0 0 40px var(--accent-glow);
+        }
+
+        .floating-cart-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #fff;
+            color: var(--accent-orange);
+            font-size: 0.75rem;
+            font-weight: 900;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
         .container { max-width: 1100px; margin: 110px auto 0; padding: 0 20px; }
@@ -220,7 +222,6 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Glow and Scale Effect on Active/Hover Filters */
         .filter-btn:hover, .filter-btn.active {
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
@@ -305,7 +306,6 @@
             box-shadow: 0 4px 12px var(--accent-glow);
         }
 
-        /* Glow and Scale on Click & Hover */
         .btn-add-cart:hover, .btn-add-cart:active {
             transform: scale(1.08);
             box-shadow: 0 0 20px var(--accent-orange), 0 0 30px var(--accent-glow);
@@ -474,15 +474,14 @@
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
             <span><span class="logo-cement">CEMENT</span><span class="logo-fit">FIT</span></span>
         </a>
-        <div class="header-actions">
-            <button class="cart-trigger-btn" onclick="openCartModal()">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span>السلة</span>
-                <span class="cart-badge" id="cartCount">0</span>
-            </button>
-            <a href="index.html" class="nav-btn">الرئيسية</a>
-        </div>
+        <a href="index.html" class="nav-btn">الرئيسية</a>
     </header>
+
+    <!-- Floating Circular Cart Button -->
+    <button class="floating-cart-btn" onclick="openCartModal()">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="floating-cart-badge" id="cartCount">0</span>
+    </button>
 
     <div class="container">
         <h1 class="title">منتجات <span style="color: var(--accent-orange);">CEMENTFIT</span></h1>
@@ -591,7 +590,7 @@
             container.innerHTML = '';
 
             if (list.length === 0) {
-                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">لا توجد منتجات مطابقة لجميع البحث.</p>';
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">لا توجد منتجات مطابقة لعملية البحث.</p>';
                 return;
             }
 
@@ -628,7 +627,6 @@
             });
         }
 
-        /* Search & Filter Logic */
         function filterProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             
@@ -656,7 +654,6 @@
             filterProducts();
         }
 
-        /* Cart Logic */
         function addToCart(id) {
             const prod = productsData.find(p => p.id === id);
             if (!prod) return;
@@ -723,7 +720,6 @@
 
             document.getElementById('cartTotalPrice').innerText = `${totalPrice} ج.م`;
             
-            // Directing Order to WhatsApp Number 01212338084
             const encodedMsg = encodeURIComponent(orderSummaryText);
             document.getElementById('whatsappCheckoutBtn').href = `https://wa.me/201212338084?text=${encodedMsg}`;
         }
