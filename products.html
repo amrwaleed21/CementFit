@@ -231,12 +231,21 @@
             color: var(--text-muted);
         }
 
+        .filter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
         .filter-tags {
             display: flex;
             gap: 10px;
             overflow-x: auto;
             padding-bottom: 5px;
             scrollbar-width: none;
+            flex-grow: 1;
         }
 
         .filter-btn {
@@ -258,6 +267,37 @@
             border-color: transparent;
             transform: scale(1.06);
             box-shadow: 0 0 15px var(--accent-orange), 0 4px 15px var(--accent-glow);
+        }
+
+        .sort-select-wrapper {
+            position: relative;
+            min-width: 180px;
+        }
+
+        .sort-select {
+            width: 100%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 9px 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            outline: none;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            appearance: none;
+        }
+
+        .sort-select:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .sort-select option {
+            background: #191c23;
+            color: #fff;
         }
 
         .products-grid {
@@ -537,11 +577,22 @@
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن منتج (مثل: دامبل، طارات...)" oninput="filterProducts()">
             </div>
-            <div class="filter-tags">
-                <button class="filter-btn active" onclick="setCategory('all', this)">الكل</button>
-                <button class="filter-btn" onclick="setCategory('دامبلز', this)">دامبلز</button>
-                <button class="filter-btn" onclick="setCategory('طارات', this)">طارات</button>
-                <button class="filter-btn" onclick="setCategory('كيتل بيل', this)">كيتل بيل (Kettlebell)</button>
+            
+            <div class="filter-row">
+                <div class="filter-tags">
+                    <button class="filter-btn active" onclick="setCategory('all', this)">الكل</button>
+                    <button class="filter-btn" onclick="setCategory('دامبلز', this)">دامبلز</button>
+                    <button class="filter-btn" onclick="setCategory('طارات', this)">طارات</button>
+                    <button class="filter-btn" onclick="setCategory('كيتل بيل', this)">كيتل بيل</button>
+                </div>
+
+                <div class="sort-select-wrapper">
+                    <select id="sortSelect" class="sort-select" onchange="filterProducts()">
+                        <option value="default">الترتيب الافتراضي</option>
+                        <option value="low-high">السعر: من الأقل للأعلى</option>
+                        <option value="high-low">السعر: من الأعلى للأقل</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -643,7 +694,7 @@
             }
 
             productsData = products;
-            renderProducts(productsData);
+            filterProducts();
         }
 
         function renderProducts(list) {
@@ -651,7 +702,7 @@
             container.innerHTML = '';
 
             if (list.length === 0) {
-                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">لا توجد منتجات مطابقة لعملية البحث.</p>';
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">لا توجد منتجات مطابقة لعملية البحث أو الفلترة.</p>';
                 return;
             }
 
@@ -690,8 +741,9 @@
 
         function filterProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const sortVal = document.getElementById('sortSelect').value;
             
-            const filtered = productsData.filter(p => {
+            let filtered = productsData.filter(p => {
                 const matchesName = p.name ? p.name.toLowerCase().includes(query) : false;
                 const matchesDesc = p.desc ? p.desc.toLowerCase().includes(query) : false;
                 const matchesSearch = matchesName || matchesDesc;
@@ -704,6 +756,13 @@
 
                 return matchesSearch && matchesCat;
             });
+
+            // Sorting logic
+            if (sortVal === 'low-high') {
+                filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            } else if (sortVal === 'high-low') {
+                filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            }
 
             renderProducts(filtered);
         }
@@ -768,7 +827,6 @@
                 productsTotalPrice += itemTotal;
                 orderSummaryText += `▪️ *${item.name}* (الكمية: ${item.qty}) - بسعر: ${itemTotal} ج.م\n`;
 
-                // Calculate Highest Shipping Price & Location
                 const itemShipping = parseFloat(item.shipping_price) || 0;
                 if (itemShipping > maxShippingPrice) {
                     maxShippingPrice = itemShipping;
