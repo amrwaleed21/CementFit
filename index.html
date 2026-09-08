@@ -24,6 +24,8 @@
             box-sizing: border-box;
             font-family: 'Cairo', sans-serif;
             scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent; /* إلغاء التحديد الأزرق للموبايل */
+            outline: none;
         }
 
         :root {
@@ -143,6 +145,13 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        /* تأثير التوهج عند الضغط على الأزرار الرئيسية */
+        .btn-primary:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.85), 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         .menu-toggle-btn {
@@ -162,6 +171,8 @@
 
         .menu-toggle-btn:active {
             transform: scale(0.92);
+            box-shadow: 0 0 18px rgba(255, 107, 53, 0.7);
+            border-color: var(--accent-orange);
         }
 
         /* Dropdown Menu */
@@ -203,11 +214,15 @@
             font-weight: 600;
             font-size: 0.9rem;
             border-radius: 10px;
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .dropdown-item i { color: var(--accent-orange); width: 20px; text-align: center; }
         .dropdown-item:hover { background: var(--glass-hover); }
+        .dropdown-item:active {
+            background: rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 12px rgba(255, 107, 53, 0.4);
+        }
 
         /* Hero Section */
         .hero {
@@ -310,11 +325,18 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .btn-glass:hover {
             background: var(--glass-hover);
+        }
+
+        /* توهج الزر الزجاجي عند الضغط */
+        .btn-glass:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+            border-color: var(--accent-orange);
         }
 
         /* Features Section (Pushed Down slightly) */
@@ -343,6 +365,7 @@
             border: 1px solid var(--glass-border);
             padding: 25px;
             border-radius: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .icon-box {
