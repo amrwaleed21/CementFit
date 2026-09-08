@@ -56,79 +56,47 @@
             animation: float 10s infinite alternate ease-in-out;
         }
 
-        .orb-1 {
-            width: 350px;
-            height: 350px;
-            background: var(--accent-orange);
-            top: -50px;
-            right: -50px;
-        }
-
-        .orb-2 {
-            width: 450px;
-            height: 450px;
-            background: #3b82f6;
-            bottom: -100px;
-            left: -100px;
-            opacity: 0.25;
-        }
-
-        .orb-3 {
-            width: 300px;
-            height: 300px;
-            background: #8b5cf6;
-            top: 40%;
-            left: 30%;
-            opacity: 0.2;
-        }
+        .orb-1 { width: 350px; height: 350px; background: var(--accent-orange); top: -50px; right: -50px; }
+        .orb-2 { width: 450px; height: 450px; background: #3b82f6; bottom: -100px; left: -100px; opacity: 0.25; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(30px, 40px) scale(1.08); }
         }
 
-        /* Glassmorphic Navbar */
+        /* Fixed Glassmorphic Navbar Container */
         header {
             position: fixed;
-            top: 12px;
+            top: 15px;
             left: 50%;
             transform: translateX(-50%);
             width: 92%;
-            max-width: 1200px;
-            background: var(--glass-bg);
+            max-width: 1100px;
+            background: rgba(22, 25, 32, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 8px 18px;
+            border-radius: 20px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .logo {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 900;
             color: var(--text-main);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 8px;
-            white-space: nowrap;
             direction: ltr;
         }
 
-        .logo span {
-            color: var(--accent-orange);
-        }
+        .logo span { color: var(--accent-orange); }
 
         .nav-links {
             display: flex;
@@ -143,61 +111,79 @@
             transition: all 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: var(--text-main);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* Left Actions inside Header */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Menu Button Style (Original position inside Header) */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange), #e85d04);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--accent-glow);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        /* Menu Button FIXED inside Header Boundary */
         .menu-toggle-btn {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            transition: all 0.2s ease;
         }
 
-        .menu-toggle-btn:hover, .menu-toggle-btn.active {
-            background: var(--glass-hover);
-            border-color: rgba(255, 255, 255, 0.3);
-            color: var(--accent-orange);
-            transform: scale(1.05);
+        .menu-toggle-btn:active {
+            transform: scale(0.92);
         }
 
-        /* Dropdown Menu Centered under Navbar */
+        /* Dropdown Menu centered directly under Navbar */
         .dropdown-menu {
             position: absolute;
-            top: calc(100% + 14px);
+            top: calc(100% + 12px);
             left: 50%;
-            transform: translateX(-50%) translateY(-12px) scale(0.95);
-            width: 240px;
-            background: rgba(15, 17, 21, 0.92);
+            transform: translateX(-50%) translateY(-10px);
+            width: 260px;
+            background: rgba(18, 20, 26, 0.95);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 18px;
             padding: 10px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 107, 53, 0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7), 0 0 15px rgba(255, 107, 53, 0.2);
             display: flex;
             flex-direction: column;
             gap: 6px;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1001;
         }
 
         .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
-            transform: translateX(-50%) translateY(0) scale(1);
+            transform: translateX(-50%) translateY(0);
         }
 
         .dropdown-item {
@@ -208,51 +194,13 @@
             color: var(--text-main);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 12px;
-            transition: all 0.25s ease;
-        }
-
-        .dropdown-item i {
-            color: var(--accent-orange);
-            font-size: 1.1rem;
-            width: 20px;
-            text-align: center;
-            transition: transform 0.25s ease;
-        }
-
-        .dropdown-item:hover {
-            background: var(--glass-hover);
-            color: #ffffff;
-            transform: translateX(-4px);
-        }
-
-        .dropdown-item:hover i {
-            transform: scale(1.2);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-orange), #e85d04);
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
             font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
+            border-radius: 10px;
+            transition: background 0.2s ease;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
-        }
+        .dropdown-item i { color: var(--accent-orange); width: 20px; text-align: center; }
+        .dropdown-item:hover { background: var(--glass-hover); }
 
         /* Hero Section */
         .hero {
@@ -261,7 +209,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 120px 8% 20px;
+            padding: 120px 20px 40px;
             max-width: 900px;
             margin: 0 auto;
             position: relative;
@@ -276,15 +224,14 @@
             align-items: center;
         }
 
-        /* 3D Model View Container */
         .hero-3d-bg {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
-            height: 400px;
-            max-width: 650px;
+            height: 380px;
+            max-width: 600px;
             z-index: -1;
             pointer-events: none;
         }
@@ -293,20 +240,6 @@
             width: 100%;
             height: 100%;
             background-color: transparent;
-            --poster-color: transparent;
-            --progress-bar-color: transparent;
-            --progress-bar-height: 0px;
-            --progress-mask: transparent;
-            outline: none;
-            border: none;
-            opacity: 0;
-            transform: scale(0.85);
-            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        model-viewer.loaded {
-            opacity: 1;
-            transform: scale(1);
         }
 
         .badge {
@@ -317,26 +250,22 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 700;
-            display: inline-block;
             margin-bottom: 20px;
         }
 
         .hero-title {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 900;
             line-height: 1.25;
             margin-bottom: 20px;
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            color: #ffffff;
         }
 
         .hero-description {
             color: var(--text-muted);
-            font-size: 1.15rem;
-            line-height: 1.8;
-            margin-bottom: 35px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
             max-width: 600px;
         }
 
@@ -344,7 +273,6 @@
             display: flex;
             gap: 15px;
             align-items: center;
-            justify-content: center;
         }
 
         .btn-glass {
@@ -356,26 +284,18 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .btn-glass:hover {
-            background: var(--glass-hover);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
         }
 
         /* Features Section */
         .features {
-            padding: 30px 8% 80px;
-            max-width: 1300px;
+            padding: 40px 20px 80px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 40px;
             font-weight: 800;
         }
@@ -383,103 +303,56 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
         }
 
         .feature-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            padding: 30px;
-            border-radius: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            background: var(--glass-hover);
-            transform: translateY(-8px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 20px;
         }
 
         .icon-box {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: rgba(255, 107, 53, 0.1);
-            border-radius: 16px;
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--accent-orange);
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 107, 53, 0.2);
+            margin-bottom: 15px;
         }
 
-        .feature-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Animation classes */
+        /* Smooth Animation setup */
         .animate-element {
             opacity: 0;
-            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-            will-change: opacity, transform;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
-
-        .fade-down { transform: translateY(-30px); }
-        .fade-up { transform: translateY(35px); }
-        .fade-right { transform: translateX(35px); }
-        .fade-left { transform: translateX(-35px); }
-        .zoom-in { transform: scale(0.85); }
 
         .animate-element.visible {
             opacity: 1;
-            transform: translate(0) scale(1);
+            transform: translateY(0);
         }
 
-        /* Responsive Design */
         @media (max-width: 968px) {
-            .hero-title {
-                font-size: 2.3rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-            
-            header {
-                padding: 8px 12px;
-            }
-
-            .hero-3d-bg {
-                height: 300px;
-                max-width: 420px;
-            }
-
-            .features {
-                padding-top: 10px;
-            }
+            .hero-title { font-size: 2.2rem; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Glass Orbs -->
+    <!-- Background Orbs -->
     <div class="glow-orb orb-1"></div>
     <div class="glow-orb orb-2"></div>
-    <div class="glow-orb orb-3"></div>
 
-    <!-- Glass Navbar -->
-    <header class="animate-element fade-down">
+    <!-- Glass Navbar Header -->
+    <header>
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
             CEMENT <span>FIT</span>
@@ -492,16 +365,17 @@
         </ul>
 
         <div class="header-actions">
-            <button class="menu-toggle-btn" id="menuBtn" aria-label="Open Menu">
-                <i class="fa-solid fa-bars-staggered"></i>
-            </button>
-
             <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit" target="_blank" class="btn-primary">
                 تواصل معنا <i class="fa-brands fa-whatsapp"></i>
             </a>
+
+            <!-- Menu Button inside Header -->
+            <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
         </div>
 
-        <!-- Dropdown Menu Centered inside Navbar Header -->
+        <!-- Dropdown Menu Positioned Centered relative to Navbar -->
         <div class="dropdown-menu" id="dropdownMenu">
             <a href="#home" class="dropdown-item">
                 <i class="fa-solid fa-house"></i>
@@ -521,7 +395,6 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <!-- 3D Model Background Container -->
             <div class="hero-3d-bg">
                 <model-viewer 
                     id="dumbbellViewer"
@@ -533,16 +406,15 @@
                     loading="eager"
                     reveal="auto"
                     shadow-intensity="0.5">
-                    <div slot="progress-bar"></div>
                 </model-viewer>
             </div>
 
-            <span class="badge animate-element zoom-in"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
-            <h1 class="hero-title animate-element fade-up">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
-            <p class="hero-description animate-element fade-up">
+            <span class="badge animate-element"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
+            <h1 class="hero-title animate-element">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
+            <p class="hero-description animate-element">
                 احصل على فورمة الجيم من البيت بأعلى خامات الجودة مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
             </p>
-            <div class="hero-buttons animate-element fade-up">
+            <div class="hero-buttons animate-element">
                 <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20اوردر%20من%20CementFit" target="_blank" class="btn-primary">
                     اطلب الآن <i class="fa-brands fa-whatsapp"></i>
                 </a>
@@ -553,26 +425,20 @@
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2 class="section-title animate-element fade-up">لماذا تختار <span style="color: var(--accent-orange);">CementFit</span>؟</h2>
+        <h2 class="section-title animate-element">لماذا تختار <span style="color: var(--accent-orange);">CementFit</span>؟</h2>
         <div class="grid">
-            <div class="feature-card animate-element fade-right">
-                <div class="icon-box">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
+            <div class="feature-card animate-element">
+                <div class="icon-box"><i class="fa-solid fa-shield-halved"></i></div>
                 <h4>صلابة وخامة معالجة</h4>
                 <p>خلطة خرسانية خاصة ومقاومة للتآكل للتحمل أثناء أعتى التمرينات.</p>
             </div>
-            <div class="feature-card animate-element fade-up">
-                <div class="icon-box">
-                    <i class="fa-solid fa-hand-fist"></i>
-                </div>
+            <div class="feature-card animate-element">
+                <div class="icon-box"><i class="fa-solid fa-hand-fist"></i></div>
                 <h4>مقبض مريح لليد</h4>
                 <p>تصميم مميز للمقبض يمنع الانزلاق أثناء التمرين ويقلل الضغط على كف اليد.</p>
             </div>
-            <div class="feature-card animate-element fade-left">
-                <div class="icon-box">
-                    <i class="fa-solid fa-sack-dollar"></i>
-                </div>
+            <div class="feature-card animate-element">
+                <div class="icon-box"><i class="fa-solid fa-sack-dollar"></i></div>
                 <h4>قيمة مقابل سعر</h4>
                 <p>وفر أكثر من 70% مقارنة بأوزان الحديد التقليدية مع الحصول على نفس النتيجة تماماً.</p>
             </div>
@@ -580,63 +446,67 @@
     </section>
 
     <script>
-        // Web Audio Synthesizer for Smooth UI Sound Effects
-        const AudioFX = {
-            ctx: null,
+        // Web Audio Synthesizer (Designed specifically to sound crisp on Mobile)
+        class SoundSystem {
+            constructor() {
+                this.ctx = null;
+            }
+
             init() {
                 if (!this.ctx) {
-                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContextClass) this.ctx = new AudioContextClass();
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
                 }
                 if (this.ctx && this.ctx.state === 'suspended') {
                     this.ctx.resume();
                 }
-            },
-            // Soft Pop sound played when elements appear/render
-            playElementAppear() {
+            }
+
+            // High Quality Pop Sound Effect
+            playPop() {
                 this.init();
                 if (!this.ctx) return;
                 try {
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
-                    
+
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(220, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(520, this.ctx.currentTime + 0.09);
-                    
-                    gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.09);
+                    osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(700, this.ctx.currentTime + 0.08);
+
+                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
 
                     osc.connect(gain);
                     gain.connect(this.ctx.destination);
+
                     osc.start();
-                    osc.stop(this.ctx.currentTime + 0.09);
+                    osc.stop(this.ctx.currentTime + 0.08);
                 } catch(e) {}
             }
-        };
+        }
 
-        // Initialize Audio context on any user interaction (to bypass browser audio locks)
-        const enableAudio = () => {
-            AudioFX.init();
-            window.removeEventListener('touchstart', enableAudio);
-            window.removeEventListener('click', enableAudio);
-            window.removeEventListener('scroll', enableAudio);
-        };
-        window.addEventListener('touchstart', enableAudio, { once: true });
-        window.addEventListener('click', enableAudio, { once: true });
-        window.addEventListener('scroll', enableAudio, { once: true });
+        const sound = new SoundSystem();
 
-        // Scroll Observer with sound trigger when elements show up
+        // Unlock Web Audio on First User Touch/Interaction
+        const unlockAudio = () => {
+            sound.init();
+            document.removeEventListener('touchstart', unlockAudio);
+            document.removeEventListener('click', unlockAudio);
+        };
+        document.addEventListener('touchstart', unlockAudio, { passive: true });
+        document.addEventListener('click', unlockAudio, { passive: true });
+
+        // Scroll Observer for smooth entrance animations
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.animate-element');
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                            AudioFX.playElementAppear(); // Play soft pop sound as element appears
-                        }, index * 100);
+                        entry.target.classList.add('visible');
+                        // Play sound when elements enter view
+                        sound.playPop();
                         observer.unobserve(entry.target);
                     }
                 });
@@ -645,40 +515,20 @@
             animatedElements.forEach(el => observer.observe(el));
         });
 
-        // 3D Model Loading Animation
-        const viewer = document.getElementById('dumbbellViewer');
-        viewer.addEventListener('load', () => {
-            requestAnimationFrame(() => {
-                viewer.classList.add('loaded');
-            });
-        });
-
-        // Dropdown Menu Logic
+        // Toggle Menu functionality with Sound
         const menuBtn = document.getElementById('menuBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            AudioFX.playElementAppear();
-            menuBtn.classList.toggle('active');
+            sound.playPop(); // Guaranteed sound on Menu button tap!
             dropdownMenu.classList.toggle('show');
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                menuBtn.classList.remove('active');
                 dropdownMenu.classList.remove('show');
             }
-        });
-
-        // Close dropdown when clicking on links
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', () => {
-                menuBtn.classList.remove('active');
-                dropdownMenu.classList.remove('show');
-            });
         });
     </script>
 </body>
