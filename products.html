@@ -1,1 +1,152 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEMENTFIT | جميع المنتجات</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
+        :root {
+            --bg-color: #0f1115;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-hover: rgba(255, 255, 255, 0.16);
+            --accent-orange: #ff6b35;
+            --accent-glow: rgba(255, 107, 53, 0.35);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; }
+
+        header {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 1100px; background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(25px); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 10px 20px; display: flex;
+            justify-content: space-between; align-items: center; z-index: 1000;
+        }
+
+        .logo { font-size: 1.25rem; font-weight: 900; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 6px; direction: ltr; }
+        .logo span { color: var(--accent-orange); }
+
+        .container { max-width: 1100px; margin: 120px auto 0; padding: 0 20px; }
+        .title { text-align: center; margin-bottom: 40px; font-size: 2.2rem; font-weight: 900; }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .product-card:hover { transform: translateY(-5px); background: var(--glass-hover); }
+
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+        .product-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; flex-grow: 1; line-height: 1.6; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price { font-size: 1.2rem; font-weight: 900; color: var(--accent-orange); }
+
+        .btn-order {
+            background: linear-gradient(135deg, var(--accent-orange), #e85d04);
+            color: #fff; padding: 8px 16px; border-radius: 12px;
+            text-decoration: none; font-weight: 700; font-size: 0.85rem;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
+            <span>CEMENT<span>FIT</span></span>
+        </a>
+        <a href="index.html" style="color: var(--text-main); text-decoration: none; font-weight: 600;">الرئيسية</a>
+    </header>
+
+    <div class="container">
+        <h1 class="title">منتجات <span style="color: var(--accent-orange);">CEMENTFIT</span></h1>
+        
+        <div class="products-grid" id="products-container">
+            <p style="grid-column: 1/-1; text-align: center;">جاري تحميل المنتجات...</p>
+        </div>
+    </div>
+
+    <script>
+        // إعدادات Supabase
+        const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            const { data: products, error } = await _supabase
+                .from('products')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error || !products) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">حدث خطأ أثناء تحميل المنتجات.</p>';
+                return;
+            }
+
+            if (products.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">لا توجد منتجات حالياً.</p>';
+                return;
+            }
+
+            products.forEach((prod) => {
+                const defaultImg = 'https://via.placeholder.com/300x200?text=CementFit';
+                const whatsappMsg = encodeURIComponent(`السلام عليكم، أريد طلب منتج: ${prod.name} بسعر ${prod.price} ج.م`);
+
+                container.innerHTML += `
+                    <div class="product-card">
+                        <img src="${prod.image || defaultImg}" alt="${prod.name}" class="product-img">
+                        <div class="product-info">
+                            <h3 class="product-name">${prod.name}</h3>
+                            <p class="product-desc">${prod.desc || 'منتج عالي الجودة من CEMENTFIT.'}</p>
+                            <div class="product-footer">
+                                <span class="price">${prod.price} ج.م</span>
+                                <a href="https://wa.me/201212338084?text=${whatsappMsg}" target="_blank" class="btn-order">
+                                    اطلب الآن <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        loadProducts();
+    </script>
+</body>
+</html>
