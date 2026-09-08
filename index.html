@@ -148,7 +148,7 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Dropdown Menu Style */
+        /* Dropdown Menu Style - Centered in Navbar */
         .menu-container {
             position: relative;
         }
@@ -157,50 +157,50 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .menu-toggle-btn:hover, .menu-toggle-btn.active {
             background: var(--glass-hover);
             border-color: rgba(255, 255, 255, 0.3);
             color: var(--accent-orange);
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .dropdown-menu {
             position: absolute;
-            top: calc(100% + 15px);
-            left: 0;
+            top: calc(100% + 18px);
+            left: 50%;
+            transform: translateX(-50%) translateY(-15px) scale(0.9);
             width: 220px;
-            background: rgba(15, 17, 21, 0.85);
+            background: rgba(15, 17, 21, 0.92);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 10px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 107, 53, 0.15);
             display: flex;
             flex-direction: column;
             gap: 6px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-12px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1001;
         }
 
         .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
+            transform: translateX(-50%) translateY(0) scale(1);
         }
 
         .dropdown-item {
@@ -231,7 +231,7 @@
         }
 
         .dropdown-item:hover i {
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
         .btn-primary {
@@ -257,7 +257,7 @@
             box-shadow: 0 6px 25px rgba(255, 107, 53, 0.6);
         }
 
-        /* Hero Section - تقليل المارجن والبادينج للتقريب */
+        /* Hero Section */
         .hero {
             min-height: 85vh;
             display: flex;
@@ -303,17 +303,13 @@
             outline: none;
             border: none;
             opacity: 0;
-            transform: scale(0.85);
-            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.8);
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         model-viewer.loaded {
             opacity: 1;
             transform: scale(1);
-        }
-
-        model-viewer::part(progress-bar) {
-            display: none;
         }
 
         .badge {
@@ -373,7 +369,7 @@
             transform: translateY(-2px);
         }
 
-        /* Features Section - تم تقليل المسافة العلوية لرفع السكشن للأعلى */
+        /* Features Section */
         .features {
             padding: 30px 8% 80px;
             max-width: 1300px;
@@ -400,7 +396,7 @@
             border: 1px solid var(--glass-border);
             padding: 30px;
             border-radius: 24px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         .feature-card:hover {
@@ -433,6 +429,24 @@
             color: var(--text-muted);
             font-size: 0.95rem;
             line-height: 1.6;
+        }
+
+        /* Smooth Entrance Animations Base Classes */
+        .animate-element {
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: opacity, transform;
+        }
+
+        .fade-down { transform: translateY(-30px); }
+        .fade-up { transform: translateY(35px); }
+        .fade-right { transform: translateX(35px); }
+        .fade-left { transform: translateX(-35px); }
+        .zoom-in { transform: scale(0.85); }
+
+        .animate-element.visible {
+            opacity: 1;
+            transform: translate(0) scale(1);
         }
 
         /* Responsive Design */
@@ -468,7 +482,7 @@
     <div class="glow-orb orb-3"></div>
 
     <!-- Glass Navbar -->
-    <header>
+    <header class="animate-element fade-down">
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
             CEMENT <span>FIT</span>
@@ -527,12 +541,12 @@
                 </model-viewer>
             </div>
 
-            <span class="badge"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
-            <h1 class="hero-title">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
-            <p class="hero-description">
+            <span class="badge animate-element zoom-in"><i class="fa-solid fa-bolt"></i> جودة عالية .. بسعر اقتصادي</span>
+            <h1 class="hero-title animate-element fade-up">اقوى أوزان خرسانية صُممت لتدوم للابد</h1>
+            <p class="hero-description animate-element fade-up">
                 احصل على فورمة الجيم من البيت بأعلى خامات الجودة مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.
             </p>
-            <div class="hero-buttons">
+            <div class="hero-buttons animate-element fade-up">
                 <a href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20اوردر%20من%20CementFit" target="_blank" class="btn-primary">
                     اطلب الآن <i class="fa-brands fa-whatsapp"></i>
                 </a>
@@ -543,23 +557,23 @@
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2 class="section-title">لماذا تختار <span style="color: var(--accent-orange);">CementFit</span>؟</h2>
+        <h2 class="section-title animate-element fade-up">لماذا تختار <span style="color: var(--accent-orange);">CementFit</span>؟</h2>
         <div class="grid">
-            <div class="feature-card">
+            <div class="feature-card animate-element fade-right">
                 <div class="icon-box">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <h4>صلابة وخامة معالجة</h4>
                 <p>خلطة خرسانية خاصة ومقاومة للتآكل للتحمل أثناء أعتى التمرينات.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card animate-element fade-up">
                 <div class="icon-box">
                     <i class="fa-solid fa-hand-fist"></i>
                 </div>
                 <h4>مقبض مريح لليد</h4>
                 <p>تصميم مميز للمقبض يمنع الانزلاق أثناء التمرين ويقلل الضغط على كف اليد.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature-card animate-element fade-left">
                 <div class="icon-box">
                     <i class="fa-solid fa-sack-dollar"></i>
                 </div>
@@ -570,6 +584,74 @@
     </section>
 
     <script>
+        // Smooth Web Audio Generator (Soft UI Sounds)
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            playSoftPop() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(680, this.ctx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            },
+            playIntroSwoosh() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(450, this.ctx.currentTime + 0.35);
+
+                gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.35);
+            }
+        };
+
+        // Scroll and Page Load Animations Trigger
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.animate-element');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                            AudioFX.playSoftPop();
+                        }, index * 120);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            animatedElements.forEach(el => observer.observe(el));
+
+            // Play intro audio once on first user interaction or load
+            window.addEventListener('click', () => AudioFX.init(), { once: true });
+            setTimeout(() => AudioFX.playIntroSwoosh(), 400);
+        });
+
         // 3D Model Loading Animation
         const viewer = document.getElementById('dumbbellViewer');
         viewer.addEventListener('load', () => {
@@ -584,6 +666,7 @@
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+            AudioFX.playSoftPop();
             menuBtn.classList.toggle('active');
             dropdownMenu.classList.toggle('show');
         });
@@ -591,6 +674,9 @@
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                if (dropdownMenu.classList.contains('show')) {
+                    AudioFX.playSoftPop();
+                }
                 menuBtn.classList.remove('active');
                 dropdownMenu.classList.remove('show');
             }
@@ -600,6 +686,7 @@
         const dropdownItems = document.querySelectorAll('.dropdown-item');
         dropdownItems.forEach(item => {
             item.addEventListener('click', () => {
+                AudioFX.playSoftPop();
                 menuBtn.classList.remove('active');
                 dropdownMenu.classList.remove('show');
             });
