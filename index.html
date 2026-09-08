@@ -28,9 +28,9 @@
 
         :root {
             --bg-color: #0f1115;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-hover: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.12); /* خلفية زجاجية أفتح */
+            --glass-border: rgba(255, 255, 255, 0.22);
+            --glass-hover: rgba(255, 255, 255, 0.18);
             --accent-orange: #ff6b35;
             --accent-glow: rgba(255, 107, 53, 0.35);
             --text-main: #f3f4f6;
@@ -64,7 +64,7 @@
             100% { transform: translate(30px, 40px) scale(1.08); }
         }
 
-        /* Fixed Glassmorphic Navbar Container */
+        /* Lighter Glassmorphic Navbar Container */
         header {
             position: fixed;
             top: 15px;
@@ -72,9 +72,9 @@
             transform: translateX(-50%);
             width: 92%;
             max-width: 1100px;
-            background: rgba(22, 25, 32, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.14); /* لون فاتح وأوضح للناڤ بار */
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 10px 20px;
@@ -82,18 +82,19 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .logo {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 900;
             color: var(--text-main);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             direction: ltr;
+            letter-spacing: -0.5px;
         }
 
         .logo span { color: var(--accent-orange); }
@@ -137,9 +138,8 @@
             white-space: nowrap;
         }
 
-        /* Menu Button FIXED inside Header Boundary */
         .menu-toggle-btn {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
             width: 38px;
@@ -157,14 +157,14 @@
             transform: scale(0.92);
         }
 
-        /* Dropdown Menu centered directly under Navbar */
+        /* Dropdown Menu */
         .dropdown-menu {
             position: absolute;
             top: calc(100% + 12px);
             left: 50%;
             transform: translateX(-50%) translateY(-10px);
             width: 260px;
-            background: rgba(18, 20, 26, 0.95);
+            background: rgba(22, 26, 35, 0.95);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
@@ -202,7 +202,7 @@
         .dropdown-item i { color: var(--accent-orange); width: 20px; text-align: center; }
         .dropdown-item:hover { background: var(--glass-hover); }
 
-        /* Hero Section - Reduced bottom padding to bring Features closer */
+        /* Hero Section */
         .hero {
             min-height: auto;
             display: flex;
@@ -224,6 +224,7 @@
             align-items: center;
         }
 
+        /* 3D Container with Pop Up Animation */
         .hero-3d-bg {
             position: absolute;
             top: 50%;
@@ -236,7 +237,6 @@
             pointer-events: none;
         }
 
-        /* Clean 3D Model without black outlines or shadows */
         model-viewer {
             width: 100%;
             height: 100%;
@@ -294,7 +294,7 @@
             font-size: 0.9rem;
         }
 
-        /* Features Section Moved UP */
+        /* Features Section */
         .features {
             padding: 20px 20px 60px;
             max-width: 1200px;
@@ -335,18 +335,27 @@
             margin-bottom: 15px;
         }
 
-        /* Smooth Pop-Up Entrance Animation */
+        /* Smooth Pop-Up Animation for all elements including 3D model */
         .animate-element {
             opacity: 0;
-            transform: translateY(35px) scale(0.94);
-            transition: opacity 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        transform 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(35px) scale(0.9);
+            transition: opacity 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        transform 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             will-change: opacity, transform;
         }
 
         .animate-element.visible {
             opacity: 1;
             transform: translateY(0) scale(1);
+        }
+
+        /* Pop up animation correction specifically for centered 3d model container */
+        .hero-3d-bg.animate-element {
+            transform: translate(-50%, -40%) scale(0.85);
+        }
+
+        .hero-3d-bg.animate-element.visible {
+            transform: translate(-50%, -50%) scale(1);
         }
 
         @media (max-width: 968px) {
@@ -367,7 +376,7 @@
     <header>
         <a href="#" class="logo">
             <i class="fa-solid fa-dumbbell" style="color: var(--accent-orange);"></i>
-            CEMENT <span>FIT</span>
+            CEMENT<span>FIT</span>
         </a>
 
         <ul class="nav-links">
@@ -381,13 +390,13 @@
                 تواصل معنا <i class="fa-brands fa-whatsapp"></i>
             </a>
 
-            <!-- Menu Button inside Header -->
+            <!-- Menu Button -->
             <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle Menu">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
         </div>
 
-        <!-- Dropdown Menu Positioned Centered relative to Navbar -->
+        <!-- Dropdown Menu -->
         <div class="dropdown-menu" id="dropdownMenu">
             <a href="#home" class="dropdown-item">
                 <i class="fa-solid fa-house"></i>
@@ -407,7 +416,8 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <div class="hero-3d-bg">
+            <!-- 3D Model with Pop Up Animation -->
+            <div class="hero-3d-bg animate-element">
                 <model-viewer 
                     id="dumbbellViewer"
                     src="./dumbbellmodel.glb" 
@@ -458,7 +468,7 @@
     </section>
 
     <script>
-        // Web Audio Synthesizer - Consistent High Quality Sound Generation
+        // Web Audio Synthesizer
         let globalAudioCtx = null;
 
         function getAudioContext() {
@@ -472,7 +482,6 @@
             return globalAudioCtx;
         }
 
-        // Crisp Pop sound that stays constant without fading
         function playPopSound() {
             try {
                 const ctx = getAudioContext();
@@ -496,7 +505,6 @@
             } catch(e) {}
         }
 
-        // Unlock Web Audio context on user tap/scroll
         const unlockAudio = () => {
             getAudioContext();
             document.removeEventListener('touchstart', unlockAudio);
@@ -521,7 +529,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.12 });
+            }, { threshold: 0.1 });
 
             animatedElements.forEach(el => observer.observe(el));
         });
