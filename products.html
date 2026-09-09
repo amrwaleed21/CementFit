@@ -750,10 +750,12 @@
 
                 let matchesCat = true;
                 if (currentCategory !== 'all') {
-                    // إزالة لواحق المفرد والجمع (مثل ات، ين، ان، s) لتتطابق الكلمة بسلاسة
-                    const cleanCat = currentCategory.toLowerCase().replace(/(ات|ين|ان|s)$/, '');
-                    const productName = p.name ? p.name.toLowerCase() : '';
-                    const productDesc = p.desc ? p.desc.toLowerCase() : '';
+                    // توحيد الهاء والتاء المربوطة (ة -> ه) وإزالة لواحق الجمع لضمان المطابقة تماماً
+                    const normalizeText = (txt) => txt ? txt.toLowerCase().replace(/ة/g, 'ه').replace(/(ات|ين|ان|s)$/, '') : '';
+                    
+                    const cleanCat = normalizeText(currentCategory);
+                    const productName = normalizeText(p.name);
+                    const productDesc = normalizeText(p.desc);
 
                     matchesCat = productName.includes(cleanCat) || productDesc.includes(cleanCat);
                 }
