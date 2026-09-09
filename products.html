@@ -548,7 +548,6 @@
     <div class="glow-blob-1"></div>
     <div class="glow-blob-2"></div>
 
-    <!-- Toast Notification -->
     <div class="toast-notification" id="toastNotification">
         <i class="fa-solid fa-circle-check" style="color: #25d366; font-size: 1.2rem;"></i>
         <span id="toastText">تم إضافة المنتج للسلة بنجاح</span>
@@ -562,7 +561,6 @@
         <a href="index.html" class="nav-btn">الرئيسية</a>
     </header>
 
-    <!-- Floating Circular Cart Button -->
     <button class="floating-cart-btn" onclick="openCartModal()">
         <i class="fa-solid fa-cart-shopping"></i>
         <span class="floating-cart-badge" id="cartCount">0</span>
@@ -571,7 +569,6 @@
     <div class="container">
         <h1 class="title">منتجات <span class="logo-cement">CEMENT</span><span class="logo-fit">FIT</span></h1>
         
-        <!-- Search & Filter Bar -->
         <div class="controls-section">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -601,7 +598,6 @@
         </div>
     </div>
 
-    <!-- Product Details Modal -->
     <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
         <div class="modal-card">
             <button class="modal-close" onclick="forceCloseModal('productModal')">&times;</button>
@@ -628,7 +624,6 @@
         </div>
     </div>
 
-    <!-- Shopping Cart Modal -->
     <div class="modal-overlay" id="cartModal" onclick="closeModal(event)">
         <div class="modal-card">
             <button class="modal-close" onclick="forceCloseModal('cartModal')">&times;</button>
@@ -638,8 +633,7 @@
                 </h2>
                 
                 <div class="cart-items-list" id="cartItemsContainer">
-                    <!-- Items rendered dynamically -->
-                </div>
+                    </div>
 
                 <div class="cart-summary">
                     <div class="cart-shipping-row">
@@ -750,8 +744,11 @@
 
                 let matchesCat = true;
                 if (currentCategory !== 'all') {
-                    matchesCat = p.name.toLowerCase().includes(currentCategory.toLowerCase()) || 
-                                 (p.desc && p.desc.toLowerCase().includes(currentCategory.toLowerCase()));
+                    const categoryKeywords = currentCategory.toLowerCase().split(' ');
+                    matchesCat = categoryKeywords.some(keyword => 
+                        (p.name && p.name.toLowerCase().includes(keyword)) || 
+                        (p.desc && p.desc.toLowerCase().includes(keyword))
+                    );
                 }
 
                 return matchesSearch && matchesCat;
