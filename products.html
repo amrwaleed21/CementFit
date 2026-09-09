@@ -548,6 +548,7 @@
     <div class="glow-blob-1"></div>
     <div class="glow-blob-2"></div>
 
+    <!-- Toast Notification -->
     <div class="toast-notification" id="toastNotification">
         <i class="fa-solid fa-circle-check" style="color: #25d366; font-size: 1.2rem;"></i>
         <span id="toastText">تم إضافة المنتج للسلة بنجاح</span>
@@ -561,6 +562,7 @@
         <a href="index.html" class="nav-btn">الرئيسية</a>
     </header>
 
+    <!-- Floating Circular Cart Button -->
     <button class="floating-cart-btn" onclick="openCartModal()">
         <i class="fa-solid fa-cart-shopping"></i>
         <span class="floating-cart-badge" id="cartCount">0</span>
@@ -569,10 +571,11 @@
     <div class="container">
         <h1 class="title">منتجات <span class="logo-cement">CEMENT</span><span class="logo-fit">FIT</span></h1>
         
+        <!-- Search & Filter Bar -->
         <div class="controls-section">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن منتج (مثل: دامبل، طارات...)" oninput="filterProducts()">
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن منتج (مثل: دامبل، طارة...)" oninput="filterProducts()">
             </div>
             
             <div class="filter-row">
@@ -598,6 +601,7 @@
         </div>
     </div>
 
+    <!-- Product Details Modal -->
     <div class="modal-overlay" id="productModal" onclick="closeModal(event)">
         <div class="modal-card">
             <button class="modal-close" onclick="forceCloseModal('productModal')">&times;</button>
@@ -624,6 +628,7 @@
         </div>
     </div>
 
+    <!-- Shopping Cart Modal -->
     <div class="modal-overlay" id="cartModal" onclick="closeModal(event)">
         <div class="modal-card">
             <button class="modal-close" onclick="forceCloseModal('cartModal')">&times;</button>
@@ -633,7 +638,8 @@
                 </h2>
                 
                 <div class="cart-items-list" id="cartItemsContainer">
-                    </div>
+                    <!-- Items rendered dynamically -->
+                </div>
 
                 <div class="cart-summary">
                     <div class="cart-shipping-row">
@@ -744,11 +750,12 @@
 
                 let matchesCat = true;
                 if (currentCategory !== 'all') {
-                    const categoryKeywords = currentCategory.toLowerCase().split(' ');
-                    matchesCat = categoryKeywords.some(keyword => 
-                        (p.name && p.name.toLowerCase().includes(keyword)) || 
-                        (p.desc && p.desc.toLowerCase().includes(keyword))
-                    );
+                    // إزالة لواحق المفرد والجمع (مثل ات، ين، ان، s) لتتطابق الكلمة بسلاسة
+                    const cleanCat = currentCategory.toLowerCase().replace(/(ات|ين|ان|s)$/, '');
+                    const productName = p.name ? p.name.toLowerCase() : '';
+                    const productDesc = p.desc ? p.desc.toLowerCase() : '';
+
+                    matchesCat = productName.includes(cleanCat) || productDesc.includes(cleanCat);
                 }
 
                 return matchesSearch && matchesCat;
