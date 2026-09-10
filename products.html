@@ -29,12 +29,15 @@
             --text-muted: #9ca3af;
         }
 
+        html, body {
+            min-height: 100dvh;
+            overflow-x: hidden;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            min-height: 100vh;
             padding-bottom: 90px;
-            overflow-x: hidden;
             position: relative;
         }
 
@@ -339,7 +342,8 @@
             font-size: 0.8rem;
             font-weight: 800;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 5;
+            z-index: 10;
+            white-space: nowrap;
         }
 
         .product-img {
@@ -348,32 +352,41 @@
             object-fit: cover;
             background: rgba(0,0,0,0.4);
             border-bottom: 1px solid var(--glass-border);
+            display: block;
         }
 
         .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         .product-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; color: #fff; }
         .product-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; flex-grow: 1; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        .price-container { display: flex; align-items: baseline; gap: 8px; }
-        .price { font-size: 1.3rem; font-weight: 900; color: var(--accent-orange); }
-        .old-price { font-size: 0.95rem; color: var(--text-muted); text-decoration: line-through; }
+        .price-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .price { font-size: 1.25rem; font-weight: 900; color: var(--accent-orange); white-space: nowrap; }
+        .old-price { font-size: 0.9rem; color: var(--text-muted); text-decoration: line-through; white-space: nowrap; }
 
-        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; gap: 10px; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; gap: 8px; flex-wrap: nowrap; }
 
         .btn-add-cart {
             background: linear-gradient(135deg, var(--accent-orange), #e85d04);
             color: #fff;
-            padding: 9px 16px;
+            padding: 9px 14px;
             border-radius: 12px;
             border: none;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 12px var(--accent-glow);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .btn-add-cart:hover, .btn-add-cart:active {
@@ -539,6 +552,16 @@
             box-shadow: 0 0 20px #25d366;
         }
 
+        /* استجابة الشاشات الصغيرة والمتصفحات المدمجة مثل انستجرام */
+        @media screen and (max-width: 400px) {
+            .container { padding: 0 12px; margin-top: 95px; }
+            .product-info { padding: 14px; }
+            .product-name { font-size: 1.15rem; }
+            .price { font-size: 1.1rem; }
+            .old-price { font-size: 0.85rem; }
+            .btn-add-cart { padding: 8px 12px; font-size: 0.8rem; }
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -656,7 +679,7 @@
                 </div>
             </div>
         </div>
-    </div >
+    </div>
 
     <script>
         const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
@@ -750,7 +773,6 @@
 
                 let matchesCat = true;
                 if (currentCategory !== 'all') {
-                    // توحيد الهاء والتاء المربوطة (ة -> ه) وإزالة لواحق الجمع لضمان المطابقة تماماً
                     const normalizeText = (txt) => txt ? txt.toLowerCase().replace(/ة/g, 'ه').replace(/(ات|ين|ان|s)$/, '') : '';
                     
                     const cleanCat = normalizeText(currentCategory);
@@ -763,7 +785,6 @@
                 return matchesSearch && matchesCat;
             });
 
-            // Sorting logic
             if (sortVal === 'low-high') {
                 filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
             } else if (sortVal === 'high-low') {
