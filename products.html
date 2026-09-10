@@ -656,7 +656,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div >
 
     <script>
         const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
@@ -826,12 +826,12 @@
             let maxShippingPrice = 0;
             let maxShippingLocation = "حسب المتفق عليه";
 
-            let orderSummaryText = "السلام عليكم، أريد طلب المنتجات التالية من موقع CementFit:\n\n";
+            let orderSummaryText = "السلام عليكم،\nممكن اطلب:\n";
 
             cart.forEach(item => {
                 const itemTotal = item.price * item.qty;
                 productsTotalPrice += itemTotal;
-                orderSummaryText += `▪️ *${item.name}* (الكمية: ${item.qty}) - بسعر: ${itemTotal} ج.م\n`;
+                orderSummaryText += `${item.name} (${item.qty})\n`;
 
                 const itemShipping = parseFloat(item.shipping_price) || 0;
                 if (itemShipping > maxShippingPrice) {
@@ -860,10 +860,7 @@
             document.getElementById('cartShippingLoc').innerText = maxShippingLocation;
             document.getElementById('cartTotalPrice').innerText = `${finalTotalPrice} ج.م`;
 
-            orderSummaryText += `\n📦 *مصاريف الشحن (${maxShippingLocation}):* ${maxShippingPrice} ج.م`;
-            orderSummaryText += `\n💰 *المجموع الكلي (شامل الشحن):* ${finalTotalPrice} ج.م`;
-
-            const encodedMsg = encodeURIComponent(orderSummaryText);
+            const encodedMsg = encodeURIComponent(orderSummaryText.trim());
             document.getElementById('whatsappCheckoutBtn').href = `https://wa.me/201212338084?text=${encodedMsg}`;
         }
 
