@@ -6,3322 +6,1020 @@
 
     <title>CEMENTFIT | معاك لحد ما توصل لهدفك</title>
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="معاك لحد ما توصل لهدفك | CEMENTFIT">
-    <meta property="og:description" content="احصل على فورمة الجيم من البيت بأعلى الخامات مع طارات ومقابض مريحة ومصممة هندسياً للتماسك التام.">
-    <meta property="og:site_name" content="CEMENTFIT">
-    <meta name="twitter:title" content="معاك لحد ما توصل لهدفك | CEMENTFIT">
+    <meta name="description" content="CEMENTFIT - أوزان خرسانية قوية للتمرين في البيت">
+    <meta name="theme-color" content="#0a0a0a">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- 3D Model Viewer -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
     <style>
-
-        /* =========================================================
-           RESET
-        ========================================================= */
+        :root {
+            --black: #080808;
+            --black-2: #101010;
+            --dark: #151515;
+            --orange: #ff6b00;
+            --orange-light: #ff8a24;
+            --white: #ffffff;
+            --gray: #a7a7a7;
+            --border: rgba(255, 107, 0, 0.20);
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-
-            font-family: 'Cairo', sans-serif;
-
-            scroll-behavior: smooth;
-
-            -webkit-tap-highlight-color: transparent;
-
-            outline: none;
         }
 
         html {
-            width: 100%;
-            max-width: 100%;
-
-            background: #050505;
-
-            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         body {
-            width: 100%;
-            max-width: 100%;
-
-            min-height: 100vh;
-
+            font-family: "Cairo", sans-serif;
             background:
-                radial-gradient(
-                    circle at 50% 25%,
-                    rgba(255, 70, 0, 0.10),
-                    transparent 35%
-                ),
-                linear-gradient(
-                    180deg,
-                    #030303 0%,
-                    #080808 45%,
-                    #030303 100%
-                );
-
-            color: #f4f4f4;
-
+                radial-gradient(circle at 80% 10%, rgba(255, 107, 0, 0.09), transparent 28%),
+                radial-gradient(circle at 15% 65%, rgba(255, 107, 0, 0.05), transparent 30%),
+                #080808;
+            color: var(--white);
+            min-height: 100vh;
             overflow-x: hidden;
-
-            position: relative;
         }
-
-
-        /* =========================================================
-           VARIABLES
-        ========================================================= */
-
-        :root {
-
-            --black: #050505;
-            --black-2: #090909;
-            --black-3: #111111;
-
-            --orange: #ff5a00;
-            --orange-light: #ff7a18;
-            --orange-dark: #d93600;
-
-            --white: #f4f4f4;
-            --gray: #a7a7a7;
-
-            --orange-glow:
-                rgba(255, 75, 0, 0.35);
-        }
-
-
-        /* =========================================================
-           INDUSTRIAL BACKGROUND
-        ========================================================= */
 
         body::before {
-
             content: "";
-
             position: fixed;
-
             inset: 0;
-
-            background-image:
-
-                linear-gradient(
-                    90deg,
-                    rgba(255,255,255,0.018) 1px,
-                    transparent 1px
-                ),
-
-                linear-gradient(
-                    rgba(255,255,255,0.018) 1px,
-                    transparent 1px
-                );
-
-            background-size: 70px 70px;
-
-            opacity: 0.35;
-
             pointer-events: none;
-
-            z-index: -10;
+            opacity: 0.045;
+            background-image:
+                linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+            background-size: 45px 45px;
+            mask-image: linear-gradient(to bottom, black, transparent 90%);
+            z-index: -2;
         }
-
 
         body::after {
-
             content: "";
-
             position: fixed;
-
-            inset: 0;
-
-            background:
-
-                radial-gradient(
-                    circle at 20% 65%,
-                    rgba(255, 70, 0, 0.08),
-                    transparent 25%
-                ),
-
-                radial-gradient(
-                    circle at 85% 30%,
-                    rgba(255, 70, 0, 0.06),
-                    transparent 25%
-                );
-
+            width: 420px;
+            height: 420px;
+            border: 1px solid rgba(255, 107, 0, 0.08);
+            transform: rotate(30deg);
+            right: -230px;
+            top: 230px;
             pointer-events: none;
-
-            z-index: -9;
+            z-index: -1;
         }
 
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-        /* =========================================================
-           ORANGE LIGHTS
-        ========================================================= */
+        button {
+            font-family: inherit;
+        }
 
-        .orange-light {
+        /* =========================
+           HEADER
+        ========================== */
 
+        header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 78px;
+            z-index: 1000;
+
+            background: rgba(8, 8, 8, 0.86);
+            border-bottom: 1px solid rgba(255, 107, 0, 0.13);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .nav {
+            width: min(1180px, 94%);
+            height: 100%;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            white-space: nowrap;
+        }
+
+        .logo-c {
+            color: var(--white);
+        }
+
+        .logo-fit {
+            color: var(--orange);
+        }
+
+        .logo-mark {
+            width: 34px;
+            height: 34px;
+            border: 2px solid var(--orange);
+            display: grid;
+            place-items: center;
+            transform: rotate(30deg);
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
+        }
+
+        .logo-mark span {
+            transform: rotate(-30deg);
+            font-weight: 900;
+            color: var(--orange);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #cfcfcf;
+            font-size: 14px;
+            font-weight: 700;
+            position: relative;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
             position: absolute;
-
-            width: 350px;
-            height: 350px;
-
+            right: 0;
+            bottom: -8px;
+            width: 0;
+            height: 2px;
             background: var(--orange);
+            box-shadow: 0 0 10px var(--orange);
+            transition: 0.25s ease;
+        }
 
-            border-radius: 50%;
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--white);
+        }
 
-            filter: blur(150px);
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
 
-            opacity: 0.10;
+        .nav-button {
+            background: var(--orange);
+            color: #fff;
+            padding: 10px 17px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: 0.2s ease;
+            box-shadow: 0 0 0 rgba(255, 107, 0, 0);
+        }
 
+        .nav-button:hover {
+            background: var(--orange-light);
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.35);
+        }
+
+        .menu-btn {
+            display: none;
+            border: 0;
+            background: transparent;
+            color: #fff;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            min-height: 100vh;
+            width: 100%;
+
+            padding: 125px 5% 60px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            right: -230px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 1px solid rgba(255, 107, 0, 0.12);
+            clip-path: polygon(
+                25% 6.7%,
+                75% 6.7%,
+                100% 50%,
+                75% 93.3%,
+                25% 93.3%,
+                0% 50%
+            );
             pointer-events: none;
         }
 
-        .light-1 {
-            top: 250px;
-            left: -220px;
+        .hero-container {
+            width: min(1200px, 100%);
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            align-items: center;
+            gap: 40px;
         }
 
-        .light-2 {
-            top: 620px;
-            right: -220px;
+        .hero-content {
+            max-width: 650px;
         }
 
-        .light-3 {
-            top: 1050px;
-            left: 20%;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
 
-            opacity: 0.06;
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            background: rgba(255, 107, 0, 0.06);
+
+            color: #ddd;
+            padding: 8px 14px;
+            border-radius: 4px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 22px;
         }
 
+        .badge i {
+            color: var(--orange);
+        }
 
-        /* =========================================================
-           HEXAGONS
-        ========================================================= */
+        .hero-title {
+            font-size: clamp(45px, 6vw, 84px);
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .hero-title .orange {
+            color: var(--orange);
+            text-shadow: 0 0 25px rgba(255, 107, 0, 0.22);
+        }
+
+        .hero-title .outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,.5);
+        }
+
+        .hero-description {
+            color: #aaa;
+            max-width: 560px;
+            line-height: 2;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            min-height: 48px;
+            padding: 0 23px;
+            border-radius: 6px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            border: 1px solid transparent;
+            cursor: pointer;
+
+            transition: .18s ease;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-light);
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: scale(.96);
+            box-shadow:
+                0 0 10px rgba(255, 107, 0, .7),
+                0 0 35px rgba(255, 107, 0, .45);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,.025);
+            border-color: rgba(255,255,255,.16);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+            box-shadow: 0 0 22px rgba(255, 107, 0, .15);
+        }
+
+        .btn-outline:active {
+            transform: scale(.96);
+            border-color: var(--orange);
+            box-shadow: 0 0 25px rgba(255, 107, 0, .3);
+        }
+
+        /* =========================
+           DUMBBELL VISUAL
+        ========================== */
+
+        .hero-visual {
+            position: relative;
+            min-height: 470px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         .hex {
-
             position: absolute;
+            width: 330px;
+            height: 380px;
+            border: 1px solid rgba(255, 107, 0, .16);
 
-            width: 130px;
-            height: 150px;
+            clip-path: polygon(
+                25% 3%,
+                75% 3%,
+                100% 50%,
+                75% 97%,
+                25% 97%,
+                0 50%
+            );
 
-            border:
-                2px solid
-                rgba(255, 79, 0, 0.35);
-
-            clip-path:
-                polygon(
-                    25% 6.7%,
-                    75% 6.7%,
-                    100% 50%,
-                    75% 93.3%,
-                    25% 93.3%,
-                    0% 50%
-                );
-
-            background:
-                rgba(255, 65, 0, 0.015);
-
-            pointer-events: none;
+            transform: rotate(15deg);
         }
 
         .hex::before {
-
             content: "";
-
             position: absolute;
-
-            inset: 8px;
-
-            border:
-                1px solid
-                rgba(255, 110, 40, 0.13);
+            inset: 20px;
+            border: 1px solid rgba(255,255,255,.06);
 
             clip-path: inherit;
         }
 
-        .hex-glow {
+        .dumbbell {
+            position: relative;
+            width: 390px;
+            height: 180px;
+            transform: rotate(-10deg);
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,.8));
+        }
 
+        .handle {
+            position: absolute;
+            width: 185px;
+            height: 38px;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    #242424 0px,
+                    #242424 8px,
+                    #171717 9px,
+                    #171717 13px
+                );
+            border-radius: 8px;
+            top: 71px;
+            left: 102px;
             box-shadow:
-                0 0 15px
-                rgba(255, 65, 0, 0.15),
-
-                inset 0 0 20px
-                rgba(255, 65, 0, 0.04);
+                inset 0 1px 1px rgba(255,255,255,.15),
+                0 5px 15px rgba(0,0,0,.6);
         }
 
-        .hex-1 {
-            top: 100px;
-            left: -55px;
-
-            transform: rotate(-7deg);
+        .handle::after {
+            content: "";
+            position: absolute;
+            inset: 5px 12px;
+            border-top: 1px solid rgba(255,255,255,.12);
         }
 
-        .hex-2 {
-            top: 230px;
-            right: -65px;
-
-            width: 170px;
-            height: 195px;
-
-            transform: rotate(8deg);
-        }
-
-        .hex-3 {
-            top: 580px;
-            left: -35px;
-
+        .weight {
+            position: absolute;
             width: 95px;
-            height: 110px;
-
-            opacity: 0.7;
-        }
-
-        .hex-4 {
-            top: 690px;
-            right: -35px;
-
-            width: 110px;
-            height: 125px;
-
-            opacity: 0.65;
-        }
-
-        .hex-5 {
-            top: 1080px;
-            left: -40px;
-
-            width: 150px;
-            height: 170px;
-
-            opacity: 0.5;
-        }
-
-        .hex-6 {
-            top: 1200px;
-            right: -45px;
-
-            width: 130px;
             height: 150px;
 
-            opacity: 0.45;
-        }
-
-
-        /* =========================================================
-           ORANGE LINES
-        ========================================================= */
-
-        .orange-line {
-
-            position: absolute;
-
-            height: 2px;
-
             background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--orange),
-                    transparent
-                );
+                linear-gradient(145deg, #3a3a3a, #151515 65%, #292929);
+
+            clip-path: polygon(
+                25% 0,
+                75% 0,
+                100% 25%,
+                100% 75%,
+                75% 100%,
+                25% 100%,
+                0 75%,
+                0 25%
+            );
 
             box-shadow:
-                0 0 10px
-                rgba(255, 70, 0, 0.5);
-
-            pointer-events: none;
+                inset 0 0 0 1px rgba(255,255,255,.08),
+                0 10px 25px rgba(0,0,0,.8);
         }
 
-        .line-1 {
-            top: 210px;
-            left: -30px;
-
-            width: 180px;
-
-            transform: rotate(-31deg);
-        }
-
-        .line-2 {
-            top: 390px;
-            right: -50px;
-
-            width: 190px;
-
-            transform: rotate(30deg);
-        }
-
-        .line-3 {
-            top: 740px;
-            left: -40px;
-
-            width: 190px;
-
-            transform: rotate(30deg);
-        }
-
-        .line-4 {
-            top: 850px;
-            right: -50px;
-
-            width: 190px;
-
-            transform: rotate(-30deg);
-        }
-
-
-        /* =========================================================
-           NAVBAR
-        ========================================================= */
-
-        header {
-
-            position: fixed;
-
+        .weight.left {
+            left: 15px;
             top: 15px;
-            left: 50%;
-
-            transform:
-                translateX(-50%);
-
-            width: 94%;
-            max-width: 1150px;
-
-            padding:
-                9px 14px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            z-index: 1000;
-
-            background:
-                rgba(8, 8, 8, 0.78);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.10);
-
-            border-radius: 14px;
-
-            backdrop-filter: blur(18px);
-
-            -webkit-backdrop-filter:
-                blur(18px);
-
-            box-shadow:
-                0 15px 40px
-                rgba(0,0,0,0.55),
-
-                inset 0 1px 0
-                rgba(255,255,255,0.05);
         }
 
-        header::after {
+        .weight.right {
+            right: 15px;
+            top: 15px;
+        }
 
-            content: "";
-
+        .weight::after {
+            content: "C";
             position: absolute;
-
-            bottom: -1px;
-
-            left: 12%;
-            right: 12%;
-
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--orange),
-                    transparent
-                );
-
-            opacity: 0.7;
-        }
-
-
-        /* =========================================================
-           LOGO
-        ========================================================= */
-
-        .logo {
-
-            text-decoration: none;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            direction: ltr;
-
-            color: white;
-
-            font-family: 'Oswald', sans-serif;
-
-            font-weight: 700;
-
-            letter-spacing: 0.5px;
-        }
-
-        .logo i {
-
-            color: var(--orange);
-
-            font-size: 18px;
-
-            filter:
-                drop-shadow(
-                    0 0 7px
-                    rgba(255,80,0,0.55)
-                );
-        }
-
-        .logo-text {
-
-            font-family: 'Oswald', sans-serif;
-
-            font-size: 1.25rem;
-
-            white-space: nowrap;
-        }
-
-        .logo-text span {
-            color: var(--orange);
-        }
-
-
-        /* =========================================================
-           NAV LINKS
-        ========================================================= */
-
-        .nav-links {
-
-            display: flex;
-
-            gap: 28px;
-
-            list-style: none;
-        }
-
-        .nav-links a {
-
-            color: #a9a9a9;
-
-            text-decoration: none;
-
-            font-size: 0.83rem;
-
-            font-weight: 700;
-
-            transition: 0.25s ease;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-        .nav-links a::after {
-
-            content: "";
-
-            display: block;
-
-            width: 0;
-            height: 2px;
-
-            margin:
-                3px auto 0;
-
-            background:
-                var(--orange);
-
-            transition:
-                0.25s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 60%;
-        }
-
-
-        /* =========================================================
-           HEADER BUTTON
-        ========================================================= */
-
-        .header-actions {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 7px;
-        }
-
-
-        .btn-primary {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #ff7016,
-                    #e64200
-                );
-
-            color: white;
-
-            padding:
-                8px 15px;
-
-            border-radius: 9px;
-
-            text-decoration: none;
-
-            font-weight: 800;
-
-            font-size: 0.78rem;
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 6px;
-
-            white-space: nowrap;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
-
-            box-shadow:
-                0 5px 20px
-                rgba(255,70,0,0.20);
-
-            transition:
-                transform 0.15s ease,
-                box-shadow 0.15s ease,
-                background 0.15s ease;
-        }
-
-
-        .btn-primary:hover {
-
-            transform:
-                translateY(-2px);
-
-            box-shadow:
-                0 8px 25px
-                rgba(255,70,0,0.35);
-        }
-
-
-        .btn-primary:active {
-
-            transform:
-                scale(0.94);
-
-            box-shadow:
-
-                0 0 8px
-                rgba(255,80,0,0.95),
-
-                0 0 20px
-                rgba(255,80,0,0.80),
-
-                0 0 45px
-                rgba(255,60,0,0.50);
-        }
-
-
-        /* =========================================================
-           MENU BUTTON
-        ========================================================= */
-
-        .menu-toggle-btn {
-
-            width: 37px;
-            height: 37px;
-
-            border-radius: 9px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.12);
-
-            background:
-                rgba(255,255,255,0.05);
-
-            color: white;
-
-            cursor: pointer;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            transition:
-                0.2s;
-        }
-
-        .menu-toggle-btn:hover {
-
-            border-color:
-                rgba(255,80,0,0.5);
-
-            color:
-                var(--orange);
-        }
-
-        .menu-toggle-btn:active {
-
-            transform:
-                scale(0.90);
-
-            color:
-                var(--orange);
-
-            border-color:
-                var(--orange);
-
-            box-shadow:
-                0 0 10px
-                rgba(255,80,0,0.8),
-
-                0 0 25px
-                rgba(255,80,0,0.45);
-        }
-
-
-        /* =========================================================
-           DROPDOWN
-        ========================================================= */
-
-        .dropdown-menu {
-
-            position: absolute;
-
-            top:
-                calc(100% + 12px);
-
-            left: 50%;
-
-            transform:
-                translateX(-50%)
-                translateY(-10px);
-
-            width: 260px;
-
-            padding: 9px;
-
-            background:
-                rgba(12,12,12,0.97);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.12);
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 20px 50px
-                rgba(0,0,0,0.8),
-
-                0 0 20px
-                rgba(255,70,0,0.08);
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 5px;
-
-            opacity: 0;
-
-            visibility: hidden;
-
-            transition:
-                0.25s
-                cubic-bezier(
-                    0.16,
-                    1,
-                    0.3,
-                    1
-                );
-        }
-
-        .dropdown-menu.show {
-
-            opacity: 1;
-
-            visibility: visible;
-
-            transform:
-                translateX(-50%)
-                translateY(0);
-        }
-
-
-        .dropdown-item {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            padding:
-                12px 14px;
-
-            color: #eee;
-
-            text-decoration: none;
-
-            font-size: 0.85rem;
-
-            font-weight: 700;
-
-            border-radius: 9px;
-
-            transition:
-                0.2s;
-        }
-
-        .dropdown-item i {
-
-            color:
-                var(--orange);
-
-            width: 20px;
-
-            text-align: center;
-        }
-
-        .dropdown-item:hover {
-
-            background:
-                rgba(255,75,0,0.10);
-
-            color: white;
-        }
-
-
-        /* =========================================================
-           HERO
-        ========================================================= */
-
-        .hero {
-
-            width: 100%;
-
-            max-width: 1450px;
-
-            min-height: 780px;
-
-            position: relative;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding:
-                145px 20px 80px;
-
-            overflow: hidden;
-
-            margin:
-                0 auto;
-        }
-
-
-        .hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 80px;
-            left: -15%;
-
-            width: 55%;
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,70,0,0.7),
-                    transparent
-                );
-
-            transform:
-                rotate(-32deg);
-
-            opacity: 0.6;
-        }
-
-
-        .hero::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 160px;
-            right: -15%;
-
-            width: 50%;
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,70,0,0.6),
-                    transparent
-                );
-
-            transform:
-                rotate(30deg);
-
-            opacity: 0.5;
-        }
-
-
-        .hero-content {
-
-            position: relative;
-
-            z-index: 5;
-
-            width: 100%;
-
-            max-width: 1050px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            text-align: center;
-        }
-
-
-        /* =========================================================
-           BRAND
-        ========================================================= */
-
-        .hero-brand {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 11px;
-
-            direction: ltr;
-
-            margin-bottom: 16px;
-
-            animation:
-                brandIn 1s ease both;
-        }
-
-
-        .hero-brand-icon {
-
-            width: 54px;
-            height: 54px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            color:
-                var(--orange);
-
-            font-size: 28px;
-
-            border:
-                2px solid
-                var(--orange);
-
-            clip-path:
-                polygon(
-                    25% 6.7%,
-                    75% 6.7%,
-                    100% 50%,
-                    75% 93.3%,
-                    25% 93.3%,
-                    0% 50%
-                );
-
-            filter:
-                drop-shadow(
-                    0 0 10px
-                    rgba(255,70,0,0.35)
-                );
-        }
-
-
-        .hero-brand-name {
-
-            font-family:
-                'Oswald',
-                sans-serif;
-
-            font-size:
-                clamp(
-                    2rem,
-                    6vw,
-                    3.5rem
-                );
-
-            font-weight: 700;
-
-            letter-spacing:
-                -1px;
-
-            line-height: 1;
-        }
-
-        .hero-brand-name span {
-            color:
-                var(--orange);
-        }
-
-
-        .brand-line {
-
-            width: 230px;
-
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--orange),
-                    transparent
-                );
-
-            margin-bottom: 12px;
-        }
-
-
-        .brand-tagline {
-
-            font-family:
-                'Oswald',
-                sans-serif;
-
-            color: #bcbcbc;
-
-            font-size: 0.65rem;
-
-            letter-spacing: 5px;
-
-            margin-bottom: 28px;
-        }
-
-        .brand-tagline span {
-
-            color:
-                var(--orange);
-
-            margin:
-                0 7px;
-        }
-
-
-        /* =========================================================
-           3D MODEL
-        ========================================================= */
-
-        .hero-3d-bg {
-
-            position: absolute;
-
-            top: 250px;
-
-            left: 50%;
-
-            transform:
-                translateX(-50%);
-
-            width:
-                min(720px, 100%);
-
-            height: 400px;
-
-            z-index: -1;
-
-            pointer-events: none;
-
-            opacity: 0.8;
-        }
-
-
-        .hero-3d-bg::after {
-
-            content: "";
-
-            position: absolute;
-
-            left: 50%;
-            bottom: 20px;
-
-            transform:
-                translateX(-50%);
-
-            width: 75%;
-
-            height: 70px;
-
-            background:
-                radial-gradient(
-                    ellipse,
-                    rgba(255,70,0,0.25),
-                    transparent 70%
-                );
-
-            filter:
-                blur(20px);
-        }
-
-
-        model-viewer {
-
-            width: 100%;
-            height: 100%;
-
-            background:
-                transparent;
-
-            outline: none !important;
-
-            border: none !important;
-
-            --poster-color:
-                transparent !important;
-
-            --progress-bar-color:
-                transparent !important;
-
-            --progress-bar-height:
-                0px !important;
-
-            opacity: 0;
-
-            transform:
-                scale(0.8);
-
-            transition:
-                opacity 1s ease,
-
-                transform 1s
-                cubic-bezier(
-                    0.16,
-                    1,
-                    0.3,
-                    1
-                );
-        }
-
-
-        model-viewer.loaded {
-
-            opacity: 1;
-
-            transform:
-                scale(1);
-        }
-
-
-        /* =========================================================
-           HERO TITLE
-        ========================================================= */
-
-        .hero-title {
-
-            font-family:
-                'Tajawal',
-                'Cairo',
-                sans-serif;
-
-            font-size:
-                clamp(
-                    3rem,
-                    8vw,
-                    6.4rem
-                );
-
+            inset: 0;
+            display: grid;
+            place-items: center;
+
+            color: rgba(255, 107, 0, .8);
+            font-size: 42px;
             font-weight: 900;
-
-            line-height: 1.05;
-
-            letter-spacing: 0 !important;
-
-            direction: rtl;
-
-            white-space: nowrap;
-
-            margin-bottom: 15px;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #ffffff 0%,
-                    #eeeeee 45%,
-                    #a8a8a8 100%
-                );
-
-            -webkit-background-clip: text;
-
-            -webkit-text-fill-color:
-                transparent;
-
-            filter:
-                drop-shadow(
-                    0 6px 0
-                    rgba(0,0,0,0.55)
-                );
         }
 
-
-        /* =========================================================
-           HERO SUBTITLE
-        ========================================================= */
-
-        .hero-subtitle {
-
-            font-family:
-                'Oswald',
-                sans-serif;
-
-            font-size: 0.68rem;
-
-            letter-spacing: 5px;
-
-            color: #c6c6c6;
-
-            margin-bottom: 18px;
-
-            text-transform:
-                uppercase;
-        }
-
-        .hero-subtitle span {
-
-            color:
-                var(--orange);
-
-            margin:
-                0 7px;
-        }
-
-
-        /* =========================================================
-           DESCRIPTION
-        ========================================================= */
-
-        .hero-description {
-
-            max-width: 600px;
-
-            color: #aaa;
-
-            font-size: 0.95rem;
-
-            line-height: 1.9;
-
-            margin-bottom: 25px;
-
-            position: relative;
-
-            z-index: 4;
-        }
-
-
-        /* =========================================================
-           HERO BUTTONS
-        ========================================================= */
-
-        .hero-buttons {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 10px;
-
-            position: relative;
-
-            z-index: 10;
-        }
-
-
-        .hero-buttons .btn-primary {
-
-            padding:
-                11px 25px;
-
-            border-radius: 8px;
-
-            font-size: 0.85rem;
-        }
-
-
-        .btn-glass {
-
-            position: relative;
-
-            overflow: hidden;
-
-            background:
-                rgba(255,255,255,0.035);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.15);
-
-            color: white;
-
-            padding:
-                10px 22px;
-
-            border-radius: 8px;
-
-            text-decoration: none;
-
-            font-size: 0.82rem;
-
-            font-weight: 700;
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            transition:
-                transform 0.15s ease,
-                box-shadow 0.15s ease,
-                border-color 0.15s ease,
-                background 0.15s ease;
-        }
-
-
-        .btn-glass:hover {
-
-            border-color:
-                var(--orange);
-
-            background:
-                rgba(255,70,0,0.08);
-        }
-
-
-        .btn-glass:active {
-
-            transform:
-                scale(0.94);
-
-            border-color:
-                var(--orange);
-
-            background:
-                rgba(255,75,0,0.18);
-
-            box-shadow:
-
-                0 0 8px
-                rgba(255,80,0,0.95),
-
-                0 0 20px
-                rgba(255,80,0,0.80),
-
-                0 0 45px
-                rgba(255,60,0,0.50);
-
-            text-shadow:
-                0 0 8px
-                rgba(255,100,30,0.8);
-        }
-
-
-        /* =========================================================
-           BUTTON LIGHT EFFECT
-        ========================================================= */
-
-        .btn-primary::after,
-        .btn-glass::after {
-
-            content: "";
-
+        .visual-glow {
             position: absolute;
-
-            top: 0;
-
-            left: -120%;
-
-            width: 80%;
-
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,255,255,0.35),
-                    transparent
-                );
-
-            transform:
-                skewX(-20deg);
-
-            pointer-events: none;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255, 107, 0, .08);
+            filter: blur(60px);
         }
 
-
-        .btn-primary:active::after,
-        .btn-glass:active::after {
-
-            animation:
-                buttonShine 0.35s ease;
-        }
-
-
-        @keyframes buttonShine {
-
-            from {
-                left: -120%;
-            }
-
-            to {
-                left: 140%;
-            }
-        }
-
-
-        /* =========================================================
-           SIDE LABELS
-        ========================================================= */
-
-        .side-label {
-
-            position: absolute;
-
-            z-index: 3;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 4px;
-
-            font-family:
-                'Oswald',
-                sans-serif;
-
-            font-size: 0.55rem;
-
-            letter-spacing: 3px;
-
-            color: #aaa;
-
-            text-transform:
-                uppercase;
-
-            text-align: left;
-        }
-
-
-        .side-label::after {
-
-            content: "";
-
-            width: 45px;
-
-            height: 1px;
-
-            background:
-                var(--orange);
-
-            margin-top: 5px;
-        }
-
-
-        .side-label.left {
-
-            left: 4%;
-
-            top: 48%;
-        }
-
-
-        .side-label.right {
-
-            right: 4%;
-
-            top: 36%;
-        }
-
-
-        .side-label strong {
-
-            color: white;
-
-            font-size: 0.62rem;
-        }
-
-
-        /* =========================================================
+        /* =========================
            FEATURES
-        ========================================================= */
+        ========================== */
 
         .features {
-
+            padding: 80px 5%;
             position: relative;
-
-            width: 100%;
-
-            max-width: 1200px;
-
-            margin:
-                0 auto;
-
-            padding:
-                60px 20px 100px;
         }
-
-
-        .features::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-
-            left: 15%;
-            right: 15%;
-
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,75,0,0.65),
-                    transparent
-                );
-        }
-
-
-        .section-heading {
-
-            text-align: center;
-
-            margin-bottom: 50px;
-        }
-
-
-        .section-heading small {
-
-            font-family:
-                'Oswald',
-                sans-serif;
-
-            color:
-                var(--orange);
-
-            letter-spacing: 4px;
-
-            font-size: 0.65rem;
-        }
-
 
         .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
+        .section-title small {
+            color: var(--orange);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(30px, 4vw, 46px);
             margin-top: 8px;
-
-            font-size:
-                clamp(
-                    1.8rem,
-                    5vw,
-                    2.8rem
-                );
-
             font-weight: 900;
         }
 
-
-        .section-title span {
-
-            color:
-                var(--orange);
-        }
-
-
-        .grid {
+        .features-grid {
+            width: min(1100px, 100%);
+            margin: auto;
 
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    3,
-                    1fr
-                );
-
-            gap: 25px;
-        }
-
-
-        /* =========================================================
-           FEATURE CARDS
-        ========================================================= */
-
-        .feature-card {
-
-            position: relative;
-
-            padding:
-                30px 25px;
-
-            text-align: center;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255,255,255,0.055),
-                    rgba(255,255,255,0.015)
-                );
-
-            border:
-                1px solid
-                rgba(255,255,255,0.09);
-
-            border-radius: 5px;
-
-            overflow: hidden;
-
-            transition:
-                transform 0.3s ease,
-                border-color 0.3s ease,
-                box-shadow 0.3s ease;
-        }
-
-
-        .feature-card::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-
-            left: 20%;
-
-            width: 60%;
-
-            height: 1px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--orange),
-                    transparent
-                );
-        }
-
-
-        .feature-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 90px;
-            height: 90px;
-
-            border:
-                1px solid
-                rgba(255,70,0,0.15);
-
-            right: -45px;
-            bottom: -45px;
-
-            transform:
-                rotate(30deg);
-
-            pointer-events: none;
-        }
-
-
-        .feature-card:hover {
-
-            transform:
-                translateY(-6px);
-
-            border-color:
-                rgba(255,80,0,0.35);
-
-            box-shadow:
-
-                0 15px 35px
-                rgba(0,0,0,0.45),
-
-                0 0 25px
-                rgba(255,70,0,0.08);
-        }
-
-
-        /* =========================================================
-           HEX ICON
-        ========================================================= */
-
-        .icon-box {
-
-            width: 65px;
-            height: 72px;
-
-            margin:
-                0 auto 20px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            color:
-                var(--orange);
-
-            font-size:
-                1.45rem;
-
-            background:
-                rgba(255,70,0,0.035);
-
-            border:
-                2px solid
-                var(--orange);
-
-            clip-path:
-                polygon(
-                    25% 6.7%,
-                    75% 6.7%,
-                    100% 50%,
-                    75% 93.3%,
-                    25% 93.3%,
-                    0% 50%
-                );
-
-            filter:
-                drop-shadow(
-                    0 0 7px
-                    rgba(255,70,0,0.25)
-                );
-        }
-
-
-        .feature-card h4 {
-
-            font-size:
-                1rem;
-
-            margin-bottom:
-                10px;
-
-            font-weight:
-                800;
-        }
-
-
-        .feature-card p {
-
-            color:
-                #8e8e8e;
-
-            font-size:
-                0.78rem;
-
-            line-height:
-                1.9;
-        }
-
-
-        /* =========================================================
-           BOTTOM BRAND
-        ========================================================= */
-
-        .brand-strip {
-
-            width: 100%;
-
-            max-width: 1100px;
-
-            margin:
-                0 auto;
-
-            padding:
-                0 25px 55px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
         }
 
+        .feature-card {
+            position: relative;
+            padding: 28px 22px;
 
-        .brand-strip-name {
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.045),
+                rgba(255,255,255,.015)
+            );
 
-            font-family:
-                'Oswald',
-                sans-serif;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 8px;
 
-            font-size:
-                1rem;
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                1px;
-
-            direction:
-                ltr;
+            overflow: hidden;
+            transition: .25s ease;
         }
 
-
-        .brand-strip-name span {
-
-            color:
-                var(--orange);
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            left: -35px;
+            bottom: -35px;
+            border: 1px solid rgba(255,107,0,.18);
+            transform: rotate(30deg);
         }
 
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,107,0,.35);
+            box-shadow: 0 15px 40px rgba(0,0,0,.3);
+        }
 
-        .brand-strip-line {
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
 
-            width:
-                250px;
+            color: var(--orange);
+            border: 1px solid rgba(255,107,0,.3);
+            background: rgba(255,107,0,.06);
 
-            height:
-                1px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: #929292;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,.06);
+            padding: 28px 5%;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
+
+        footer strong {
+            color: #aaa;
+        }
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 850px) {
+
+            header {
+                height: 68px;
+            }
+
+            .nav {
+                width: 100%;
+                padding: 0 18px;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .logo-mark {
+                width: 29px;
+                height: 29px;
+            }
+
+            .nav-links,
+            .nav-button {
+                display: none;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding:
+                    105px
+                    18px
+                    55px;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-title {
+                font-size: clamp(42px, 14vw, 65px);
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 14px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                min-height: 300px;
+                transform: scale(.82);
+            }
+
+            .features {
+                padding: 55px 18px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .hero-title {
+                font-size: 44px;
+            }
+
+            .hero-visual {
+                transform: scale(.70);
+                margin-top: -20px;
+                margin-bottom: -30px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* =========================
+           MOBILE MENU
+        ========================== */
+
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.65);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: .25s ease;
+        }
+
+        .mobile-menu.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(82%, 340px);
+            height: 100%;
 
             background:
                 linear-gradient(
-                    90deg,
-                    var(--orange),
-                    transparent
+                    160deg,
+                    #151515,
+                    #090909
                 );
+
+            border-left: 1px solid rgba(255,107,0,.2);
+
+            padding: 25px;
+            transform: translateX(100%);
+            transition: .3s ease;
         }
 
-
-        .brand-strip-text {
-
-            font-family:
-                'Oswald',
-                sans-serif;
-
-            font-size:
-                0.6rem;
-
-            letter-spacing:
-                3px;
-
-            color:
-                #aaa;
-
-            direction:
-                ltr;
+        .mobile-menu.show .mobile-panel {
+            transform: translateX(0);
         }
 
-
-        .brand-strip-text span {
-
-            color:
-                var(--orange);
+        .close-menu {
+            border: 0;
+            background: transparent;
+            color: #fff;
+            font-size: 25px;
+            cursor: pointer;
+            margin-bottom: 40px;
         }
 
+        .mobile-panel a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
 
-        /* =========================================================
-           ANIMATIONS
-        ========================================================= */
+            padding: 16px 0;
 
-        .animate-element {
+            color: #ddd;
+            border-bottom: 1px solid rgba(255,255,255,.06);
 
-            opacity: 0;
-
-            transform:
-                translateY(25px)
-                scale(0.97);
-
-            transition:
-
-                opacity 0.8s
-                cubic-bezier(
-                    0.16,
-                    1,
-                    0.3,
-                    1
-                ),
-
-                transform 0.8s
-                cubic-bezier(
-                    0.16,
-                    1,
-                    0.3,
-                    1
-                );
+            font-weight: 700;
         }
 
-
-        .animate-element.visible {
-
-            opacity: 1;
-
-            transform:
-                translateY(0)
-                scale(1);
+        .mobile-panel a i {
+            color: var(--orange);
         }
 
-
-        @keyframes brandIn {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(-20px)
-                    scale(0.95);
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
+        .mobile-panel a:active {
+            color: var(--orange);
         }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 968px) {
-
-            html,
-            body {
-
-                width: 100vw;
-
-                max-width: 100vw;
-
-                overflow-x: hidden;
-            }
-
-
-            header {
-
-                width:
-                    calc(100vw - 24px);
-
-                max-width:
-                    none;
-
-                left:
-                    12px;
-
-                transform:
-                    none;
-            }
-
-
-            .nav-links {
-
-                display:
-                    none;
-            }
-
-
-            .logo-text {
-
-                font-size:
-                    1.1rem;
-            }
-
-
-            .header-actions .btn-primary {
-
-                padding:
-                    7px 10px;
-
-                font-size:
-                    0.72rem;
-            }
-
-
-            .hero {
-
-                width: 100vw;
-
-                max-width: none;
-
-                min-height:
-                    760px;
-
-                margin:
-                    0;
-
-                padding:
-                    130px 18px 55px;
-
-                overflow:
-                    hidden;
-            }
-
-
-            .hero-content {
-
-                width:
-                    100%;
-
-                max-width:
-                    100%;
-
-                padding:
-                    0;
-
-                margin:
-                    0 auto;
-            }
-
-
-            .hero-brand-icon {
-
-                width:
-                    45px;
-
-                height:
-                    50px;
-
-                font-size:
-                    22px;
-            }
-
-
-            .hero-brand-name {
-
-                font-size:
-                    2.4rem;
-            }
-
-
-            .brand-tagline {
-
-                font-size:
-                    0.53rem;
-
-                letter-spacing:
-                    3px;
-            }
-
-
-            .hero-title {
-
-                width:
-                    100%;
-
-                max-width:
-                    100%;
-
-                font-size:
-                    clamp(
-                        2.7rem,
-                        12vw,
-                        4.5rem
-                    );
-
-                line-height:
-                    1;
-
-                white-space:
-                    nowrap;
-
-                text-align:
-                    center;
-
-                margin-left:
-                    auto;
-
-                margin-right:
-                    auto;
-            }
-
-
-            .hero-3d-bg {
-
-                top:
-                    315px;
-
-                width:
-                    100vw;
-
-                max-width:
-                    none;
-
-                left:
-                    50%;
-
-                transform:
-                    translateX(-50%);
-
-                height:
-                    340px;
-
-                opacity:
-                    0.75;
-            }
-
-
-            .hero-description {
-
-                width:
-                    100%;
-
-                max-width:
-                    390px;
-
-                margin-left:
-                    auto;
-
-                margin-right:
-                    auto;
-
-                font-size:
-                    0.82rem;
-            }
-
-
-            .hero-buttons {
-
-                width:
-                    100%;
-
-                max-width:
-                    430px;
-
-                margin-left:
-                    auto;
-
-                margin-right:
-                    auto;
-            }
-
-
-            .side-label {
-
-                display:
-                    none;
-            }
-
-
-            .features {
-
-                width:
-                    100vw;
-
-                max-width:
-                    none;
-
-                padding-top:
-                    45px;
-
-                padding-left:
-                    18px;
-
-                padding-right:
-                    18px;
-            }
-
-
-            .grid {
-
-                grid-template-columns:
-                    1fr;
-
-                width:
-                    100%;
-
-                max-width:
-                    430px;
-
-                margin:
-                    0 auto;
-            }
-
-
-            .hex-3,
-            .hex-4,
-            .hex-5,
-            .hex-6 {
-
-                opacity:
-                    0.35;
-            }
-
-
-            .brand-strip {
-
-                width:
-                    100vw;
-
-                max-width:
-                    none;
-
-                flex-wrap:
-                    wrap;
-
-                gap:
-                    10px;
-            }
-
-
-            .brand-strip-line {
-
-                width:
-                    120px;
-            }
-
-
-            .brand-strip-text {
-
-                width:
-                    100%;
-
-                text-align:
-                    center;
-            }
-        }
-
-
-        /* =========================================================
-           SMALL MOBILE
-        ========================================================= */
-
-        @media (max-width: 480px) {
-
-            .hero {
-
-                width:
-                    100vw;
-
-                min-height:
-                    730px;
-
-                padding:
-                    125px 15px 45px;
-            }
-
-
-            .header-actions .btn-primary {
-
-                display:
-                    none;
-            }
-
-
-            .hero-brand {
-
-                margin-bottom:
-                    12px;
-            }
-
-
-            .hero-brand-name {
-
-                font-size:
-                    2.15rem;
-            }
-
-
-            .hero-brand-icon {
-
-                width:
-                    44px;
-
-                height:
-                    50px;
-
-                font-size:
-                    21px;
-            }
-
-
-            .brand-line {
-
-                width:
-                    190px;
-            }
-
-
-            .brand-tagline {
-
-                margin-bottom:
-                    25px;
-
-                font-size:
-                    0.48rem;
-
-                letter-spacing:
-                    2.5px;
-            }
-
-
-            .hero-title {
-
-                font-size:
-                    clamp(
-                        2.5rem,
-                        12.5vw,
-                        3.8rem
-                    );
-
-                line-height:
-                    1;
-
-                white-space:
-                    nowrap;
-            }
-
-
-            .hero-subtitle {
-
-                font-size:
-                    0.58rem;
-
-                letter-spacing:
-                    3px;
-
-                margin-top:
-                    12px;
-            }
-
-
-            .hero-description {
-
-                font-size:
-                    0.78rem;
-
-                line-height:
-                    1.85;
-
-                max-width:
-                    350px;
-
-                margin-top:
-                    20px;
-            }
-
-
-            .hero-buttons {
-
-                gap:
-                    9px;
-
-                padding:
-                    0 2px;
-            }
-
-
-            .hero-buttons .btn-primary,
-            .hero-buttons .btn-glass {
-
-                padding:
-                    11px 12px;
-
-                font-size:
-                    0.76rem;
-
-                min-height:
-                    45px;
-
-                flex:
-                    1;
-
-                justify-content:
-                    center;
-            }
-
-
-            .hero-3d-bg {
-
-                top:
-                    300px;
-
-                width:
-                    100vw;
-
-                height:
-                    340px;
-            }
-
-
-            .hex-1 {
-
-                left:
-                    -75px;
-            }
-
-
-            .hex-2 {
-
-                right:
-                    -90px;
-            }
-        }
-
-
-        /* =========================================================
-           VERY SMALL PHONES
-        ========================================================= */
-
-        @media (max-width: 360px) {
-
-            .hero {
-
-                padding-left:
-                    10px;
-
-                padding-right:
-                    10px;
-            }
-
-
-            .hero-brand-name {
-
-                font-size:
-                    1.95rem;
-            }
-
-
-            .hero-title {
-
-                font-size:
-                    2.35rem;
-            }
-
-
-            .hero-subtitle {
-
-                font-size:
-                    0.51rem;
-
-                letter-spacing:
-                    2px;
-            }
-
-
-            .hero-description {
-
-                font-size:
-                    0.73rem;
-            }
-
-
-            .hero-buttons .btn-primary,
-            .hero-buttons .btn-glass {
-
-                font-size:
-                    0.69rem;
-
-                padding:
-                    10px 8px;
-            }
-        }
-
-
-        /* =========================================================
-           REDUCED MOTION
-        ========================================================= */
-
-        @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
-
-                scroll-behavior:
-                    auto !important;
-
-                animation-duration:
-                    0.01ms !important;
-
-                transition-duration:
-                    0.01ms !important;
-            }
-        }
-
     </style>
 </head>
 
-
 <body>
 
+<header>
+    <nav class="nav">
 
-    <!-- =========================================================
-         BACKGROUND
-    ========================================================= -->
+        <a href="/home" class="logo">
+            <div class="logo-mark">
+                <span>C</span>
+            </div>
 
-    <div class="orange-light light-1"></div>
-
-    <div class="orange-light light-2"></div>
-
-    <div class="orange-light light-3"></div>
-
-
-    <!-- HEXAGONS -->
-
-    <div class="hex hex-glow hex-1"></div>
-
-    <div class="hex hex-glow hex-2"></div>
-
-    <div class="hex hex-3"></div>
-
-    <div class="hex hex-4"></div>
-
-    <div class="hex hex-5"></div>
-
-    <div class="hex hex-6"></div>
-
-
-    <!-- ORANGE LINES -->
-
-    <div class="orange-line line-1"></div>
-
-    <div class="orange-line line-2"></div>
-
-    <div class="orange-line line-3"></div>
-
-    <div class="orange-line line-4"></div>
-
-
-
-    <!-- =========================================================
-         NAVBAR
-    ========================================================= -->
-
-    <header>
-
-        <a href="#" class="logo">
-
-            <i class="fa-solid fa-dumbbell"></i>
-
-            <span class="logo-text">
-                CEMENT<span>FIT</span>
+            <span>
+                <span class="logo-c">CEMENT</span><span class="logo-fit">FIT</span>
             </span>
-
         </a>
 
-
-        <ul class="nav-links">
-
-            <li>
-                <a href="#home">
-                    الرئيسية
-                </a>
-            </li>
-
-            <li>
-                <a href="products.html">
-                    المنتجات
-                </a>
-            </li>
-
-            <li>
-                <a href="#features">
-                    المميزات
-                </a>
-            </li>
-
-        </ul>
-
-
-        <div class="header-actions">
-
-            <a
-                href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit"
-                target="_blank"
-                class="btn-primary"
-            >
-
-                تواصل معنا
-
-                <i class="fa-brands fa-whatsapp"></i>
-
-            </a>
-
-
-            <button
-                class="menu-toggle-btn"
-                id="menuBtn"
-                aria-label="Toggle Menu"
-            >
-
-                <i class="fa-solid fa-bars-staggered"></i>
-
-            </button>
-
+        <div class="nav-links">
+            <a href="/home" class="active">الرئيسية</a>
+            <a href="/products">المنتجات</a>
+            <a href="#features">لماذا CEMENTFIT؟</a>
         </div>
 
-
-        <!-- DROPDOWN -->
-
-        <div
-            class="dropdown-menu"
-            id="dropdownMenu"
+        <a
+            class="nav-button"
+            href="https://wa.me/201212338084"
+            target="_blank"
         >
+            اطلب الآن
+        </a>
 
-            <a
-                href="#home"
-                class="dropdown-item"
-            >
+        <button class="menu-btn" onclick="openMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
 
-                <i class="fa-solid fa-house"></i>
+    </nav>
+</header>
 
-                <span>
-                    الرئيسية
-                </span>
+<!-- MOBILE MENU -->
 
-            </a>
+<div class="mobile-menu" id="mobileMenu">
 
+    <div class="mobile-panel">
 
-            <a
-                href="products.html"
-                class="dropdown-item"
-            >
+        <button class="close-menu" onclick="closeMenu()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
 
-                <i class="fa-solid fa-boxes-stacked"></i>
+        <a href="/home">
+            <i class="fa-solid fa-house"></i>
+            الرئيسية
+        </a>
 
-                <span>
-                    جميع المنتجات
-                </span>
+        <a href="/products">
+            <i class="fa-solid fa-dumbbell"></i>
+            المنتجات
+        </a>
 
-            </a>
+        <a href="#features" onclick="closeMenu()">
+            <i class="fa-solid fa-bolt"></i>
+            لماذا CEMENTFIT؟
+        </a>
 
+        <a
+            href="https://wa.me/201212338084"
+            target="_blank"
+        >
+            <i class="fa-brands fa-whatsapp"></i>
+            تواصل معنا
+        </a>
 
-            <a
-                href="#features"
-                class="dropdown-item"
-            >
+    </div>
 
-                <i class="fa-solid fa-star"></i>
+</div>
 
-                <span>
-                    المميزات
-                </span>
+<!-- HERO -->
 
-            </a>
+<section class="hero" id="home">
 
-        </div>
-
-    </header>
-
-
-
-    <!-- =========================================================
-         HERO
-    ========================================================= -->
-
-    <section
-        class="hero"
-        id="home"
-    >
+    <div class="hero-container">
 
         <div class="hero-content">
 
-
-            <!-- BRAND -->
-
-            <div class="hero-brand">
-
-                <div class="hero-brand-icon">
-
-                    <i class="fa-solid fa-dumbbell"></i>
-
-                </div>
-
-
-                <div class="hero-brand-name">
-
-                    CEMENT<span>FIT</span>
-
-                </div>
-
+            <div class="badge">
+                <i class="fa-solid fa-fire"></i>
+                خامات قوية • تصميم عملي • سعر اقتصادي
             </div>
 
-
-            <div class="brand-line"></div>
-
-
-            <div class="brand-tagline">
-
-                STRONGER
-
-                <span>|</span>
-
-                SAFER
-
-                <span>|</span>
-
-                SMARTER
-
-            </div>
-
-
-
-            <!-- 3D DUMBBELL -->
-
-            <div class="hero-3d-bg">
-
-                <model-viewer
-                    id="dumbbellViewer"
-                    src="./dumbbellmodel.glb"
-                    alt="3D Dumbbell Model"
-                    auto-rotate
-                    rotation-per-second="40deg"
-                    interaction-prompt="none"
-                    loading="eager"
-                    reveal="auto"
-                    shadow-intensity="0"
-                >
-                </model-viewer>
-
-            </div>
-
-
-
-            <!-- MAIN TITLE -->
-
-            <h1 class="hero-title animate-element">
-
-                اتمرن في بيتك!
-
+            <h1 class="hero-title">
+                اتمرن
+                <span class="orange">في بيتك!</span>
+                <br>
+                <span class="outline">وخليك أقوى</span>
             </h1>
 
-
-
-            <!-- SUBTITLE -->
-
-            <div class="hero-subtitle animate-element">
-
-                REAL WEIGHT
-
-                <span>/</span>
-
-                REAL PROGRESS
-
-            </div>
-
-
-
-            <!-- DESCRIPTION -->
-
-            <p class="hero-description animate-element">
-
-                احصل على فورمة الجيم من البيت بأعلى الخامات،
-                مع طارات ومقابض مريحة ومصممة هندسياً
-                للتماسك التام أثناء التمرين.
-
+            <p class="hero-description">
+                أوزان خرسانية مصممة للتمرين في البيت.
+                قوة حقيقية، تصميم عملي، وخامات تتحمل معاك
+                كل تمرينة وكل تحدي.
             </p>
 
-
-
-            <!-- BUTTONS -->
-
-            <div class="hero-buttons animate-element">
+            <div class="hero-buttons">
 
                 <a
-                    href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20اوردر%20من%20CementFit"
-                    target="_blank"
-                    class="btn-primary"
+                    href="/products"
+                    class="btn btn-primary"
                 >
-
-                    اطلب الآن
-
-                    <i class="fa-brands fa-whatsapp"></i>
-
-                </a>
-
-
-                <a
-                    href="products.html"
-                    class="btn-glass"
-                >
-
-                    شوف المنتجات
-
                     <i class="fa-solid fa-dumbbell"></i>
+                    شوف المنتجات
+                </a>
 
+                <a
+                    href="https://wa.me/201212338084"
+                    target="_blank"
+                    class="btn btn-outline"
+                >
+                    <i class="fa-brands fa-whatsapp"></i>
+                    اطلب الآن
                 </a>
 
             </div>
 
-
-
-            <!-- SIDE LABELS -->
-
-            <div class="side-label left">
-
-                <strong>
-                    BUILT
-                </strong>
-
-                FOR
-
-                <strong>
-                    STRENGTH
-                </strong>
-
-            </div>
-
-
-            <div class="side-label right">
-
-                <strong>
-                    TRAIN
-                </strong>
-
-                AT
-
-                <strong>
-                    HOME
-                </strong>
-
-            </div>
-
         </div>
 
-    </section>
+        <div class="hero-visual">
 
+            <div class="visual-glow"></div>
 
+            <div class="hex"></div>
 
-    <!-- =========================================================
-         FEATURES
-    ========================================================= -->
+            <div class="dumbbell">
 
-    <section
-        class="features"
-        id="features"
-    >
+                <div class="weight left"></div>
 
-        <div class="section-heading">
+                <div class="handle"></div>
 
-            <small>
-                CEMENTFIT QUALITY
-            </small>
-
-            <h2 class="section-title">
-
-                ليه تختار
-
-                <span>
-                    CEMENTFIT؟
-                </span>
-
-            </h2>
-
-        </div>
-
-
-        <div class="grid">
-
-
-            <!-- FEATURE 1 -->
-
-            <div class="feature-card animate-element">
-
-                <div class="icon-box">
-
-                    <i class="fa-solid fa-shield-halved"></i>
-
-                </div>
-
-                <h4>
-                    صلابة وخامة معالجة
-                </h4>
-
-                <p>
-                    خلطة خرسانية خاصة ومقاومة للتآكل
-                    للتحمل أثناء أعلى التمرينات.
-                </p>
+                <div class="weight right"></div>
 
             </div>
-
-
-
-            <!-- FEATURE 2 -->
-
-            <div class="feature-card animate-element">
-
-                <div class="icon-box">
-
-                    <i class="fa-solid fa-hand-fist"></i>
-
-                </div>
-
-                <h4>
-                    مقبض مريح لليد
-                </h4>
-
-                <p>
-                    تصميم مميز للمقبض يمنع الانزلاق
-                    أثناء التمرين ويقلل الضغط على كف اليد.
-                </p>
-
-            </div>
-
-
-
-            <!-- FEATURE 3 -->
-
-            <div class="feature-card animate-element">
-
-                <div class="icon-box">
-
-                    <i class="fa-solid fa-sack-dollar"></i>
-
-                </div>
-
-                <h4>
-                    قيمة مقابل سعر
-                </h4>
-
-                <p>
-                    وفر أكثر مقارنة بأوزان الحديد التقليدية
-                    مع الحصول على تجربة تمرين قوية.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================================================
-         BOTTOM BRAND
-    ========================================================= -->
-
-    <div class="brand-strip">
-
-        <div class="brand-strip-name">
-
-            CEMENT<span>FIT</span>
-
-        </div>
-
-
-        <div class="brand-strip-line"></div>
-
-
-        <div class="brand-strip-text">
-
-            YOUR HOME GYM
-
-            <span>
-                STARTS HERE
-            </span>
 
         </div>
 
     </div>
 
+</section>
 
+<!-- FEATURES -->
 
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================= -->
+<section class="features" id="features">
 
-    <script>
+    <div class="section-title">
+        <small>CEMENTFIT</small>
+        <h2>مصمم عشان تتمرن</h2>
+    </div>
 
-        /* =====================================================
-           AUDIO
-        ===================================================== */
+    <div class="features-grid">
 
-        let globalAudioCtx = null;
+        <div class="feature-card">
 
+            <div class="feature-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
 
-        function getAudioContext() {
+            <h3>قوي ومتين</h3>
 
-            if (!globalAudioCtx) {
+            <p>
+                أوزان خرسانية بتصميم عملي وخامات
+                تساعدك تتمرن بثقة وتتحمل الاستخدام.
+            </p>
 
-                const AudioCtx =
-                    window.AudioContext ||
-                    window.webkitAudioContext;
+        </div>
 
-                if (AudioCtx) {
+        <div class="feature-card">
 
-                    globalAudioCtx =
-                        new AudioCtx();
+            <div class="feature-icon">
+                <i class="fa-solid fa-house"></i>
+            </div>
 
-                }
+            <h3>اتمرن في بيتك</h3>
 
+            <p>
+                وفر وقت الجيم وخلي تمرينك متاح
+                في أي وقت من البيت.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>سعر اقتصادي</h3>
+
+            <p>
+                معدات عملية بسعر مناسب تساعدك
+                تبني Home Gym على قد احتياجك.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    © 2026 <strong>CEMENTFIT</strong> — معاك لحد ما توصل لهدفك
+</footer>
+
+<script>
+
+    function openMenu() {
+        document
+            .getElementById("mobileMenu")
+            .classList.add("show");
+    }
+
+    function closeMenu() {
+        document
+            .getElementById("mobileMenu")
+            .classList.remove("show");
+    }
+
+    document
+        .getElementById("mobileMenu")
+        .addEventListener("click", function(e) {
+
+            if (e.target === this) {
+                closeMenu();
             }
 
+        });
 
-            if (
-                globalAudioCtx &&
-                globalAudioCtx.state === 'suspended'
-            ) {
-
-                globalAudioCtx.resume();
-
-            }
-
-
-            return globalAudioCtx;
-
-        }
-
-
-        function playPopSound() {
-
-            try {
-
-                const ctx =
-                    getAudioContext();
-
-                if (!ctx) return;
-
-
-                const osc =
-                    ctx.createOscillator();
-
-                const gain =
-                    ctx.createGain();
-
-
-                osc.type = 'sine';
-
-
-                osc.frequency.setValueAtTime(
-                    320,
-                    ctx.currentTime
-                );
-
-
-                osc.frequency.exponentialRampToValueAtTime(
-                    680,
-                    ctx.currentTime + 0.07
-                );
-
-
-                gain.gain.setValueAtTime(
-                    0.08,
-                    ctx.currentTime
-                );
-
-
-                gain.gain.exponentialRampToValueAtTime(
-                    0.001,
-                    ctx.currentTime + 0.07
-                );
-
-
-                osc.connect(gain);
-
-                gain.connect(ctx.destination);
-
-
-                osc.start(
-                    ctx.currentTime
-                );
-
-
-                osc.stop(
-                    ctx.currentTime + 0.07
-                );
-
-            }
-
-            catch (e) {}
-
-        }
-
-
-
-        /* =====================================================
-           UNLOCK AUDIO
-        ===================================================== */
-
-        const unlockAudio = () => {
-
-            getAudioContext();
-
-
-            document.removeEventListener(
-                'touchstart',
-                unlockAudio
-            );
-
-
-            document.removeEventListener(
-                'click',
-                unlockAudio
-            );
-
-
-            document.removeEventListener(
-                'scroll',
-                unlockAudio
-            );
-
-        };
-
-
-        document.addEventListener(
-            'touchstart',
-            unlockAudio,
-            { passive: true }
-        );
-
-
-        document.addEventListener(
-            'click',
-            unlockAudio,
-            { passive: true }
-        );
-
-
-        document.addEventListener(
-            'scroll',
-            unlockAudio,
-            { passive: true }
-        );
-
-
-
-        /* =====================================================
-           3D MODEL
-        ===================================================== */
-
-        const dumbbellViewer =
-            document.getElementById(
-                'dumbbellViewer'
-            );
-
-
-        if (dumbbellViewer) {
-
-            dumbbellViewer.addEventListener(
-                'load',
-                () => {
-
-                    dumbbellViewer.classList.add(
-                        'loaded'
-                    );
-
-                    playPopSound();
-
-                }
-            );
-
-
-            if (dumbbellViewer.loaded) {
-
-                dumbbellViewer.classList.add(
-                    'loaded'
-                );
-
-            }
-
-        }
-
-
-
-        /* =====================================================
-           SCROLL ANIMATIONS
-        ===================================================== */
-
-        document.addEventListener(
-            'DOMContentLoaded',
-            () => {
-
-                const animatedElements =
-                    document.querySelectorAll(
-                        '.animate-element'
-                    );
-
-
-                const observer =
-                    new IntersectionObserver(
-                        (entries) => {
-
-                            entries.forEach(
-                                (entry) => {
-
-                                    if (
-                                        entry.isIntersecting
-                                    ) {
-
-                                        setTimeout(
-                                            () => {
-
-                                                entry.target.classList.add(
-                                                    'visible'
-                                                );
-
-                                                playPopSound();
-
-                                            },
-                                            120
-                                        );
-
-
-                                        observer.unobserve(
-                                            entry.target
-                                        );
-
-                                    }
-
-                                }
-                            );
-
-                        },
-                        {
-                            threshold: 0.1
-                        }
-                    );
-
-
-                animatedElements.forEach(
-                    (el) => {
-
-                        observer.observe(el);
-
-                    }
-                );
-
-            }
-        );
-
-
-
-        /* =====================================================
-           MENU
-        ===================================================== */
-
-        const menuBtn =
-            document.getElementById(
-                'menuBtn'
-            );
-
-
-        const dropdownMenu =
-            document.getElementById(
-                'dropdownMenu'
-            );
-
-
-        menuBtn.addEventListener(
-            'click',
-            (e) => {
-
-                e.stopPropagation();
-
-                playPopSound();
-
-                dropdownMenu.classList.toggle(
-                    'show'
-                );
-
-            }
-        );
-
-
-        document.addEventListener(
-            'click',
-            (e) => {
-
-                if (
-                    !menuBtn.contains(e.target) &&
-                    !dropdownMenu.contains(e.target)
-                ) {
-
-                    dropdownMenu.classList.remove(
-                        'show'
-                    );
-
-                }
-
-            }
-        );
-
-
-
-        /* =====================================================
-           CLOSE MENU AFTER CLICK
-        ===================================================== */
-
-        document.querySelectorAll(
-            '.dropdown-item'
-        ).forEach(
-            item => {
-
-                item.addEventListener(
-                    'click',
-                    () => {
-
-                        dropdownMenu.classList.remove(
-                            'show'
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-    </script>
+</script>
 
 </body>
 </html>
