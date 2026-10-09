@@ -6,7 +6,6 @@
 <title>تفاصيل المنتج | CEMENTFIT</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent}
 :root{--orange:#ff5a00;--orange-dark:#d94700;--white:#f5f5f5;--muted:#999;--border:rgba(255,255,255,.1)}
@@ -52,7 +51,6 @@ h1{font-size:clamp(1.65rem,4vw,2.5rem);line-height:1.5;font-weight:900;margin-bo
 <script>
 const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DEFAULT_IMAGE = 'https://via.placeholder.com/700x700?text=CementFit';
 let currentProduct = null;
 let quantity = 1;
@@ -80,17 +78,47 @@ async function loadProduct() {
     const productId = new URLSearchParams(window.location.search).get('id');
     if (!productId) return showError('لم يتم تحديد المنتج المطلوب.');
 
-    const { data: product, error } = await _supabase
-        .from('products').select('*').eq('id', productId).maybeSingle();
+    const content = document.getElementById('productContent');
+    content.innerHTML = '<div class="status-message"><i class="fa-solid fa-spinner fa-spin"></i>جاري تحميل بيانات المنتج...</div>';
 
-    if (error) {
-        console.error('Supabase error:', error);
-        return showError('حدث خطأ أثناء تحميل المنتج. حاول مرة أخرى.');
+    try {
+        // Use Supabase REST API directly, matching the working products page.
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        let response;
+        try {
+            const query = new URLSearchParams({ select: '*', id: `eq.${productId}`, limit: '1' });
+            response = await fetch(`${SUPABASE_URL}/rest/v1/products?${query.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Accept': 'application/json'
+                },
+                signal: controller.signal
+            });
+        } finally {
+            clearTimeout(timeoutId);
+        }
+
+        if (!response.ok) {
+            const details = await response.text().catch(() => '');
+            console.error('Supabase REST error:', response.status, details);
+            return showError(`تعذّر تحميل المنتج (HTTP ${response.status}). تأكد من الاتصال وصلاحيات قراءة المنتجات.`);
+        }
+
+        const products = await response.json();
+        const product = Array.isArray(products) ? products[0] : null;
+        if (!product) return showError('المنتج غير موجود أو تم حذفه.');
+
+        currentProduct = product;
+        renderProduct(product);
+    } catch (error) {
+        console.error('Failed to load product:', error);
+        return showError(error.name === 'AbortError'
+            ? 'انتهت مهلة الاتصال بقاعدة البيانات. حدّث الصفحة وحاول مرة أخرى.'
+            : 'تعذّر الاتصال بقاعدة البيانات. تأكد من الإنترنت ثم حدّث الصفحة.');
     }
-    if (!product) return showError('المنتج غير موجود أو تم حذفه.');
-
-    currentProduct = product;
-    renderProduct(product);
 }
 function showError(message) {
     const box = document.createElement('div');
