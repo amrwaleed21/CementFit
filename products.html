@@ -184,7 +184,7 @@ function renderProducts(list) {
         const oldPriceHTML = hasDiscount ? `<span class="old-price">${oldPrice.toLocaleString('en-US')} ج.م</span>` : '';
         card.innerHTML = `
             ${badge}
-            <img src="${escapeHTML(safeImageUrl(prod.image_url || prod.image || prod.image_path))}" alt="${escapeHTML(prod.name || 'المنتج')}" class="product-img" loading="lazy">
+            <img src="${escapeHTML(prod.image || DEFAULT_IMAGE)}" alt="${escapeHTML(prod.name || 'المنتج')}" class="product-img" loading="lazy">
             <div class="product-info">
                 <h3 class="product-name">${escapeHTML(prod.name || 'منتج CEMENTFIT')}</h3>
                 <p class="product-desc">${escapeHTML(prod.desc || 'منتج عالي الجودة من CEMENTFIT.')}</p>
