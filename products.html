@@ -90,7 +90,7 @@ header:after{content:"";position:absolute;bottom:-1px;left:8%;right:8%;height:1p
 <script>
 const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
-let _supabase = null;
+
 const DEFAULT_IMAGE = 'https://via.placeholder.com/500x350?text=CementFit';
 let productsData = [];
 let cart = [];
@@ -132,33 +132,43 @@ async function loadProducts() {
     const container = document.getElementById('products-container');
     container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">جاري تحميل المنتجات...</p>';
 
-    if (!_supabase) {
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">تعذر تشغيل مكتبة الاتصال بقاعدة البيانات. أزرار البحث والتصفية ما زالت تعمل، لكن عرض المنتجات يحتاج اتصالًا بالمكتبة.</div>';
-        return;
-    }
-
     try {
-        const request = _supabase
-            .from('products')
-            .select('*')
-            .order('id', { ascending: false });
-        const timeout = new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('انتهت مهلة الاتصال بـ Supabase')), 12000);
-        });
-        const { data: products, error } = await Promise.race([request, timeout]);
+        // Use Supabase REST API directly; this does not depend on an external JS library/CDN.
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        let response;
+        try {
+            response = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc`, {
+                method: 'GET',
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Accept': 'application/json'
+                },
+                signal: controller.signal
+            });
+        } finally {
+            clearTimeout(timeoutId);
+        }
 
-        if (error || !products) {
-            console.error('Supabase error:', error);
-            container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">حصلت مشكلة في تحميل المنتجات.<br>حدّث الصفحة، ولو استمرت المشكلة تأكد من اتصال الإنترنت.</div>';
+        if (!response.ok) {
+            const details = await response.text().catch(() => '');
+            console.error('Supabase REST error:', response.status, details);
+            container.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">تعذّر تحميل المنتجات (HTTP ${response.status}).<br>تأكد من اتصال الإنترنت وصلاحيات قراءة جدول المنتجات في Supabase.</div>`;
             return;
         }
 
+        const products = await response.json();
+        if (!Array.isArray(products)) throw new Error('Unexpected products response');
         productsData = products;
         filterProducts();
         updateCartUI();
     } catch (error) {
         console.error('Failed to load products:', error);
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">تعذّر الاتصال بقاعدة البيانات أو تأخر الرد.<br>تأكد من الإنترنت ثم اضغط تحديث الصفحة.</div>';
+        const message = error.name === 'AbortError'
+            ? 'انتهت مهلة الاتصال بقاعدة البيانات.'
+            : 'تعذّر الاتصال بقاعدة البيانات. تأكد من الإنترنت ثم حدّث الصفحة.';
+        container.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">${message}<br>لو استمرت المشكلة، ابعتلي صورة الرسالة.</div>`;
     }
 }
 
@@ -358,41 +368,8 @@ document.addEventListener('keydown', event => {
     if (event.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(modal => modal.classList.remove('active'));
 });
 
-function loadSupabaseScript(url) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = url;
-        script.async = true;
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load ' + url));
-        document.head.appendChild(script);
-    });
-}
+loadProducts();
 
-async function initializeSupabaseAndLoadProducts() {
-    const sources = [
-        'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
-        'https://unpkg.com/@supabase/supabase-js@2'
-    ];
-    for (const source of sources) {
-        try {
-            if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-                await loadSupabaseScript(source);
-            }
-            if (window.supabase && typeof window.supabase.createClient === 'function') {
-                _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                await loadProducts();
-                return;
-            }
-        } catch (error) {
-            console.error('Supabase library source failed:', source, error);
-        }
-    }
-    const container = document.getElementById('products-container');
-    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">المتصفح لم يستطع تحميل مكتبة الاتصال. جرّب فتح الموقع في Chrome وتحديث الصفحة. إذا كان الإنترنت يعمل على الموبايل فقط، فقد يكون التاب حاجبًا مصادر المكتبة.</div>';
-}
-
-initializeSupabaseAndLoadProducts();
 </script>
 </body>
 </html>
