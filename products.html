@@ -90,7 +90,9 @@ header:after{content:"";position:absolute;bottom:-1px;left:8%;right:8%;height:1p
 <script>
 const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const _supabase = (window.supabase && typeof window.supabase.createClient === 'function')
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+    : null;
 const DEFAULT_IMAGE = 'https://via.placeholder.com/500x350?text=CementFit';
 let productsData = [];
 let cart = [];
@@ -132,20 +134,35 @@ async function loadProducts() {
     const container = document.getElementById('products-container');
     container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">جاري تحميل المنتجات...</p>';
 
-    const { data: products, error } = await _supabase
-        .from('products')
-        .select('*')
-        .order('id', { ascending: false });
-
-    if (error || !products) {
-        console.error('Supabase error:', error);
-        container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px">حدث خطأ أثناء تحميل المنتجات. تأكد من اتصال Supabase وسياسات القراءة.</p>';
+    if (!_supabase) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">تعذّر تحميل مكتبة الاتصال بالمنتجات.<br>تأكد من اتصال الإنترنت ثم حدّث الصفحة.</div>';
+        console.error('Supabase JS library was not loaded.');
         return;
     }
 
-    productsData = products;
-    filterProducts();
-    updateCartUI();
+    try {
+        const request = _supabase
+            .from('products')
+            .select('*')
+            .order('id', { ascending: false });
+        const timeout = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('انتهت مهلة الاتصال بـ Supabase')), 12000);
+        });
+        const { data: products, error } = await Promise.race([request, timeout]);
+
+        if (error || !products) {
+            console.error('Supabase error:', error);
+            container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">حصلت مشكلة في تحميل المنتجات.<br>حدّث الصفحة، ولو استمرت المشكلة تأكد من اتصال الإنترنت.</div>';
+            return;
+        }
+
+        productsData = products;
+        filterProducts();
+        updateCartUI();
+    } catch (error) {
+        console.error('Failed to load products:', error);
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">تعذّر الاتصال بقاعدة البيانات أو تأخر الرد.<br>تأكد من الإنترنت ثم اضغط تحديث الصفحة.</div>';
+    }
 }
 
 function goToProduct(id) {
