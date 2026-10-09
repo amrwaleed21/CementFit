@@ -6,7 +6,6 @@
 <title>CEMENTFIT | جميع المنتجات</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent}
@@ -91,7 +90,7 @@ header:after{content:"";position:absolute;bottom:-1px;left:8%;right:8%;height:1p
 <script>
 const SUPABASE_URL = 'https://mhdprpqckntptvgsmnlo.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_0qMAGKpfoQpHa5FoO-lNLg_5OIc2Kn_';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let _supabase = null;
 const DEFAULT_IMAGE = 'https://via.placeholder.com/500x350?text=CementFit';
 let productsData = [];
 let cart = [];
@@ -132,6 +131,11 @@ function showToast(message) {
 async function loadProducts() {
     const container = document.getElementById('products-container');
     container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">جاري تحميل المنتجات...</p>';
+
+    if (!_supabase) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">تعذر تشغيل مكتبة الاتصال بقاعدة البيانات. أزرار البحث والتصفية ما زالت تعمل، لكن عرض المنتجات يحتاج اتصالًا بالمكتبة.</div>';
+        return;
+    }
 
     try {
         const request = _supabase
@@ -354,7 +358,41 @@ document.addEventListener('keydown', event => {
     if (event.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(modal => modal.classList.remove('active'));
 });
 
-loadProducts();
+function loadSupabaseScript(url) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load ' + url));
+        document.head.appendChild(script);
+    });
+}
+
+async function initializeSupabaseAndLoadProducts() {
+    const sources = [
+        'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
+        'https://unpkg.com/@supabase/supabase-js@2'
+    ];
+    for (const source of sources) {
+        try {
+            if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+                await loadSupabaseScript(source);
+            }
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                await loadProducts();
+                return;
+            }
+        } catch (error) {
+            console.error('Supabase library source failed:', source, error);
+        }
+    }
+    const container = document.getElementById('products-container');
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;padding:40px;line-height:2">المتصفح لم يستطع تحميل مكتبة الاتصال. جرّب فتح الموقع في Chrome وتحديث الصفحة. إذا كان الإنترنت يعمل على الموبايل فقط، فقد يكون التاب حاجبًا مصادر المكتبة.</div>';
+}
+
+initializeSupabaseAndLoadProducts();
 </script>
 </body>
 </html>
