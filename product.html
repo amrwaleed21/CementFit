@@ -116,8 +116,11 @@ function renderProduct(product) {
     const img = document.createElement('img');
     img.className = 'product-image';
     img.alt = product.name;
-    img.src = safeImageUrl(product.image);
-    img.onerror = function() { this.onerror = null; this.src = DEFAULT_IMAGE; };
+    img.src = product.image || DEFAULT_IMAGE;
+    img.onerror = function() {
+        this.onerror = null;
+        this.src = DEFAULT_IMAGE;
+    };
     visual.appendChild(img);
 
     const info = document.createElement('div');
