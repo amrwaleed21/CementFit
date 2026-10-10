@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -106,9 +105,21 @@
             pointer-events: none;
         }
 
-        .light-1 { top: 250px; left: -220px; }
-        .light-2 { top: 620px; right: -220px; }
-        .light-3 { top: 1050px; left: 20%; opacity: 0.06; }
+        .light-1 {
+            top: 250px;
+            left: -220px;
+        }
+
+        .light-2 {
+            top: 620px;
+            right: -220px;
+        }
+
+        .light-3 {
+            top: 1050px;
+            left: 20%;
+            opacity: 0.06;
+        }
 
         /* HEXAGONS */
         .hex {
@@ -133,12 +144,51 @@
             box-shadow: 0 0 15px rgba(255, 65, 0, 0.15), inset 0 0 20px rgba(255, 65, 0, 0.04);
         }
 
-        .hex-1 { top: 100px; left: -55px; transform: rotate(-7deg); }
-        .hex-2 { top: 230px; right: -65px; width: 170px; height: 195px; transform: rotate(8deg); }
-        .hex-3 { top: 580px; left: -35px; width: 95px; height: 110px; opacity: 0.7; }
-        .hex-4 { top: 690px; right: -35px; width: 110px; height: 125px; opacity: 0.65; }
-        .hex-5 { top: 1080px; left: -40px; width: 150px; height: 170px; opacity: 0.5; }
-        .hex-6 { top: 1200px; right: -45px; width: 130px; height: 150px; opacity: 0.45; }
+        .hex-1 {
+            top: 100px;
+            left: -55px;
+            transform: rotate(-7deg);
+        }
+
+        .hex-2 {
+            top: 230px;
+            right: -65px;
+            width: 170px;
+            height: 195px;
+            transform: rotate(8deg);
+        }
+
+        .hex-3 {
+            top: 580px;
+            left: -35px;
+            width: 95px;
+            height: 110px;
+            opacity: 0.7;
+        }
+
+        .hex-4 {
+            top: 690px;
+            right: -35px;
+            width: 110px;
+            height: 125px;
+            opacity: 0.65;
+        }
+
+        .hex-5 {
+            top: 1080px;
+            left: -40px;
+            width: 150px;
+            height: 170px;
+            opacity: 0.5;
+        }
+
+        .hex-6 {
+            top: 1200px;
+            right: -45px;
+            width: 130px;
+            height: 150px;
+            opacity: 0.45;
+        }
 
         /* ORANGE LINES */
         .orange-line {
@@ -149,10 +199,33 @@
             pointer-events: none;
         }
 
-        .line-1 { top: 210px; left: -30px; width: 180px; transform: rotate(-31deg); }
-        .line-2 { top: 390px; right: -50px; width: 190px; transform: rotate(30deg); }
-        .line-3 { top: 740px; left: -40px; width: 190px; transform: rotate(30deg); }
-        .line-4 { top: 850px; right: -50px; width: 190px; transform: rotate(-30deg); }
+        .line-1 {
+            top: 210px;
+            left: -30px;
+            width: 180px;
+            transform: rotate(-31deg);
+        }
+
+        .line-2 {
+            top: 390px;
+            right: -50px;
+            width: 190px;
+            transform: rotate(30deg);
+        }
+
+        .line-3 {
+            top: 740px;
+            left: -40px;
+            width: 190px;
+            transform: rotate(30deg);
+        }
+
+        .line-4 {
+            top: 850px;
+            right: -50px;
+            width: 190px;
+            transform: rotate(-30deg);
+        }
 
         /* NAVBAR */
         header {
@@ -196,24 +269,38 @@
             color: white;
             font-family: 'Oswald', sans-serif;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0;
+            flex-shrink: 0;
         }
 
         .logo i {
             color: var(--orange);
             font-size: 18px;
             filter: drop-shadow(0 0 7px rgba(255,80,0,0.55));
+            flex-shrink: 0;
         }
 
         .logo-text {
             font-family: 'Oswald', sans-serif;
             font-size: 1.25rem;
+            font-weight: 700;
             white-space: nowrap;
             color: #fff;
+            display: inline-flex;
+            align-items: baseline;
+            direction: ltr;
+            gap: 0;
+            letter-spacing: 0;
+            line-height: 1;
         }
 
         .logo-text span {
             color: var(--orange);
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: inherit;
+            line-height: inherit;
         }
 
         /* NAV LINKS */
@@ -231,7 +318,9 @@
             transition: 0.25s ease;
         }
 
-        .nav-links a:hover { color: white; }
+        .nav-links a:hover {
+            color: white;
+        }
 
         .nav-links a::after {
             content: "";
@@ -243,7 +332,9 @@
             transition: 0.25s ease;
         }
 
-        .nav-links a:hover::after { width: 60%; }
+        .nav-links a:hover::after {
+            width: 60%;
+        }
 
         /* HEADER BUTTON */
         .header-actions {
@@ -620,8 +711,13 @@
         }
 
         @keyframes buttonShine {
-            from { left: -120%; }
-            to { left: 140%; }
+            from {
+                left: -120%;
+            }
+
+            to {
+                left: 140%;
+            }
         }
 
         /* SIDE LABELS */
@@ -647,8 +743,15 @@
             margin-top: 5px;
         }
 
-        .side-label.left { left: 4%; top: 48%; }
-        .side-label.right { right: 4%; top: 36%; }
+        .side-label.left {
+            left: 4%;
+            top: 48%;
+        }
+
+        .side-label.right {
+            right: 4%;
+            top: 36%;
+        }
 
         .side-label strong {
             color: white;
@@ -690,23 +793,23 @@
             margin-top: 8px;
             font-size: clamp(1.8rem, 5vw, 2.8rem);
             font-weight: 900;
+            direction: rtl;
+            unicode-bidi: plaintext;
         }
 
-        .section-title span {
-            color: var(--orange);
-        }
-
-        /* Keep CEMENT white in the brand name inside the section heading */
         .section-title .brand-name {
             color: #fff;
             direction: ltr;
             display: inline-block;
+            unicode-bidi: isolate;
+            white-space: nowrap;
         }
 
         .section-title .brand-name span {
             color: var(--orange);
         }
 
+        /* FEATURE GRID */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -841,6 +944,7 @@
                 opacity: 0;
                 transform: translateY(-20px) scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -863,9 +967,13 @@
                 transform: none;
             }
 
-            .nav-links { display: none; }
+            .nav-links {
+                display: none;
+            }
 
-            .logo-text { font-size: 1.1rem; }
+            .logo-text {
+                font-size: 1.1rem;
+            }
 
             .header-actions .btn-primary {
                 padding: 7px 10px;
@@ -894,7 +1002,9 @@
                 font-size: 22px;
             }
 
-            .hero-brand-name { font-size: 2.4rem; }
+            .hero-brand-name {
+                font-size: 2.4rem;
+            }
 
             .brand-tagline {
                 font-size: 0.53rem;
@@ -937,7 +1047,9 @@
                 margin-right: auto;
             }
 
-            .side-label { display: none; }
+            .side-label {
+                display: none;
+            }
 
             .features {
                 width: 100vw;
@@ -968,7 +1080,9 @@
                 gap: 10px;
             }
 
-            .brand-strip-line { width: 120px; }
+            .brand-strip-line {
+                width: 120px;
+            }
 
             .brand-strip-text {
                 width: 100%;
@@ -984,11 +1098,17 @@
                 padding: 125px 15px 45px;
             }
 
-            .header-actions .btn-primary { display: none; }
+            .header-actions .btn-primary {
+                display: none;
+            }
 
-            .hero-brand { margin-bottom: 12px; }
+            .hero-brand {
+                margin-bottom: 12px;
+            }
 
-            .hero-brand-name { font-size: 2.15rem; }
+            .hero-brand-name {
+                font-size: 2.15rem;
+            }
 
             .hero-brand-icon {
                 width: 44px;
@@ -996,7 +1116,9 @@
                 font-size: 21px;
             }
 
-            .brand-line { width: 190px; }
+            .brand-line {
+                width: 190px;
+            }
 
             .brand-tagline {
                 margin-bottom: 25px;
@@ -1043,8 +1165,13 @@
                 height: 340px;
             }
 
-            .hex-1 { left: -75px; }
-            .hex-2 { right: -90px; }
+            .hex-1 {
+                left: -75px;
+            }
+
+            .hex-2 {
+                right: -90px;
+            }
         }
 
         /* VERY SMALL PHONES */
@@ -1054,16 +1181,22 @@
                 padding-right: 10px;
             }
 
-            .hero-brand-name { font-size: 1.95rem; }
+            .hero-brand-name {
+                font-size: 1.95rem;
+            }
 
-            .hero-title { font-size: 2.35rem; }
+            .hero-title {
+                font-size: 2.35rem;
+            }
 
             .hero-subtitle {
                 font-size: 0.51rem;
                 letter-spacing: 2px;
             }
 
-            .hero-description { font-size: 0.73rem; }
+            .hero-description {
+                font-size: 0.73rem;
+            }
 
             .hero-buttons .btn-primary,
             .hero-buttons .btn-glass {
@@ -1107,14 +1240,14 @@
 
     <!-- NAVBAR -->
     <header>
-        <a href="#" class="logo">
+        <a href="home" class="logo">
             <i class="fa-solid fa-dumbbell"></i>
             <span class="logo-text">CEMENT<span>FIT</span></span>
         </a>
 
         <ul class="nav-links">
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="products.html">المنتجات</a></li>
+            <li><a href="home">الرئيسية</a></li>
+            <li><a href="products">المنتجات</a></li>
             <li><a href="#features">المميزات</a></li>
         </ul>
 
@@ -1122,25 +1255,26 @@
             <a
                 href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20استفسر%20عن%20منتجات%20CementFit"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="btn-primary"
             >
                 تواصل معنا
                 <i class="fa-brands fa-whatsapp"></i>
             </a>
 
-            <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle Menu">
+            <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle Menu" aria-expanded="false">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
         </div>
 
         <!-- DROPDOWN -->
         <div class="dropdown-menu" id="dropdownMenu">
-            <a href="#home" class="dropdown-item">
+            <a href="home" class="dropdown-item">
                 <i class="fa-solid fa-house"></i>
                 <span>الرئيسية</span>
             </a>
 
-            <a href="products.html" class="dropdown-item">
+            <a href="products" class="dropdown-item">
                 <i class="fa-solid fa-boxes-stacked"></i>
                 <span>جميع المنتجات</span>
             </a>
@@ -1213,13 +1347,14 @@
                 <a
                     href="https://wa.me/201212338084?text=السلام%20عليكم،%20عايز%20اطلب%20اوردر%20من%20CementFit"
                     target="_blank"
+                    rel="noopener noreferrer"
                     class="btn-primary"
                 >
                     اطلب الآن
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
 
-                <a href="products.html" class="btn-glass">
+                <a href="products" class="btn-glass">
                     شوف المنتجات
                     <i class="fa-solid fa-dumbbell"></i>
                 </a>
@@ -1246,8 +1381,8 @@
             <small>CEMENTFIT QUALITY</small>
 
             <h2 class="section-title">
-                ليه تختار
-                <span class="brand-name">CEMENT<span>FIT</span>؟</span>
+                <span>ليه تختار</span>
+                <span class="brand-name" dir="ltr">CEMENT<span>FIT</span></span><span>؟</span>
             </h2>
         </div>
 
@@ -1364,7 +1499,9 @@
 
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            dropdownMenu.classList.toggle('show');
+
+            const isOpen = dropdownMenu.classList.toggle('show');
+            menuBtn.setAttribute('aria-expanded', String(isOpen));
         });
 
         document.addEventListener('click', (e) => {
@@ -1373,6 +1510,7 @@
                 !dropdownMenu.contains(e.target)
             ) {
                 dropdownMenu.classList.remove('show');
+                menuBtn.setAttribute('aria-expanded', 'false');
             }
         });
 
@@ -1383,6 +1521,7 @@
         document.querySelectorAll('.dropdown-item').forEach((item) => {
             item.addEventListener('click', () => {
                 dropdownMenu.classList.remove('show');
+                menuBtn.setAttribute('aria-expanded', 'false');
             });
         });
     </script>
