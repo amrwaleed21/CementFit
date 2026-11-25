@@ -4,108 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CEMENTFIT | لوحة الإدارة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent}
+        :root{--bg:#07080a;--glass:rgba(255,255,255,.045);--line:rgba(255,255,255,.1);--orange:#ff5a00;--orange2:#ff8a2a;--text:#f4f4f6;--muted:#9a9ca6;--ok:#22c55e;--bad:#ef4444;--grad:linear-gradient(135deg,#ff9a3c,#ff5a00 50%,#d03a00)}
+        html{overflow-x:clip;background:var(--bg)}
+        body{background:radial-gradient(800px 450px at 90% -5%,rgba(255,90,0,.15),transparent 60%),var(--bg);color:var(--text);min-height:100vh;padding:16px;overflow-x:clip}
+        .container{max-width:980px;margin:20px auto}
+        .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+        .brand{display:flex;align-items:center;gap:10px;direction:ltr;font-family:'Oswald',sans-serif;font-weight:700;font-size:1.4rem;letter-spacing:1.5px}
+        .brand img{width:36px;height:36px;filter:drop-shadow(0 0 8px rgba(255,90,0,.55))}
+        .brand b{color:var(--orange)}
+        .page-title{font-size:1.1rem;color:var(--muted);font-weight:700}
+        .card{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:22px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+        h2{margin-bottom:16px;color:var(--orange2);font-size:1.15rem;font-weight:800}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        @media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+        .input-group{margin-bottom:8px;min-width:0}
+        .input-group.full-width{grid-column:1/-1}
+        .input-group label{display:block;margin-bottom:7px;font-weight:700;font-size:.92rem}
+        .input-group input,.input-group textarea,.input-group select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.4);color:#fff;outline:none;font-size:1rem}
+        .input-group input:focus,.input-group textarea:focus,.input-group select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,90,0,.15)}
+        .input-group select option{background:#14151a}
+        .btn{background:var(--grad);color:#fff;border:none;padding:13px 20px;border-radius:12px;cursor:pointer;font-weight:800;width:100%;transition:all .3s ease;margin-top:10px;font-size:1rem;box-shadow:0 8px 22px rgba(255,90,0,.3)}
+        .btn:disabled{opacity:.6;cursor:not-allowed}
+        .btn:active{transform:scale(.98)}
+        .product-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;background:rgba(0,0,0,.3);border-radius:14px;margin-bottom:12px;border:1px solid var(--line);flex-wrap:wrap}
+        .product-item .pname{min-width:0;overflow-wrap:anywhere}
+        .actions{display:flex;gap:8px}
+        .btn-delete{background:var(--bad);color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+        .btn-edit{background:#3b82f6;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:700}
+        .hidden{display:none!important}
+        #img-preview{max-width:120px;max-height:120px;margin-top:10px;border-radius:10px;display:none;border:1px solid var(--line);object-fit:cover}
 
-        :root {
-            --bg-color: #0d0f12;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --accent-orange: #ff6b35;
-            --text-main: #f3f4f6;
-        }
+        /* tabs */
+        .tabs{display:flex;gap:8px;margin-bottom:20px;padding:6px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+        .tab{flex:1;padding:11px 8px;border:0;border-radius:11px;background:transparent;color:var(--muted);font-weight:800;font-size:.95rem;cursor:pointer;transition:.25s}
+        .tab.active{background:var(--grad);color:#fff;box-shadow:0 6px 18px rgba(255,90,0,.3)}
 
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; padding: 20px; }
-
-        .container { max-width: 800px; margin: 40px auto; }
-        
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        h2 { margin-bottom: 20px; color: var(--accent-orange); }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .form-grid { grid-template-columns: 1fr; }
-        }
-
-        .input-group { margin-bottom: 15px; }
-        .input-group.full-width { grid-column: 1 / -1; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.95rem; }
-        .input-group input, .input-group textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.4);
-            color: #fff;
-            outline: none;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--accent-orange), #e85d04);
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            width: 100%;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .btn:active { transform: scale(0.98); }
-
-        .product-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 14px;
-            margin-bottom: 12px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .actions { display: flex; gap: 8px; }
-        .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
-        .btn-edit { background: #3b82f6; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
-        .hidden { display: none !important; }
-
-        #img-preview {
-            max-width: 120px;
-            max-height: 120px;
-            margin-top: 10px;
-            border-radius: 10px;
-            display: none;
-            border: 1px solid var(--glass-border);
-            object-fit: cover;
-        }
+        /* stats */
+        .stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+        @media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        .stat{padding:16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);position:relative;overflow:hidden}
+        .stat::after{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--grad)}
+        .stat small{display:block;color:var(--muted);font-size:.8rem;font-weight:700}
+        .stat strong{display:block;font-size:1.45rem;font-weight:900;margin-top:2px;overflow-wrap:anywhere}
+        .stat strong.orange{color:var(--orange2)}
+        .range-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+        .chip{padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass);color:#cfd0d6;font-weight:700;font-size:.85rem;cursor:pointer}
+        .chip.active{background:var(--grad);border-color:transparent;color:#fff}
+        .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.3);border:1px solid var(--line);margin-bottom:10px;flex-wrap:wrap}
+        .row .main{min-width:0;flex:1 1 200px}
+        .row .main b{display:block;overflow-wrap:anywhere}
+        .row .sub{color:var(--muted);font-size:.8rem}
+        .row .amt{font-weight:900;color:var(--orange2);white-space:nowrap}
+        .bar{height:8px;border-radius:8px;background:rgba(255,255,255,.07);overflow:hidden;margin-top:8px;width:100%}
+        .bar i{display:block;height:100%;background:var(--grad);border-radius:8px}
+        .up{color:var(--bad);font-weight:800}.down{color:var(--ok);font-weight:800}
+        .empty{color:var(--muted);text-align:center;padding:18px 6px;font-size:.92rem}
+        .notice{padding:14px;border-radius:14px;background:rgba(255,90,0,.08);border:1px solid rgba(255,90,0,.35);margin-bottom:18px;font-size:.9rem;line-height:1.9}
+        .notice pre{direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-word;background:rgba(0,0,0,.5);border-radius:10px;padding:12px;margin:10px 0;font-size:.74rem;line-height:1.5;font-family:Consolas,monospace;max-height:260px;overflow:auto}
+        .btn-sm{background:rgba(255,255,255,.08);border:1px solid var(--line);color:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700}
     </style>
 </head>
 <body>
@@ -113,6 +76,7 @@
     <div class="container">
         <!-- Login Section -->
         <div id="login-section" class="card">
+            <div class="brand" style="margin-bottom:18px"><img src="assets/logo-mark.svg" alt=""><span>CEMENT<b>FIT</b></span></div>
             <h2>تسجيل دخول لوحة الإدارة</h2>
             <div class="input-group">
                 <label>البريد الإلكتروني</label>
@@ -127,61 +91,140 @@
 
         <!-- Dashboard Section -->
         <div id="dashboard-section" class="hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1>إدارة منتجات CEMENTFIT</h1>
+            <div class="topbar">
+                <div>
+                    <div class="brand"><img src="assets/logo-mark.svg" alt=""><span>CEMENT<b>FIT</b></span></div>
+                    <div class="page-title">لوحة الإدارة</div>
+                </div>
                 <button class="btn-delete" onclick="logout()">تسجيل خروج</button>
             </div>
 
-            <!-- Form Add / Edit -->
-            <div class="card">
-                <h2 id="form-title">إضافة منتج جديد</h2>
-                <input type="hidden" id="prod-id">
-                
-                <div class="form-grid">
-                    <div class="input-group full-width">
-                        <label>اسم المنتج</label>
-                        <input type="text" id="prod-name" placeholder="مثال: طارة خرسانية 10 كجم">
-                    </div>
-                    
-                    <div class="input-group full-width">
-                        <label>الوصف</label>
-                        <textarea id="prod-desc" rows="3" placeholder="وصف المنتج..."></textarea>
-                    </div>
-
-                    <div class="input-group">
-                        <label>السعر النهائي (بعد الخصم)</label>
-                        <input type="number" id="prod-price" placeholder="مثال: 300">
-                    </div>
-
-                    <div class="input-group">
-                        <label>السعر الأصلي (قبل الخصم - اختياري)</label>
-                        <input type="number" id="prod-old-price" placeholder="مثال: 400">
-                    </div>
-
-                    <div class="input-group">
-                        <label>سعر الشحن (بالجنيه)</label>
-                        <input type="number" id="prod-shipping-price" placeholder="مثال: 50">
-                    </div>
-
-                    <div class="input-group">
-                        <label>الأماكن المتاحة للشحن</label>
-                        <input type="text" id="prod-shipping-locs" placeholder="مثال: بورسعيد، القاهرة، الجيزة">
-                    </div>
-
-                    <div class="input-group full-width">
-                        <label>اختر صورة المنتج من جهازك</label>
-                        <input type="file" id="prod-file" accept="image/*" onchange="previewAndCompressImage(event)">
-                        <img id="img-preview" alt="معاينة الصورة">
-                    </div>
-                </div>
-
-                <button class="btn" id="save-btn" onclick="saveProduct()">حفظ المنتج</button>
+            <div class="tabs">
+                <button class="tab active" id="tab-products" onclick="switchTab('products')"><i class="fa-solid fa-box"></i> المنتجات</button>
+                <button class="tab" id="tab-stats" onclick="switchTab('stats')"><i class="fa-solid fa-chart-line"></i> الإحصائيات</button>
             </div>
 
-            <!-- Existing Products List -->
-            <div class="card">
-                <h2>المنتجات الحالية</h2>
-                <div id="admin-products-list">جاري التحميل...</div>
+            <!-- ============ PRODUCTS TAB ============ -->
+            <div id="view-products">
+                <!-- Form Add / Edit -->
+                <div class="card">
+                    <h2 id="form-title">إضافة منتج جديد</h2>
+                    <input type="hidden" id="prod-id">
+
+                    <div class="form-grid">
+                        <div class="input-group full-width">
+                            <label>اسم المنتج</label>
+                            <input type="text" id="prod-name" placeholder="مثال: طارة خرسانية 10 كجم">
+                        </div>
+
+                        <div class="input-group full-width">
+                            <label>الوصف</label>
+                            <textarea id="prod-desc" rows="3" placeholder="وصف المنتج..."></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label>السعر النهائي (بعد الخصم)</label>
+                            <input type="number" id="prod-price" placeholder="مثال: 300">
+                        </div>
+
+                        <div class="input-group">
+                            <label>السعر الأصلي (قبل الخصم - اختياري)</label>
+                            <input type="number" id="prod-old-price" placeholder="مثال: 400">
+                        </div>
+
+                        <div class="input-group">
+                            <label>سعر الشحن (بالجنيه)</label>
+                            <input type="number" id="prod-shipping-price" placeholder="مثال: 50">
+                        </div>
+
+                        <div class="input-group">
+                            <label>الأماكن المتاحة للشحن</label>
+                            <input type="text" id="prod-shipping-locs" placeholder="مثال: بورسعيد، القاهرة، الجيزة">
+                        </div>
+
+                        <div class="input-group full-width">
+                            <label>اختر صورة المنتج من جهازك</label>
+                            <input type="file" id="prod-file" accept="image/*" onchange="previewAndCompressImage(event)">
+                            <img id="img-preview" alt="معاينة الصورة">
+                        </div>
+                    </div>
+
+                    <button class="btn" id="save-btn" onclick="saveProduct()">حفظ المنتج</button>
+                </div>
+
+                <!-- Existing Products List -->
+                <div class="card">
+                    <h2>المنتجات الحالية</h2>
+                    <div id="admin-products-list">جاري التحميل...</div>
+                </div>
+            </div>
+
+            <!-- ============ STATS TAB ============ -->
+            <div id="view-stats" class="hidden">
+                <div id="setup-notice" class="notice hidden">
+                    <b>خطوة تجهيز مرة واحدة:</b> جداول الإحصائيات لسه مش موجودة في Supabase. افتح Supabase ← SQL Editor ← New query، الصق الكود ده واضغط Run، وبعدين حدّث الصفحة.
+                    <pre id="setup-sql"></pre>
+                    <button class="btn-sm" onclick="copySetupSql()"><i class="fa-regular fa-copy"></i> نسخ الكود</button>
+                </div>
+
+                <div class="range-row" id="range-row">
+                    <button class="chip" data-range="7" onclick="setRange(7,this)">آخر 7 أيام</button>
+                    <button class="chip" data-range="30" onclick="setRange(30,this)">آخر 30 يوم</button>
+                    <button class="chip active" data-range="0" onclick="setRange(0,this)">الكل</button>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat"><small>إجمالي المبيعات</small><strong class="orange" id="st-revenue">0 ج.م</strong></div>
+                    <div class="stat"><small>عدد الطلبات</small><strong id="st-orders">0</strong></div>
+                    <div class="stat"><small>القطع المباعة</small><strong id="st-units">0</strong></div>
+                    <div class="stat"><small>الأكثر مبيعاً</small><strong id="st-best" style="font-size:1rem">-</strong></div>
+                </div>
+
+                <div class="card">
+                    <h2>تسجيل عملية بيع</h2>
+                    <div class="form-grid">
+                        <div class="input-group full-width">
+                            <label>المنتج</label>
+                            <select id="sale-product" onchange="fillSalePrice()"></select>
+                        </div>
+                        <div class="input-group">
+                            <label>الكمية</label>
+                            <input type="number" id="sale-qty" value="1" min="1">
+                        </div>
+                        <div class="input-group">
+                            <label>سعر القطعة (ج.م)</label>
+                            <input type="number" id="sale-price" placeholder="يتعبى تلقائي من سعر المنتج">
+                        </div>
+                        <div class="input-group">
+                            <label>الشحن (ج.م)</label>
+                            <input type="number" id="sale-shipping" value="0" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label>اسم العميل (اختياري)</label>
+                            <input type="text" id="sale-customer" placeholder="مثال: أحمد - بورسعيد">
+                        </div>
+                    </div>
+                    <button class="btn" id="sale-btn" onclick="addSale()">إضافة للسجل</button>
+                </div>
+
+                <div class="card">
+                    <h2>المبيعات حسب المنتج</h2>
+                    <div id="sales-by-product"></div>
+                </div>
+
+                <div class="card">
+                    <h2>سجل المبيعات</h2>
+                    <div id="sales-list"></div>
+                </div>
+
+                <div class="card">
+                    <h2>سجل تغيير الأسعار</h2>
+                    <div class="input-group">
+                        <label>اختر المنتج</label>
+                        <select id="history-filter" onchange="renderPriceHistory()"></select>
+                    </div>
+                    <div id="price-history-list"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -193,6 +236,44 @@
 
         let currentBase64Image = '';
         let productsMap = {};
+        let salesData = [];
+        let historyData = [];
+        let rangeDays = 0;
+        let statsMissing = false;
+
+        const SETUP_SQL = `create table if not exists public.sales (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  product_id bigint,
+  product_name text not null,
+  qty integer not null default 1,
+  unit_price numeric not null default 0,
+  shipping numeric not null default 0,
+  total numeric not null default 0,
+  customer text
+);
+create table if not exists public.price_history (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  product_id bigint,
+  product_name text,
+  old_price numeric,
+  new_price numeric,
+  old_original_price numeric,
+  new_original_price numeric
+);
+alter table public.sales enable row level security;
+alter table public.price_history enable row level security;
+create policy "admin all sales" on public.sales for all to authenticated using (true) with check (true);
+create policy "admin all price_history" on public.price_history for all to authenticated using (true) with check (true);`;
+
+        function esc(v) {
+            return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function money(n) { return Number(n || 0).toLocaleString('en-US') + ' ج.م'; }
+        function fmtDate(d) {
+            return new Date(d).toLocaleString('ar-EG', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+        }
 
         window.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await _supabase.auth.getSession();
@@ -222,12 +303,21 @@
         function showDashboard() {
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
+            document.getElementById('setup-sql').textContent = SETUP_SQL;
             loadAdminProducts();
         }
 
         async function logout() {
             await _supabase.auth.signOut();
             location.reload();
+        }
+
+        function switchTab(name) {
+            document.getElementById('view-products').classList.toggle('hidden', name !== 'products');
+            document.getElementById('view-stats').classList.toggle('hidden', name !== 'stats');
+            document.getElementById('tab-products').classList.toggle('active', name === 'products');
+            document.getElementById('tab-stats').classList.toggle('active', name === 'stats');
+            if (name === 'stats') loadStats();
         }
 
         // دالة لضغط تصغير حجم الصورة آلياً
@@ -293,16 +383,24 @@
                 productsMap[prod.id] = prod;
                 list.innerHTML += `
                     <div class="product-item">
-                        <div>
-                            <strong>${prod.name}</strong> - ${prod.price} ج.م ${prod.old_price ? `<span style="text-decoration:line-through; font-size:0.85rem; color:#888;">(${prod.old_price} ج.م)</span>` : ''}
+                        <div class="pname">
+                            <strong>${esc(prod.name)}</strong> - ${esc(prod.price)} ج.م ${prod.old_price ? `<span style="text-decoration:line-through; font-size:0.85rem; color:#888;">(${esc(prod.old_price)} ج.م)</span>` : ''}
                         </div>
                         <div class="actions">
-                            <button class="btn-edit" onclick="editProduct(${prod.id})">تعديل</button>
-                            <button class="btn-delete" onclick="deleteProduct(${prod.id})">حذف</button>
+                            <button class="btn-edit" onclick="editProduct(${Number(prod.id)})">تعديل</button>
+                            <button class="btn-delete" onclick="deleteProduct(${Number(prod.id)})">حذف</button>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        // تسجيل تغيير السعر في سجل الأسعار (لا يوقف الحفظ لو الجدول غير موجود)
+        async function logPriceChange(row) {
+            try {
+                const { error } = await _supabase.from('price_history').insert([row]);
+                if (error) statsMissing = true;
+            } catch (e) { statsMissing = true; }
         }
 
         async function saveProduct() {
@@ -333,13 +431,17 @@
                 payload.image = currentBase64Image;
             }
 
+            const before = id ? productsMap[id] : null;
+
             let error;
+            let newId = null;
             if(id) {
                 const res = await _supabase.from('products').update(payload).eq('id', id);
                 error = res.error;
             } else {
-                const res = await _supabase.from('products').insert([payload]);
+                const res = await _supabase.from('products').insert([payload]).select('id');
                 error = res.error;
+                if (!error && res.data && res.data[0]) newId = res.data[0].id;
             }
 
             saveBtn.disabled = false;
@@ -348,6 +450,16 @@
                 alert('فشلت العملية: ' + error.message);
                 saveBtn.innerText = id ? 'تحديث البيانات' : 'حفظ المنتج';
             } else {
+                // سجل الأسعار: عند تعديل السعر أو السعر الأصلي، أو عند إضافة منتج جديد
+                if (before) {
+                    const oldP = Number(before.price);
+                    const oldO = before.old_price === null || before.old_price === undefined ? null : Number(before.old_price);
+                    if (oldP !== price || oldO !== old_price) {
+                        await logPriceChange({ product_id: Number(id), product_name: name, old_price: oldP, new_price: price, old_original_price: oldO, new_original_price: old_price });
+                    }
+                } else {
+                    await logPriceChange({ product_id: newId, product_name: name, old_price: null, new_price: price, old_original_price: null, new_original_price: old_price });
+                }
                 resetForm();
                 loadAdminProducts();
             }
@@ -401,6 +513,143 @@
             currentBase64Image = '';
             document.getElementById('form-title').innerText = 'إضافة منتج جديد';
             document.getElementById('save-btn').innerText = 'حفظ المنتج';
+        }
+
+        /* =========================================================
+           الإحصائيات: سجل المبيعات + سجل تغيير الأسعار
+        ========================================================= */
+        async function loadStats() {
+            // نحدّث قائمة المنتجات أولاً (لو لسه ما اتحملتش)
+            if (!Object.keys(productsMap).length) await loadAdminProducts();
+
+            const [s, h] = await Promise.all([
+                _supabase.from('sales').select('*').order('created_at', { ascending: false }),
+                _supabase.from('price_history').select('*').order('created_at', { ascending: false })
+            ]);
+
+            statsMissing = !!(s.error || h.error);
+            document.getElementById('setup-notice').classList.toggle('hidden', !statsMissing);
+            salesData = s.error ? [] : (s.data || []);
+            historyData = h.error ? [] : (h.data || []);
+
+            const opts = Object.values(productsMap).sort((a, b) => b.id - a.id)
+                .map(p => `<option value="${Number(p.id)}">${esc(p.name)}</option>`).join('');
+            document.getElementById('sale-product').innerHTML = opts || '<option value="">لا توجد منتجات</option>';
+            document.getElementById('history-filter').innerHTML = '<option value="all">كل المنتجات</option>' + opts;
+            fillSalePrice();
+            renderStats();
+            renderPriceHistory();
+        }
+
+        function fillSalePrice() {
+            const p = productsMap[document.getElementById('sale-product').value];
+            document.getElementById('sale-price').value = p ? p.price : '';
+        }
+
+        function setRange(days, btn) {
+            rangeDays = days;
+            document.querySelectorAll('#range-row .chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            renderStats();
+        }
+
+        function filteredSales() {
+            if (!rangeDays) return salesData;
+            const from = Date.now() - rangeDays * 86400000;
+            return salesData.filter(x => new Date(x.created_at).getTime() >= from);
+        }
+
+        function renderStats() {
+            const list = filteredSales();
+            const revenue = list.reduce((a, x) => a + Number(x.total || 0), 0);
+            const units = list.reduce((a, x) => a + Number(x.qty || 0), 0);
+
+            const byProd = {};
+            list.forEach(x => {
+                const k = x.product_name || 'منتج محذوف';
+                byProd[k] = byProd[k] || { qty: 0, total: 0 };
+                byProd[k].qty += Number(x.qty || 0);
+                byProd[k].total += Number(x.total || 0);
+            });
+            const ranked = Object.entries(byProd).sort((a, b) => b[1].total - a[1].total);
+
+            document.getElementById('st-revenue').textContent = money(revenue);
+            document.getElementById('st-orders').textContent = list.length;
+            document.getElementById('st-units').textContent = units;
+            document.getElementById('st-best').textContent = ranked.length ? ranked[0][0] : '-';
+
+            const bp = document.getElementById('sales-by-product');
+            if (!ranked.length) bp.innerHTML = '<div class="empty">لا توجد مبيعات في الفترة دي.</div>';
+            else {
+                const max = ranked[0][1].total || 1;
+                bp.innerHTML = ranked.map(([name, v]) => `
+                    <div class="row"><div class="main"><b>${esc(name)}</b><span class="sub">${v.qty} قطعة</span></div>
+                    <div class="amt">${money(v.total)}</div>
+                    <div class="bar"><i style="width:${Math.max(4, Math.round(v.total / max * 100))}%"></i></div></div>`).join('');
+            }
+
+            const sl = document.getElementById('sales-list');
+            if (!list.length) sl.innerHTML = '<div class="empty">سجل المبيعات فاضي. سجّل أول عملية بيع من الفورم اللي فوق.</div>';
+            else sl.innerHTML = list.map(x => `
+                <div class="row">
+                    <div class="main"><b>${esc(x.product_name)} × ${esc(x.qty)}</b>
+                    <span class="sub">${fmtDate(x.created_at)}${x.customer ? ' · ' + esc(x.customer) : ''}${Number(x.shipping) ? ' · شحن ' + money(x.shipping) : ''}</span></div>
+                    <div class="amt">${money(x.total)}</div>
+                    <button class="btn-delete" onclick="deleteSale(${Number(x.id)})" aria-label="حذف"><i class="fa-solid fa-trash"></i></button>
+                </div>`).join('');
+        }
+
+        async function addSale() {
+            const pid = document.getElementById('sale-product').value;
+            const prod = productsMap[pid];
+            const qty = Math.max(1, Math.floor(Number(document.getElementById('sale-qty').value) || 1));
+            const unit = Number(document.getElementById('sale-price').value);
+            const shipping = Number(document.getElementById('sale-shipping').value) || 0;
+            const customer = document.getElementById('sale-customer').value.trim();
+            if (!prod) return alert('اختار المنتج الأول');
+            if (!unit) return alert('اكتب سعر القطعة');
+
+            const btn = document.getElementById('sale-btn');
+            btn.disabled = true;
+            const { error } = await _supabase.from('sales').insert([{
+                product_id: Number(prod.id), product_name: prod.name, qty, unit_price: unit,
+                shipping, total: unit * qty + shipping, customer: customer || null
+            }]);
+            btn.disabled = false;
+            if (error) { alert('فشل التسجيل: ' + error.message); loadStats(); return; }
+            document.getElementById('sale-qty').value = 1;
+            document.getElementById('sale-shipping').value = 0;
+            document.getElementById('sale-customer').value = '';
+            loadStats();
+        }
+
+        async function deleteSale(id) {
+            if (!confirm('حذف العملية دي من السجل؟')) return;
+            const { error } = await _supabase.from('sales').delete().eq('id', id);
+            if (error) alert('فشل الحذف'); else loadStats();
+        }
+
+        function renderPriceHistory() {
+            const f = document.getElementById('history-filter').value;
+            const rows = historyData.filter(x => f === 'all' || String(x.product_id) === String(f));
+            const box = document.getElementById('price-history-list');
+            if (!rows.length) { box.innerHTML = '<div class="empty">لسه مفيش تغييرات أسعار متسجلة. أي تعديل في السعر هيتسجل هنا تلقائي.</div>'; return; }
+            box.innerHTML = rows.map(x => {
+                let change = '<span class="sub">منتج جديد</span>';
+                if (x.old_price !== null && x.old_price !== undefined) {
+                    const d = Number(x.new_price) - Number(x.old_price);
+                    const pct = Number(x.old_price) ? Math.abs(d / Number(x.old_price) * 100).toFixed(0) : 0;
+                    change = d === 0 ? '<span class="sub">تغيير في السعر الأصلي فقط</span>'
+                        : `<span class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲ زيادة' : '▼ خفض'} ${pct}%</span>`;
+                }
+                const was = x.old_price !== null && x.old_price !== undefined ? `<span style="color:#888;text-decoration:line-through">${money(x.old_price)}</span> ← ` : '';
+                return `<div class="row"><div class="main"><b>${esc(x.product_name)}</b><span class="sub">${fmtDate(x.created_at)}</span></div>
+                    <div>${change}</div><div class="amt">${was}${money(x.new_price)}</div></div>`;
+            }).join('');
+        }
+
+        function copySetupSql() {
+            navigator.clipboard.writeText(SETUP_SQL).then(() => alert('تم النسخ'), () => alert('انسخه يدوي من المربع'));
         }
     </script>
 </body>
