@@ -264,7 +264,7 @@ body{background:transparent!important}
                 <div class="card">
                     <h2>المنتجات الحالية</h2>
                     <div id="sold-notice" class="notice hidden">
-                        <b>خطوة تجهيز مرة واحدة (عداد المبيعات):</b> افتح Supabase ← SQL Editor ← New query، الصق الكود ده واضغط Run، وبعدها حدّث الصفحة.
+                        <b>تحديث مهم لعداد المبيعات (مرة واحدة):</b> الكود ده بيضيف خانة إظهار/إخفاء عدد المبيعات لكل منتج، وبيأمّن العداد نفسه: المنتج اللي مخفي عداده مش هيظهر رقمه لأي حد على الموقع. افتح Supabase ← SQL Editor ← New query، الصق الكود ده واضغط Run، وبعدها حدّث الصفحة. الكود آمن يتكرر — حتى لو شغّلت النسخة القديمة قبل كده، شغّل دي مكانها.
                         <pre id="sold-sql"></pre>
                         <button class="btn-sm" onclick="copySoldSql()"><i class="fa-regular fa-copy"></i> نسخ الكود</button>
                     </div>
@@ -367,12 +367,19 @@ body{background:transparent!important}
         let statsMissing = false;
         let soldColMissing = false;
         let soldByProd = {};
-        const SOLD_SQL = `alter table public.products add column if not exists show_sold boolean not null default true;
+        const SOLD_SQL = `-- CementFit: sold counter setup + privacy fix (safe to re-run)
+alter table public.products add column if not exists show_sold boolean not null default true;
+
 create or replace function public.get_sold_counts()
 returns table(product_id bigint, units bigint)
 language sql security definer set search_path = public as $fn$
-  select s.product_id, coalesce(sum(s.qty),0)::bigint from public.sales s where s.product_id is not null group by s.product_id
+  select s.product_id, coalesce(sum(s.qty),0)::bigint
+  from public.sales s
+  join public.products p on p.id = s.product_id
+  where s.product_id is not null and p.show_sold = true
+  group by s.product_id
 $fn$;
+
 grant execute on function public.get_sold_counts() to anon, authenticated;`;
 
         const SETUP_SQL = `create table if not exists public.sales (
@@ -515,7 +522,7 @@ create policy "admin all price_history" on public.price_history for all to authe
             productsMap = {};
 
             soldColMissing = !('show_sold' in products[0]);
-            document.getElementById('sold-notice').classList.toggle('hidden', !soldColMissing);
+            document.getElementById('sold-notice').classList.remove('hidden'); // always visible: old installs need the privacy fix too
             document.getElementById('show-sold-group').classList.toggle('hidden', soldColMissing);
             document.getElementById('bulk-row').classList.toggle('hidden', soldColMissing);
             soldByProd = {};
