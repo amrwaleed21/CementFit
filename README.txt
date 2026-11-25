@@ -1,2 +1,1 @@
-ارفع الملفين products.html و admin.html في جذر الريبو (استبدل القديم).
-بعد الرفع: افتح الأدمن، هيظهر صندوق برتقالي في تبويب المنتجات فيه كود SQL: انسخه والصقه في Supabase SQL Editor واضغط Run، وحدّث الصفحة.
+v6: home.html has new HD bodybuilder image. Upload all 4 to repo root.
