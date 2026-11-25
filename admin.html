@@ -69,7 +69,45 @@
         .notice{padding:14px;border-radius:14px;background:rgba(255,90,0,.08);border:1px solid rgba(255,90,0,.35);margin-bottom:18px;font-size:.9rem;line-height:1.9}
         .notice pre{direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-word;background:rgba(0,0,0,.5);border-radius:10px;padding:12px;margin:10px 0;font-size:.74rem;line-height:1.5;font-family:Consolas,monospace;max-height:260px;overflow:auto}
         .btn-sm{background:rgba(255,255,255,.08);border:1px solid var(--line);color:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-    
+
+/* ===== stats v2 ===== */
+.kpi{padding:16px;border-radius:16px;background:var(--glass);border:1px solid var(--line);position:relative;overflow:hidden;min-width:0}
+.kpi::after{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--grad)}
+.kpi small{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.8rem;font-weight:700}
+.kpi small i{color:var(--orange2)}
+.kpi strong{display:block;font-size:1.4rem;font-weight:900;margin-top:4px;overflow-wrap:anywhere}
+.trend{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 9px;border-radius:999px;font-size:.76rem;font-weight:800}
+.trend.t-up{color:#22c55e;background:rgba(34,197,94,.12)}
+.trend.t-down{color:#ef4444;background:rgba(239,68,68,.12)}
+.trend.t-flat{color:var(--muted);background:rgba(255,255,255,.06)}
+.chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:22px}
+@media(max-width:760px){.chart-grid{grid-template-columns:minmax(0,1fr)}}
+.chart-grid .card{margin-bottom:0}
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.donut-svg{width:100%;max-width:220px;height:auto;display:block;overflow:visible}
+.donut-seg{fill:none;stroke-width:15;cursor:pointer;transition:stroke-width .2s,opacity .2s;transform:rotate(-90deg);transform-origin:60px 60px}
+.donut-seg.dim{opacity:.28}.donut-seg.on{stroke-width:19}
+.donut-c1{fill:#fff;font-weight:900;font-size:13px;font-family:'Cairo',sans-serif}
+.donut-c2{fill:#9a9ca6;font-size:6.4px;font-family:'Cairo',sans-serif}
+.legend{width:100%;display:flex;flex-direction:column;gap:6px}
+.lg{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;background:rgba(0,0,0,.28);border:1px solid transparent;cursor:pointer;font-size:.86rem;min-width:0;transition:.2s}
+.lg.on{border-color:rgba(255,90,0,.6);background:rgba(255,90,0,.1)}
+.lg i{width:11px;height:11px;border-radius:4px;flex:0 0 auto}
+.lg span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lg b{white-space:nowrap;color:var(--orange2)}
+.bars-box{width:100%}
+.bars-svg{width:100%;height:auto;display:block}
+.bar-col{cursor:pointer;transition:opacity .2s}
+.bar-col.dim{opacity:.4}
+.bar-info{margin-top:8px;text-align:center;font-weight:800;font-size:.9rem;min-height:1.6em;color:var(--orange2)}
+.bar-lbl{fill:#9a9ca6;font-size:7px;font-family:'Cairo',sans-serif}
+.sold-pill{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;color:var(--orange2);font-weight:700;margin-inline-start:8px}
+.chk{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid var(--line);cursor:pointer;font-weight:700}
+.chk input{width:20px;height:20px;accent-color:#ff5a00;flex:0 0 auto}
+.bulk-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.btn-eye{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+.btn-eye.off{color:var(--muted)}
+
 /* ===== CEMENTFIT ambient background + glow polish ===== */
 .cf-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .cf-orb{position:absolute;border-radius:50%}
@@ -208,6 +246,10 @@ body{background:transparent!important}
                             <input type="text" id="prod-shipping-locs" placeholder="مثال: بورسعيد، القاهرة، الجيزة">
                         </div>
 
+                        <div class="input-group full-width" id="show-sold-group">
+                            <label class="chk"><input type="checkbox" id="prod-show-sold" checked> إظهار عدد النسخ المباعة للعملاء في صفحة المنتجات</label>
+                        </div>
+
                         <div class="input-group full-width">
                             <label>اختر صورة المنتج من جهازك</label>
                             <input type="file" id="prod-file" accept="image/*" onchange="previewAndCompressImage(event)">
@@ -221,6 +263,15 @@ body{background:transparent!important}
                 <!-- Existing Products List -->
                 <div class="card">
                     <h2>المنتجات الحالية</h2>
+                    <div id="sold-notice" class="notice hidden">
+                        <b>خطوة تجهيز مرة واحدة (عداد المبيعات):</b> افتح Supabase ← SQL Editor ← New query، الصق الكود ده واضغط Run، وبعدها حدّث الصفحة.
+                        <pre id="sold-sql"></pre>
+                        <button class="btn-sm" onclick="copySoldSql()"><i class="fa-regular fa-copy"></i> نسخ الكود</button>
+                    </div>
+                    <div class="bulk-row" id="bulk-row">
+                        <button class="btn-sm" onclick="bulkShowSold(true)"><i class="fa-solid fa-eye"></i> إظهار المبيعات لكل المنتجات</button>
+                        <button class="btn-sm" onclick="bulkShowSold(false)"><i class="fa-solid fa-eye-slash"></i> إخفاء المبيعات عن كل المنتجات</button>
+                    </div>
                     <div id="admin-products-list">جاري التحميل...</div>
                 </div>
             </div>
@@ -240,10 +291,18 @@ body{background:transparent!important}
                 </div>
 
                 <div class="stat-grid">
-                    <div class="stat"><small>إجمالي المبيعات</small><strong class="orange" id="st-revenue">0 ج.م</strong></div>
-                    <div class="stat"><small>عدد الطلبات</small><strong id="st-orders">0</strong></div>
-                    <div class="stat"><small>القطع المباعة</small><strong id="st-units">0</strong></div>
-                    <div class="stat"><small>الأكثر مبيعاً</small><strong id="st-best" style="font-size:1rem">-</strong></div>
+                    <div class="kpi"><small><i class="fa-solid fa-sack-dollar"></i> إجمالي المبيعات</small><strong class="orange" id="st-revenue" style="color:var(--orange2)">0 ج.م</strong><div id="tr-revenue"></div></div>
+                    <div class="kpi"><small><i class="fa-solid fa-receipt"></i> عدد الطلبات</small><strong id="st-orders">0</strong><div id="tr-orders"></div></div>
+                    <div class="kpi"><small><i class="fa-solid fa-boxes-stacked"></i> القطع المباعة</small><strong id="st-units">0</strong><div id="tr-units"></div></div>
+                    <div class="kpi"><small><i class="fa-solid fa-crown"></i> الأكثر مبيعاً</small><strong id="st-best" style="font-size:1rem">-</strong><div id="tr-best"></div></div>
+                </div>
+                <div class="sub" id="trend-note" style="color:var(--muted);font-size:.78rem;margin:-10px 0 16px"></div>
+
+                <div class="chart-grid">
+                    <div class="card"><h2><i class="fa-solid fa-chart-pie"></i> توزيع الإيرادات على المنتجات</h2><div id="donut-products" class="donut-wrap"></div></div>
+                    <div class="card"><h2><i class="fa-solid fa-chart-pie"></i> القطع المباعة لكل منتج</h2><div id="donut-units" class="donut-wrap"></div></div>
+                    <div class="card"><h2><i class="fa-solid fa-truck-fast"></i> المنتجات مقابل الشحن</h2><div id="donut-ship" class="donut-wrap"></div></div>
+                    <div class="card"><h2><i class="fa-solid fa-chart-column"></i> المبيعات اليومية</h2><div id="bars-days" class="bars-box"></div></div>
                 </div>
 
                 <div class="card">
@@ -306,6 +365,15 @@ body{background:transparent!important}
         let historyData = [];
         let rangeDays = 0;
         let statsMissing = false;
+        let soldColMissing = false;
+        let soldByProd = {};
+        const SOLD_SQL = `alter table public.products add column if not exists show_sold boolean not null default true;
+create or replace function public.get_sold_counts()
+returns table(product_id bigint, units bigint)
+language sql security definer set search_path = public as $fn$
+  select s.product_id, coalesce(sum(s.qty),0)::bigint from public.sales s where s.product_id is not null group by s.product_id
+$fn$;
+grant execute on function public.get_sold_counts() to anon, authenticated;`;
 
         const SETUP_SQL = `create table if not exists public.sales (
   id bigint generated always as identity primary key,
@@ -370,6 +438,7 @@ create policy "admin all price_history" on public.price_history for all to authe
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('dashboard-section').classList.remove('hidden');
             document.getElementById('setup-sql').textContent = SETUP_SQL;
+            document.getElementById('sold-sql').textContent = SOLD_SQL;
             loadAdminProducts();
         }
 
@@ -445,14 +514,28 @@ create policy "admin all price_history" on public.price_history for all to authe
             list.innerHTML = '';
             productsMap = {};
 
+            soldColMissing = !('show_sold' in products[0]);
+            document.getElementById('sold-notice').classList.toggle('hidden', !soldColMissing);
+            document.getElementById('show-sold-group').classList.toggle('hidden', soldColMissing);
+            document.getElementById('bulk-row').classList.toggle('hidden', soldColMissing);
+            soldByProd = {};
+            try {
+                const sr = await _supabase.from('sales').select('product_id,qty');
+                if (!sr.error) (sr.data || []).forEach(x => { soldByProd[x.product_id] = (soldByProd[x.product_id] || 0) + Number(x.qty || 0); });
+            } catch (e) {}
+
             products.forEach((prod) => {
                 productsMap[prod.id] = prod;
+                const sold = soldByProd[prod.id] || 0;
+                const shown = prod.show_sold !== false;
                 list.innerHTML += `
                     <div class="product-item">
                         <div class="pname">
                             <strong>${esc(prod.name)}</strong> - ${esc(prod.price)} ج.م ${prod.old_price ? `<span style="text-decoration:line-through; font-size:0.85rem; color:#888;">(${esc(prod.old_price)} ج.م)</span>` : ''}
+                            <span class="sold-pill"><i class="fa-solid fa-fire"></i> اتباع ${sold} نسخة</span>
                         </div>
                         <div class="actions">
+                            ${soldColMissing ? '' : `<button class="btn-eye ${shown ? '' : 'off'}" title="${shown ? 'العداد ظاهر للعملاء' : 'العداد مخفي عن العملاء'}" onclick="toggleShowSold(${Number(prod.id)})"><i class="fa-solid ${shown ? 'fa-eye' : 'fa-eye-slash'}"></i></button>`}
                             <button class="btn-edit" onclick="editProduct(${Number(prod.id)})">تعديل</button>
                             <button class="btn-delete" onclick="deleteProduct(${Number(prod.id)})">حذف</button>
                         </div>
@@ -492,6 +575,7 @@ create policy "admin all price_history" on public.price_history for all to authe
                 shipping_price, 
                 shipping_locations 
             };
+            if (!soldColMissing) payload.show_sold = document.getElementById('prod-show-sold').checked;
 
             if (currentBase64Image) {
                 payload.image = currentBase64Image;
@@ -542,6 +626,7 @@ create policy "admin all price_history" on public.price_history for all to authe
             document.getElementById('prod-old-price').value = prod.old_price || '';
             document.getElementById('prod-shipping-price').value = prod.shipping_price || '';
             document.getElementById('prod-shipping-locs').value = prod.shipping_locations || '';
+            document.getElementById('prod-show-sold').checked = prod.show_sold !== false;
             
             currentBase64Image = prod.image || '';
 
@@ -575,6 +660,7 @@ create policy "admin all price_history" on public.price_history for all to authe
             document.getElementById('prod-shipping-price').value = '';
             document.getElementById('prod-shipping-locs').value = '';
             document.getElementById('prod-file').value = '';
+            document.getElementById('prod-show-sold').checked = true;
             document.getElementById('img-preview').style.display = 'none';
             currentBase64Image = '';
             document.getElementById('form-title').innerText = 'إضافة منتج جديد';
@@ -627,6 +713,8 @@ create policy "admin all price_history" on public.price_history for all to authe
 
         function renderStats() {
             const list = filteredSales();
+            drawCharts(list);
+            renderTrends();
             const revenue = list.reduce((a, x) => a + Number(x.total || 0), 0);
             const units = list.reduce((a, x) => a + Number(x.qty || 0), 0);
 
@@ -712,6 +800,122 @@ create policy "admin all price_history" on public.price_history for all to authe
                 return `<div class="row"><div class="main"><b>${esc(x.product_name)}</b><span class="sub">${fmtDate(x.created_at)}</span></div>
                     <div>${change}</div><div class="amt">${was}${money(x.new_price)}</div></div>`;
             }).join('');
+        }
+
+
+        async function toggleShowSold(id) {
+            const p = productsMap[id]; if (!p) return;
+            const { error } = await _supabase.from('products').update({ show_sold: !(p.show_sold !== false) }).eq('id', id);
+            if (error) alert('فشل التحديث: ' + error.message); else loadAdminProducts();
+        }
+        async function bulkShowSold(v) {
+            if (!confirm(v ? 'إظهار عدد المبيعات لكل المنتجات؟' : 'إخفاء عدد المبيعات عن كل المنتجات؟')) return;
+            const { error } = await _supabase.from('products').update({ show_sold: v }).gte('id', 0);
+            if (error) alert('فشل التحديث: ' + error.message); else loadAdminProducts();
+        }
+        function copySoldSql() {
+            navigator.clipboard.writeText(SOLD_SQL).then(() => alert('تم النسخ'), () => alert('انسخه يدوي من المربع'));
+        }
+
+        /* ===== رسوم الإحصائيات (SVG داخلي) ===== */
+        const PALETTE = ['#ff5a00', '#ffb020', '#3b82f6', '#22c55e', '#a855f7', '#ef4444', '#14b8a6', '#9a9ca6'];
+        const chartState = {};
+        function trendBadge(cur, prev) {
+            if (!prev && !cur) return '<span class="trend t-flat"><i class="fa-solid fa-minus"></i> ثابت</span>';
+            if (!prev) return '<span class="trend t-up"><i class="fa-solid fa-arrow-trend-up"></i> جديد</span>';
+            const pct = Math.round((cur - prev) / prev * 100);
+            if (pct === 0) return '<span class="trend t-flat"><i class="fa-solid fa-minus"></i> 0%</span>';
+            return pct > 0 ? `<span class="trend t-up"><i class="fa-solid fa-arrow-up"></i> ${pct}%</span>`
+                           : `<span class="trend t-down"><i class="fa-solid fa-arrow-down"></i> ${Math.abs(pct)}%</span>`;
+        }
+        function drawDonut(boxId, items, fmt, centerLabel) {
+            const box = document.getElementById(boxId);
+            const total = items.reduce((a, x) => a + x.v, 0);
+            if (!total) { box.innerHTML = '<div class="empty">مفيش بيانات في الفترة دي.</div>'; return; }
+            const R = 42, C = 2 * Math.PI * R;
+            let off = 0, segs = '', legend = '';
+            items.forEach((it, i) => {
+                const frac = it.v / total, len = frac * C, col = PALETTE[i % PALETTE.length];
+                segs += `<circle class="donut-seg" data-i="${i}" cx="60" cy="60" r="${R}" stroke="${col}" stroke-dasharray="${Math.max(len - 1.5, .5)} ${C}" stroke-dashoffset="${-off}" onclick="pickSeg('${boxId}',${i})" onmouseenter="pickSeg('${boxId}',${i})"/>`;
+                legend += `<div class="lg" data-i="${i}" onclick="pickSeg('${boxId}',${i})"><i style="background:${col}"></i><span>${esc(it.n)}</span><b>${Math.round(frac * 100)}%</b></div>`;
+                off += len;
+            });
+            chartState[boxId] = { items, total, fmt, centerLabel };
+            box.innerHTML = `<svg class="donut-svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="${R}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="15"/>${segs}
+                <text class="donut-c1" x="60" y="60" text-anchor="middle" id="${boxId}-c1">${fmt(total)}</text>
+                <text class="donut-c2" x="60" y="72" text-anchor="middle" id="${boxId}-c2">${esc(centerLabel)}</text></svg><div class="legend">${legend}</div>`;
+        }
+        function pickSeg(boxId, i) {
+            const st = chartState[boxId]; if (!st) return;
+            const box = document.getElementById(boxId), it = st.items[i];
+            box.querySelectorAll('.donut-seg').forEach(e => { const on = +e.dataset.i === i; e.classList.toggle('on', on); e.classList.toggle('dim', !on); });
+            box.querySelectorAll('.lg').forEach(e => e.classList.toggle('on', +e.dataset.i === i));
+            const c1 = document.getElementById(boxId + '-c1'), c2 = document.getElementById(boxId + '-c2');
+            c1.textContent = Math.round(it.v / st.total * 100) + '%';
+            c2.textContent = (it.n.length > 16 ? it.n.slice(0, 15) + '…' : it.n) + ' · ' + st.fmt(it.v);
+        }
+        function topWithOthers(map, n) {
+            const arr = Object.entries(map).map(([k, v]) => ({ n: k, v })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
+            if (arr.length <= n) return arr;
+            const rest = arr.slice(n - 1).reduce((a, x) => a + x.v, 0);
+            return arr.slice(0, n - 1).concat([{ n: 'أخرى', v: rest }]);
+        }
+        function drawDays(list) {
+            const box = document.getElementById('bars-days');
+            const N = rangeDays === 7 ? 7 : 14;
+            const days = [];
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            for (let i = N - 1; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); days.push({ d, v: 0, q: 0 }); }
+            list.forEach(x => {
+                const t = new Date(x.created_at); t.setHours(0, 0, 0, 0);
+                const hit = days.find(o => o.d.getTime() === t.getTime());
+                if (hit) { hit.v += Number(x.total || 0); hit.q += Number(x.qty || 0); }
+            });
+            const max = Math.max(...days.map(o => o.v));
+            if (!max) { box.innerHTML = '<div class="empty">مفيش مبيعات في آخر ' + N + ' يوم.</div><div class="bar-info"></div>'; return; }
+            const W = 200, H = 90, bw = W / N;
+            let g = '';
+            days.forEach((o, i) => {
+                const h = Math.max(2, o.v / max * (H - 8));
+                const lbl = o.d.getDate() + '/' + (o.d.getMonth() + 1);
+                g += `<g class="bar-col" data-i="${i}" onclick="pickBar(${i})" onmouseenter="pickBar(${i})"><rect x="${i * bw + 2}" y="0" width="${bw - 4}" height="${H}" fill="transparent"/>
+                    <rect x="${i * bw + 3}" y="${H - h}" width="${bw - 6}" height="${h}" rx="2.5" fill="url(#bg1)"/>
+                    ${(N <= 7 || i % 2 === 0) ? `<text class="bar-lbl" x="${i * bw + bw / 2}" y="${H + 9}" text-anchor="middle">${lbl}</text>` : ''}</g>`;
+            });
+            chartState.days = days;
+            box.innerHTML = `<svg class="bars-svg" viewBox="0 0 ${W} ${H + 12}"><defs><linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8a2a"/><stop offset="1" stop-color="#ff5a00"/></linearGradient></defs>${g}</svg>
+                <div class="bar-info" id="bar-info">اضغط على عمود لعرض تفاصيل اليوم</div>`;
+        }
+        function pickBar(i) {
+            const o = chartState.days && chartState.days[i]; if (!o) return;
+            document.querySelectorAll('#bars-days .bar-col').forEach(e => e.classList.toggle('dim', +e.dataset.i !== i));
+            document.getElementById('bar-info').textContent = o.d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' }) + ' · ' + money(o.v) + ' · ' + o.q + ' قطعة';
+        }
+        function drawCharts(list) {
+            const rev = {}, units = {};
+            let ship = 0, goods = 0;
+            list.forEach(x => {
+                const k = x.product_name || 'منتج محذوف';
+                rev[k] = (rev[k] || 0) + Number(x.total || 0) - Number(x.shipping || 0);
+                units[k] = (units[k] || 0) + Number(x.qty || 0);
+                ship += Number(x.shipping || 0); goods += Number(x.total || 0) - Number(x.shipping || 0);
+            });
+            drawDonut('donut-products', topWithOthers(rev, 6), v => Number(v).toLocaleString('en-US'), 'ج.م');
+            drawDonut('donut-units', topWithOthers(units, 6), v => v + ' ق', 'قطعة');
+            drawDonut('donut-ship', [{ n: 'المنتجات', v: goods }, { n: 'الشحن', v: ship }].filter(x => x.v > 0), v => Number(v).toLocaleString('en-US'), 'ج.م');
+            drawDays(list);
+        }
+        function renderTrends() {
+            const N = rangeDays || 30, now = Date.now(), ms = N * 86400000;
+            const inR = (x, a, b) => { const t = new Date(x.created_at).getTime(); return t >= a && t < b; };
+            const cur = salesData.filter(x => inR(x, now - ms, now + 1)), prev = salesData.filter(x => inR(x, now - 2 * ms, now - ms));
+            const agg = l => ({ r: l.reduce((a, x) => a + Number(x.total || 0), 0), o: l.length, u: l.reduce((a, x) => a + Number(x.qty || 0), 0) });
+            const c = agg(cur), p = agg(prev);
+            document.getElementById('tr-revenue').innerHTML = trendBadge(c.r, p.r);
+            document.getElementById('tr-orders').innerHTML = trendBadge(c.o, p.o);
+            document.getElementById('tr-units').innerHTML = trendBadge(c.u, p.u);
+            document.getElementById('tr-best').innerHTML = '';
+            document.getElementById('trend-note').textContent = 'الأسهم بتقارن آخر ' + N + ' يوم بالـ ' + N + ' يوم اللي قبلهم.';
         }
 
         function copySetupSql() {
