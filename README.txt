@@ -1,0 +1,1 @@
+ارفع الملفات دي (home.html, products.html, product.html, admin.html) في أول الريبو (الصفحة الرئيسية بتاعة الريبو، مش جوه فولدر) واعمل Commit. الـ CSS دلوقتي جوه كل صفحة فمش محتاج theme.css ولا assets.
