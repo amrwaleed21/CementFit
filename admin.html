@@ -108,10 +108,36 @@ header{box-shadow:0 10px 40px rgba(0,0,0,.45),0 0 24px rgba(255,90,0,.10)}
 .floating-cart-btn{animation:cf-cart-pulse 2.8s ease-in-out infinite}
 @keyframes cf-cart-pulse{0%,100%{box-shadow:0 10px 30px rgba(255,90,0,.5)}50%{box-shadow:0 10px 40px rgba(255,90,0,.8),0 0 26px rgba(255,110,30,.5)}}
 @media (prefers-reduced-motion:reduce){.cf-orb,.cf-spark,.logo-mark,.hero-title,.btn-primary::after,.floating-cart-btn{animation:none!important}}
+
+/* ===== CEMENTFIT v3: livelier background (all clipped inside fixed .cf-bg) ===== */
+body{background:transparent!important}
+.cf-bg{background:radial-gradient(1100px 760px at 10% -4%,rgba(255,95,0,.42),transparent 64%),radial-gradient(1000px 760px at 100% 104%,rgba(255,120,20,.40),transparent 64%),radial-gradient(800px 640px at 50% 48%,rgba(255,80,0,.20),transparent 70%),linear-gradient(180deg,#2c1307 0%,#170e0c 46%,#2e1206 100%);contain:strict}
+.cf-orb-1{width:max(78vmin,420px);height:max(78vmin,420px);background:radial-gradient(circle,rgba(255,110,15,.62),rgba(255,90,0,0) 64%);animation-duration:13s}
+.cf-orb-2{width:max(72vmin,380px);height:max(72vmin,380px);background:radial-gradient(circle,rgba(255,140,40,.55),rgba(255,122,26,0) 64%);animation-duration:16s}
+.cf-orb-3{width:max(52vmin,300px);height:max(52vmin,300px);background:radial-gradient(circle,rgba(255,75,0,.42),rgba(255,60,0,0) 62%);animation-duration:11s}
+.cf-orb-4{width:max(46vmin,260px);height:max(46vmin,260px);top:62%;left:-8vmin;background:radial-gradient(circle,rgba(255,150,50,.42),rgba(255,120,30,0) 64%);animation:cf-drift-b 15s ease-in-out infinite alternate}
+.cf-orb-5{width:max(44vmin,250px);height:max(44vmin,250px);top:4%;right:-6vmin;background:radial-gradient(circle,rgba(255,100,10,.42),rgba(255,90,0,0) 64%);animation:cf-drift-a 12s ease-in-out infinite alternate}
+.cf-beam{position:absolute;top:-30%;left:0;width:26vmax;height:160%;background:linear-gradient(90deg,transparent,rgba(255,170,90,.13),rgba(255,255,255,.07),rgba(255,170,90,.13),transparent);transform:translateX(-60vw) skewX(-22deg);animation:cf-beam 9s ease-in-out infinite}
+.cf-beam-2{width:14vmax;animation-duration:13s;animation-delay:-6s;opacity:.8}
+@keyframes cf-beam{0%{transform:translateX(-45vw) skewX(-22deg)}100%{transform:translateX(130vw) skewX(-22deg)}}
+.cf-spark{width:6px;height:6px;box-shadow:0 0 14px 3px rgba(255,130,40,.75)}
+.cf-spark:nth-of-type(13){left:8%;animation-duration:9s;animation-delay:-3s}
+.cf-spark:nth-of-type(14){left:16%;animation-duration:14s;animation-delay:-8s}
+.cf-spark:nth-of-type(15){left:23%;animation-duration:10s;animation-delay:-1s}
+.cf-spark:nth-of-type(16){left:31%;animation-duration:12s;animation-delay:-6s}
+.cf-spark:nth-of-type(17){left:38%;animation-duration:15s;animation-delay:-11s}
+.cf-spark:nth-of-type(18){left:46%;animation-duration:9.5s;animation-delay:-4s}
+.cf-spark:nth-of-type(19){left:54%;animation-duration:13s;animation-delay:-9s}
+.cf-spark:nth-of-type(20){left:61%;animation-duration:10.5s;animation-delay:-2s}
+.cf-spark:nth-of-type(21){left:69%;animation-duration:14s;animation-delay:-7s}
+.cf-spark:nth-of-type(22){left:77%;animation-duration:11s;animation-delay:-5s}
+.cf-spark:nth-of-type(23){left:86%;animation-duration:12.5s;animation-delay:-10s}
+.cf-spark:nth-of-type(24){left:95%;animation-duration:9s;animation-delay:-8s}
+@media (prefers-reduced-motion:reduce){.cf-orb,.cf-beam{animation:none!important}}
 </style>
 </head>
 <body>
-<div class="cf-bg" aria-hidden="true"><div class="cf-orb cf-orb-1"></div><div class="cf-orb cf-orb-2"></div><div class="cf-orb cf-orb-3"></div><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span></div>
+<div class="cf-bg" aria-hidden="true"><div class="cf-orb cf-orb-1"></div><div class="cf-orb cf-orb-2"></div><div class="cf-orb cf-orb-3"></div><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><div class="cf-orb cf-orb-4"></div><div class="cf-orb cf-orb-5"></div><div class="cf-beam"></div><div class="cf-beam cf-beam-2"></div><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span><span class="cf-spark"></span></div>
 
     <div class="container">
         <!-- Login Section -->
