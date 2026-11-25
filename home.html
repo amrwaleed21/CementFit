@@ -308,6 +308,44 @@ body{background:transparent!important}
 .hero-figure .hf-floor{animation:cf-halo-f 3.6s ease-in-out infinite}
 @media(max-width:480px){.hero{padding:88px 14px 46px}.hero-figure{width:min(149px,42vw)}}
 @media (prefers-reduced-motion:reduce){.hero-figure *,.hero-figure::before,.hero-figure::after{animation:none!important}}
+
+/* ---------- playing-card features ---------- */
+.features{overflow:hidden}
+.features .grid{position:relative;display:flex;justify-content:center;align-items:center;gap:0;padding:30px 0 40px;perspective:1200px}
+.features .grid::before{content:"";position:absolute;left:50%;top:50%;width:80%;height:80%;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(255,110,30,.26) 0%,rgba(255,90,20,.12) 40%,transparent 70%);filter:blur(40px);pointer-events:none;z-index:0;animation:pcGlow 5s ease-in-out infinite alternate}
+@keyframes pcGlow{from{opacity:.7}to{opacity:1}}
+.feature-card.pc{flex:0 0 auto;width:min(290px,28vw);min-height:400px;margin:0 10px;padding:60px 28px 62px;border-radius:22px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ background:linear-gradient(165deg,#2b2c33 0%,#1c1d22 60%,#17181c 100%);border:1px solid rgba(255,255,255,.12);
+ box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 46px 6px rgba(255,100,20,.30),0 0 90px 10px rgba(255,80,10,.14),inset 0 1px 0 rgba(255,255,255,.07);
+ transform:translateY(var(--y,0)) rotate(var(--rot,0deg));transform-origin:50% 120%;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .3s;overflow:hidden;opacity:0;animation:pcIn .8s ease forwards,pcPulse 4s ease-in-out 1s infinite alternate;animation-delay:var(--d,0s),1s}
+@keyframes pcPulse{from{box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 34px 2px rgba(255,100,20,.22),0 0 70px 6px rgba(255,80,10,.10),inset 0 1px 0 rgba(255,255,255,.07)}to{box-shadow:0 18px 40px rgba(0,0,0,.5),0 0 54px 8px rgba(255,110,30,.38),0 0 100px 14px rgba(255,80,10,.18),inset 0 1px 0 rgba(255,255,255,.07)}}
+@keyframes pcIn{from{opacity:0;transform:translateY(40px) rotate(0deg)}to{opacity:1;transform:translateY(var(--y,0)) rotate(var(--rot,0deg))}}
+.feature-card.pc::after{inset:14px;height:auto;border:1px solid rgba(255,150,70,.28);border-radius:14px;background:none;opacity:1;pointer-events:none}
+.feature-card.pc:nth-child(1){--rot:-7deg;--y:16px;--d:.05s;z-index:1}
+.feature-card.pc:nth-child(2){--rot:0deg;--y:-8px;--d:.2s;z-index:2}
+.feature-card.pc:nth-child(3){--rot:7deg;--y:16px;--d:.35s;z-index:1}
+.feature-card.pc:hover{transform:translateY(-26px) rotate(0deg) scale(1.04);z-index:5;border-color:rgba(255,130,50,.5);box-shadow:0 28px 55px rgba(0,0,0,.6),0 0 34px rgba(255,100,20,.2)}
+.pc .corner{position:absolute;font-family:'Oswald',sans-serif;font-weight:700;font-size:1.05rem;line-height:1;color:var(--orange2);display:flex;flex-direction:column;align-items:center;gap:4px;z-index:2}
+.pc .corner i{font-size:.8rem;opacity:.85}
+.pc .corner.tl{top:26px;left:26px}.pc .corner.br{bottom:26px;right:26px;transform:rotate(180deg)}
+.pc .icon-box{margin:0 auto 20px;width:68px;height:68px;font-size:1.8rem;border-radius:50%;background:linear-gradient(145deg,#c8501a,#8a3a16);box-shadow:0 8px 24px rgba(200,80,20,.3)}
+.pc h4{font-size:1.25rem;margin-bottom:10px}
+.pc p{line-height:1.8}
+@media(max-width:900px){
+ .features .grid{flex-wrap:wrap;flex-direction:row;justify-content:center;align-items:stretch;gap:0;padding:10px 0 30px}
+ .feature-card.pc{width:min(300px,calc(50% - 16px));min-height:0;margin:0 6px 26px;padding:56px 14px 58px;transform-origin:50% 50%}
+ .feature-card.pc:nth-child(1){--rot:-4deg;--y:0px}
+ .feature-card.pc:nth-child(2){--rot:4deg;--y:0px}
+ .feature-card.pc:nth-child(3){--rot:-1.5deg;--y:0px;margin-top:-30px;margin-bottom:12px;z-index:3}
+ .pc .corner{font-size:.85rem;gap:3px}
+ .pc .corner i{font-size:.65rem}
+ .pc .corner.tl{top:18px;left:15px}.pc .corner.br{bottom:18px;right:15px}
+ .pc .icon-box{width:54px;height:54px;font-size:1.4rem;margin-bottom:14px}
+ .pc h4{font-size:1.02rem;margin-bottom:8px}
+ .pc p{font-size:.85rem;line-height:1.75}
+ .feature-card.pc::after{inset:10px}
+ .feature-card.pc:hover{transform:translateY(-6px) rotate(0deg)}
+}
 </style>
 </head>
 
@@ -454,7 +492,7 @@ body{background:transparent!important}
 
         <div class="grid">
             <!-- FEATURE 1 -->
-            <div class="feature-card animate-element">
+            <div class="feature-card pc"><div class="corner tl"><span>A</span><i class="fa-solid fa-dumbbell"></i></div><div class="corner br"><span>A</span><i class="fa-solid fa-dumbbell"></i></div>
                 <div class="icon-box">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
@@ -468,7 +506,7 @@ body{background:transparent!important}
             </div>
 
             <!-- FEATURE 2 -->
-            <div class="feature-card animate-element">
+            <div class="feature-card pc"><div class="corner tl"><span>K</span><i class="fa-solid fa-dumbbell"></i></div><div class="corner br"><span>K</span><i class="fa-solid fa-dumbbell"></i></div>
                 <div class="icon-box">
                     <i class="fa-solid fa-hand-fist"></i>
                 </div>
@@ -482,7 +520,7 @@ body{background:transparent!important}
             </div>
 
             <!-- FEATURE 3 -->
-            <div class="feature-card animate-element">
+            <div class="feature-card pc"><div class="corner tl"><span>Q</span><i class="fa-solid fa-dumbbell"></i></div><div class="corner br"><span>Q</span><i class="fa-solid fa-dumbbell"></i></div>
                 <div class="icon-box">
                     <i class="fa-solid fa-sack-dollar"></i>
                 </div>
